@@ -1,0 +1,13 @@
+{
+  "name": "chr-pms",
+  "version": "1.0.0",
+  "description": "CHR PMS — Les Trois Sources : simulateur de PMS hôtelier pour la formation réception, avec comptes et session partagée.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": { "node": ">=22" }
+}

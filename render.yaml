@@ -1,0 +1,27 @@
+# Déploiement sur Render (https://render.com) : « New > Blueprint » puis choisir ce dépôt.
+services:
+  - type: web
+    name: chr-pms
+    runtime: node
+    region: frankfurt        # données hébergées en Europe
+    plan: starter            # le disque persistant nécessite une offre payante
+    buildCommand: "true"     # aucune dépendance à installer
+    startCommand: node src/server.js
+    healthCheckPath: /sante
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /var/data
+      - key: PASS_STEPHANIE
+        generateValue: true  # mots de passe visibles dans l'onglet Environment de Render
+      - key: PASS_FLORIANE
+        generateValue: true
+      - key: PASS_SOUKAYNA
+        generateValue: true
+      - key: PASS_YASMINE
+        generateValue: true
+    disk:
+      name: donnees
+      mountPath: /var/data
+      sizeGB: 1
