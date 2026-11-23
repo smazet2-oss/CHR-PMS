@@ -14,7 +14,7 @@ Toutes les données (clients, sociétés, réservations) sont fictives.
 
 1. Sur Render : **New > Blueprint**, choisir ce dépôt, valider.
 2. Une fois le service créé : onglet **Environment** → les mots de passe `PASS_STEPHANIE`, `PASS_FLORIANE`, `PASS_SOUKAYNA`, `PASS_YASMINE` y sont générés. Les communiquer à chaque personne (ou les remplacer par des mots de passe choisis).
-3. L'adresse du site s'affiche en haut de la page du service (ex. `https://chr-pms.onrender.com`).
+3. L'adresse du site s'affiche en haut de la page du service (ex. `https://chr-solution.onrender.com`).
 
 Le disque `/var/data` conserve la session et le journal entre deux redémarrages (offre payante « Starter »).
 Sans disque, tout repart de zéro à chaque redémarrage.

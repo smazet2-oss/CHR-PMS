@@ -1,7 +1,7 @@
 # Déploiement sur Render (https://render.com) : « New > Blueprint » puis choisir ce dépôt.
 services:
   - type: web
-    name: chr-pms
+    name: chr-solution
     runtime: node
     region: frankfurt        # données hébergées en Europe
     plan: starter            # le disque persistant nécessite une offre payante
