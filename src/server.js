@@ -26,7 +26,7 @@ const COMPTES = [
   { login: 'yasmine', nom: 'Yasmine', env: 'PASS_YASMINE' },
 ];
 for (const c of COMPTES) {
-  c.pass = process.env[c.env] || '';
+  c.pass = String(process.env[c.env] || '').trim();
   if (!c.pass) console.warn(`[chr-pms] ${c.env} absent : le compte « ${c.login} » est désactivé.`);
 }
 function egal(a, b) {
@@ -140,9 +140,12 @@ const serveur = http.createServer(async (req, res) => {
     if (p === '/login' && req.method === 'POST') {
       if (trop(req)) return repondre(res, 429, 'text/html; charset=utf-8', pageConnexion('Trop de tentatives : réessayez dans 15 minutes.'));
       const f = new URLSearchParams(await corps(req, 4096));
-      const login = String(f.get('login') || '').trim().toLowerCase();
+      // « Stéphanie », « STEPHANIE », « stephanie  » : on accepte toutes ces écritures.
+      const login = String(f.get('login') || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
       const c = COMPTES.find((x) => x.login === login && x.pass);
-      if (!c || !egal(f.get('pass') || '', c.pass)) return repondre(res, 401, 'text/html; charset=utf-8', pageConnexion('Identifiant ou mot de passe incorrect.'));
+      if (!c) console.warn(`[chr-pms] connexion refusée : identifiant inconnu ou compte désactivé (« ${login.slice(0, 30)} »)`);
+      else if (!egal(String(f.get('pass') || '').trim(), c.pass)) console.warn(`[chr-pms] connexion refusée : mauvais mot de passe pour « ${c.login} »`);
+      if (!c || !egal(String(f.get('pass') || '').trim(), c.pass)) return repondre(res, 401, 'text/html; charset=utf-8', pageConnexion('Identifiant ou mot de passe incorrect.'));
       const t = crypto.randomBytes(32).toString('hex');
       sessions[t] = { login: c.login, t: Date.now() }; sauverSessions();
       res.writeHead(303, { Location: '/', 'Set-Cookie': `chrpms=${t}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${SESS_MAX / 1000}${PROD ? '; Secure' : ''}`, ...SECU });

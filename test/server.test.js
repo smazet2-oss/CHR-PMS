@@ -42,6 +42,9 @@ test('connexion, identité et partage d’un document', async () => {
   const page = await (await fetch(base + '/', { headers: { cookie: s.cookie } })).text();
   assert.ok(page.includes('<script src="/shim.js"></script>'));
 });
+test('identifiant avec accent, majuscules et espaces accepté', async () => {
+  assert.strictEqual((await login(' Stéphanie ', ' a ')).status, 303);
+});
 test('chemin de document invalide refusé', async () => {
   const s = await login('stephanie', 'a');
   const r = await fetch(base + '/api/doc?path=../../etc', { headers: { cookie: s.cookie } });
