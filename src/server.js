@@ -142,7 +142,9 @@ const serveur = http.createServer(async (req, res) => {
       const f = new URLSearchParams(await corps(req, 4096));
       // « Stéphanie », « STEPHANIE », « stephanie  » : on accepte toutes ces écritures.
       const login = String(f.get('login') || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
-      const c = COMPTES.find((x) => x.login === login && x.pass);
+      // « admin » ou « administrateur » = le compte de la formatrice (même mot de passe que stephanie).
+      const cible = (login === 'admin' || login === 'administrateur' || login === 'formatrice') ? 'stephanie' : login;
+      const c = COMPTES.find((x) => x.login === cible && x.pass);
       if (!c) console.warn(`[chr-pms] connexion refusée : identifiant inconnu ou compte désactivé (« ${login.slice(0, 30)} »)`);
       else if (!egal(String(f.get('pass') || '').trim(), c.pass)) console.warn(`[chr-pms] connexion refusée : mauvais mot de passe pour « ${c.login} »`);
       if (!c || !egal(String(f.get('pass') || '').trim(), c.pass)) return repondre(res, 401, 'text/html; charset=utf-8', pageConnexion('Identifiant ou mot de passe incorrect.'));

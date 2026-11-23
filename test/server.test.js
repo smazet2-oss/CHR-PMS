@@ -45,6 +45,11 @@ test('connexion, identité et partage d’un document', async () => {
 test('identifiant avec accent, majuscules et espaces accepté', async () => {
   assert.strictEqual((await login(' Stéphanie ', ' a ')).status, 303);
 });
+test('« admin » ouvre le compte de la formatrice', async () => {
+  const r = await login('admin', 'a'); assert.strictEqual(r.status, 303);
+  const me = await (await fetch(base + '/api/me', { headers: { cookie: r.cookie } })).json();
+  assert.strictEqual(me.proprio, true);
+});
 test('chemin de document invalide refusé', async () => {
   const s = await login('stephanie', 'a');
   const r = await fetch(base + '/api/doc?path=../../etc', { headers: { cookie: s.cookie } });
