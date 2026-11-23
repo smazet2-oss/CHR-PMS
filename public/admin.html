@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Administration — CHR PMS</title><link rel="icon" href="/logo.png">
+<style>
+  :root{ --navy:#0f2742; --gold:#c9a24a; --ink:#1c2430; --soft:#5b6573; --line:#dfe4ec; --bg:#f4f6fa; --ok:#1d6b37; --ko:#9b1c1c; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; font:15px system-ui,-apple-system,Segoe UI,sans-serif; color:var(--ink); background:var(--bg); }
+  header{ background:var(--navy); color:#fff; padding:14px 22px; display:flex; align-items:center; gap:14px; border-bottom:4px solid var(--gold); }
+  header img{ height:38px; } header h1{ font-size:18px; margin:0; flex:1; }
+  header a{ color:#fff; text-decoration:none; font-weight:600; font-size:13.5px; border:1px solid rgba(255,255,255,.4); border-radius:999px; padding:6px 14px; }
+  main{ max-width:1040px; margin:0 auto; padding:22px; display:grid; gap:20px; }
+  section{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:18px 20px; }
+  h2{ font-size:16px; margin:0 0 4px; } .hint{ color:var(--soft); font-size:13px; margin:0 0 14px; }
+  form.creer{ display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:10px; align-items:end; }
+  label{ font-size:12.5px; font-weight:600; color:var(--soft); display:grid; gap:4px; }
+  input{ font:inherit; padding:9px 11px; border:1px solid #cfd6e0; border-radius:8px; }
+  button{ font:inherit; font-weight:600; border-radius:8px; padding:8px 14px; cursor:pointer; border:1px solid var(--line); background:#fff; color:var(--ink); }
+  button.prim{ background:var(--navy); color:#fff; border-color:var(--navy); } button.danger{ color:var(--ko); border-color:#f1c4c4; }
+  button.sm{ padding:5px 10px; font-size:12.5px; }
+  table{ width:100%; border-collapse:collapse; font-size:14px; }
+  th{ text-align:left; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--soft); padding:8px; border-bottom:2px solid var(--line); }
+  td{ padding:10px 8px; border-bottom:1px solid var(--line); vertical-align:middle; }
+  td.act{ white-space:nowrap; text-align:right; } td.act button{ margin-left:4px; }
+  .chip{ display:inline-block; font-size:12px; font-weight:700; border-radius:999px; padding:2px 9px; }
+  .on{ background:#e3f4e8; color:var(--ok); } .off{ background:#fde2e2; color:var(--ko); } .live{ background:#fff1d6; color:#8a5a00; } .own{ background:#e8eefb; color:var(--navy); }
+  .msg{ border-radius:8px; padding:9px 12px; font-size:13.5px; margin-top:12px; } .msg.ok{ background:#e3f4e8; color:var(--ok); } .msg.ko{ background:#fde2e2; color:var(--ko); }
+  .pass{ font-family:ui-monospace,Consolas,monospace; background:#fff8e6; border:1px dashed var(--gold); padding:2px 8px; border-radius:6px; }
+  .muted{ color:var(--soft); font-size:12.5px; }
+  @media (max-width:760px){ form.creer{ grid-template-columns:1fr; } td.act{ white-space:normal; } th:nth-child(4), td:nth-child(4){ display:none; } }
+</style>
+</head>
+<body>
+<header><img src="/logo.png" alt="CHR Solution"><h1>Administration — Les Trois Sources</h1><a href="/">← Retour au PMS</a><a href="/logout">Se déconnecter</a></header>
+<main>
+  <section>
+    <h2>Créer un accès</h2>
+    <p class="hint">Un compte par apprenant·e. Communiquez l'identifiant et le mot de passe en main propre ; l'apprenant·e apparaîtra sous son prénom dans le PMS et dans le Journal des manipulations.</p>
+    <form class="creer" id="fCreer">
+      <label>Prénom<input name="nom" required maxlength="40" placeholder="ex. Inès"></label>
+      <label>Identifiant<input name="login" required maxlength="30" placeholder="ex. ines" pattern="[A-Za-z0-9._ \-]{2,30}"></label>
+      <label>Mot de passe<input name="pass" required minlength="6" placeholder="6 caractères minimum"></label>
+      <div style="display:flex;gap:6px;"><button type="button" id="gen" title="Proposer un mot de passe">🎲</button><button class="prim" type="submit">Créer</button></div>
+    </form>
+    <div id="mCreer"></div>
+  </section>
+  <section>
+    <h2>Comptes et accès</h2>
+    <p class="hint">« En ligne » = PMS ouvert en ce moment. Désactiver un compte ferme immédiatement ses connexions et bloque l'accès ; réactiver le rend possible à nouveau, avec le même mot de passe.</p>
+    <div style="overflow:auto;"><table><thead><tr><th>Prénom</th><th>Identifiant</th><th>État</th><th>Dernière activité</th><th></th></tr></thead><tbody id="tb"></tbody></table></div>
+    <div id="mListe"></div>
+  </section>
+</main>
+<script>
+(function(){
+  'use strict';
+  var $ = function(id){ return document.getElementById(id); };
+  function api(m, u, b){
+    return fetch(u, { method:m, credentials:'same-origin', headers:{ 'Content-Type':'application/json', 'X-CHR':'1' }, body: b ? JSON.stringify(b) : undefined })
+      .then(function(r){ return r.json().then(function(d){ if (!r.ok) throw new Error(d.erreur || 'Erreur'); return d; }); });
+  }
+  function msg(id, ok, html){ $(id).innerHTML = '<div class="msg ' + (ok ? 'ok' : 'ko') + '">' + html + '</div>'; }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function quand(iso){ if (!iso) return '<span class="muted">jamais connecté·e</span>'; var d = new Date(iso); return d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}); }
+  function motDePasse(){ var a = 'abcdefghjkmnpqrstuvwxyz', c = 'ABCDEFGHJKMNPQRSTUVWXYZ', n = '23456789', r = crypto.getRandomValues(new Uint32Array(10)), s = '';
+    for (var i = 0; i < 10; i++){ var set = i < 4 ? a : (i < 6 ? c : n); s += set[r[i] % set.length]; } return s; }
+
+  function charger(){
+    api('GET', '/api/admin/comptes').then(function(d){
+      $('tb').innerHTML = d.comptes.map(function(c){
+        var etat = c.proprio ? '<span class="chip own">Formatrice</span>' : (c.actif ? '<span class="chip on">Actif</span>' : '<span class="chip off">Désactivé</span>');
+        if (c.postes) etat += ' <span class="chip live">● En ligne' + (c.postes > 1 ? ' (' + c.postes + ' postes)' : '') + '</span>';
+        var act = '<button class="sm" data-a="mdp" data-l="' + esc(c.login) + '">Nouveau mot de passe</button>' +
+          '<button class="sm" data-a="nom" data-l="' + esc(c.login) + '" data-n="' + esc(c.nom) + '">Renommer</button>' +
+          (c.proprio ? '' :
+            (c.sessions ? '<button class="sm" data-a="deco" data-l="' + esc(c.login) + '">Déconnecter</button>' : '') +
+            (c.actif ? '<button class="sm danger" data-a="off" data-l="' + esc(c.login) + '">Désactiver</button>' : '<button class="sm" data-a="on" data-l="' + esc(c.login) + '">Réactiver</button>') +
+            '<button class="sm danger" data-a="del" data-l="' + esc(c.login) + '" data-n="' + esc(c.nom) + '">Supprimer</button>');
+        return '<tr><td><b>' + esc(c.nom) + '</b></td><td><code>' + esc(c.login) + '</code></td><td>' + etat + '</td><td>' + quand(c.derniere) + '</td><td class="act">' + act + '</td></tr>';
+      }).join('');
+    }).catch(function(e){ msg('mListe', false, esc(e.message)); });
+  }
+  $('gen').onclick = function(){ $('fCreer').pass.value = motDePasse(); };
+  $('fCreer').onsubmit = function(e){
+    e.preventDefault(); var f = e.target, b = { nom:f.nom.value, login:f.login.value, pass:f.pass.value };
+    api('POST', '/api/admin/comptes', b).then(function(d){
+      msg('mCreer', true, 'Compte créé. Identifiant : <span class="pass">' + esc(d.login) + '</span> · mot de passe : <span class="pass">' + esc(b.pass) + '</span> — notez-le maintenant, il ne sera plus affiché.');
+      f.reset(); charger();
+    }).catch(function(e2){ msg('mCreer', false, esc(e2.message)); });
+  };
+  $('fCreer').nom.oninput = function(){ var f = $('fCreer'); if (!f.login.dataset.touche) f.login.value = this.value.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '.').replace(/^\.|\.$/g, ''); };
+  $('fCreer').login.oninput = function(){ this.dataset.touche = '1'; };
+  $('tb').onclick = function(e){
+    var b = e.target.closest('button[data-a]'); if (!b) return;
+    var l = b.dataset.l, a = b.dataset.a, p;
+    if (a === 'mdp'){ var np = prompt('Nouveau mot de passe pour « ' + l + ' » (6 caractères minimum) :', motDePasse()); if (!np) return; p = api('PATCH', '/api/admin/comptes/' + l, { pass:np }).then(function(){ msg('mListe', true, 'Mot de passe de <b>' + esc(l) + '</b> changé : <span class="pass">' + esc(np) + '</span>. Ses connexions en cours ont été fermées.'); }); }
+    if (a === 'nom'){ var nn = prompt('Prénom affiché pour « ' + l + ' » :', b.dataset.n); if (!nn) return; p = api('PATCH', '/api/admin/comptes/' + l, { nom:nn }).then(function(){ msg('mListe', true, 'Prénom mis à jour.'); }); }
+    if (a === 'off') p = api('PATCH', '/api/admin/comptes/' + l, { actif:false }).then(function(){ msg('mListe', true, 'Accès de <b>' + esc(l) + '</b> désactivé.'); });
+    if (a === 'on') p = api('PATCH', '/api/admin/comptes/' + l, { actif:true }).then(function(){ msg('mListe', true, 'Accès de <b>' + esc(l) + '</b> réactivé.'); });
+    if (a === 'deco') p = api('POST', '/api/admin/comptes/' + l + '/deconnecter').then(function(d){ msg('mListe', true, d.fermees + ' connexion(s) de <b>' + esc(l) + '</b> fermée(s).'); });
+    if (a === 'del'){ if (!confirm('Supprimer définitivement le compte de ' + b.dataset.n + ' ? Son historique dans le journal reste visible.')) return; p = api('DELETE', '/api/admin/comptes/' + l).then(function(){ msg('mListe', true, 'Compte supprimé.'); }); }
+    if (p) p.then(charger).catch(function(e2){ msg('mListe', false, esc(e2.message)); });
+  };
+  charger(); setInterval(charger, 15000);
+})();
+</script>
+</body>
+</html>

@@ -19,11 +19,14 @@ Toutes les données (clients, sociétés, réservations) sont fictives.
 Le disque `/var/data` conserve la session et le journal entre deux redémarrages (offre payante « Starter »).
 Sans disque, tout repart de zéro à chaque redémarrage.
 
-## Ajouter ou retirer une personne
+## Administration (formatrice)
 
-Dans `src/server.js`, tableau `COMPTES` : ajouter une ligne `{ login, nom, env }`, puis créer la variable de mot de passe correspondante sur Render.
-Pour qu'elle soit reconnue par son prénom dans le PMS, ajouter aussi son prénom au tableau `PARTICIPANTES` de `public/pms.html`.
-Un compte sans mot de passe défini est désactivé.
+Connectée avec `stephanie` (ou `admin`), cliquez sur **⚙️ Administration** en bas à droite du PMS, ou ouvrez `/admin` :
+
+- **Créer un accès** : prénom, identifiant, mot de passe (bouton 🎲 pour en proposer un).
+- **Comptes et accès** : voir qui est en ligne et la dernière activité ; nouveau mot de passe ; renommer ; déconnecter ; désactiver / réactiver ; supprimer.
+
+Les comptes sont enregistrés (mots de passe chiffrés) dans `/var/data/comptes.json`. `PASS_STEPHANIE` reste un accès de secours pour la formatrice.
 
 ## En local
 

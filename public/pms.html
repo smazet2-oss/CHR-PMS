@@ -10282,7 +10282,8 @@
     try { me = SYNC.user && SYNC.user.me ? await SYNC.user.me() : null; } catch(e){ me = null; }
     if (SYNC.estProprio || (me && me.isOwner)) return {nom:FORMATRICE, source:"compte"};
     if (me && me.email){ var h = await idSha(me.email), p = PARTICIPANTES.filter(function(x){ return x.h === h; })[0]; if (p) return {nom:p.nom, source:"compte"}; }
-    if (me && me.name){ var n = exoNorm(me.name), q = PARTICIPANTES.filter(function(x){ return n.indexOf(exoNorm(x.nom)) >= 0; })[0]; if (q) return {nom:q.nom, source:"compte"}; }
+    if (me && me.name){ var n = exoNorm(me.name), q = PARTICIPANTES.filter(function(x){ return n.indexOf(exoNorm(x.nom)) >= 0; })[0]; if (q) return {nom:q.nom, source:"compte"};
+      if (window.__CHR_COMPTES) return {nom:me.name, source:"compte"}; }
     var loc = null; try { loc = localStorage.getItem("chrParticipante"); } catch(e){}
     if (loc && PARTICIPANTES.some(function(x){ return x.nom === loc; })) return {nom:loc, source:"poste"};
     return null;
@@ -10319,9 +10320,16 @@
      au prénom de la participante connectée. La formatrice voit le journal de tout le monde, en direct.
      Un document par personne : deux postes qui travaillent en même temps ne s'écrasent pas. */
   var ACT_KEYS = ["formatrice", "floriane", "soukayna", "yasmine", "inconnu"];
+  /* Site en ligne : chaque compte créé par la formatrice a son propre journal. */
+  function actMajCles(){
+    (window.__CHR_COMPTES || []).forEach(function(c){ var k = c.proprio ? "formatrice" : exoNorm(c.nom); if (ACT_KEYS.indexOf(k) < 0) ACT_KEYS.splice(ACT_KEYS.length - 1, 0, k); });
+    var pal = ["#2b6cb0","#8e44ad","#00897b","#d35400","#6d4c41","#c2185b","#558b2f","#3949ab"], i = 0;
+    ACT_KEYS.forEach(function(k){ if (!ACT_COUL[k]) ACT_COUL[k] = pal[i++ % pal.length]; });
+  }
   app.actAll = app.actAll || {};
   function actKey(){ var n = SYNC.moi && SYNC.moi.nom; if (!n) return "inconnu"; if (n === FORMATRICE) return "formatrice"; return exoNorm(n); }
-  function actNom(k){ return k === "formatrice" ? FORMATRICE : (k === "inconnu" ? "Poste non identifié" : k.charAt(0).toUpperCase() + k.slice(1)); }
+  function actNom(k){ if (k === "formatrice") return FORMATRICE; if (k === "inconnu") return "Poste non identifié";
+    var c = (window.__CHR_COMPTES || []).filter(function(x){ return exoNorm(x.nom) === k; })[0]; return c ? c.nom : k.charAt(0).toUpperCase() + k.slice(1); }
   function actSig(r){ return {st:r.status, room:r.room, arr:r.arr, dep:r.dep, np:(r.paiements || []).length, nc:(r.commentaires || []).length, fac:r.facture && r.facture.numero || "",
     nom:(r.client && (r.client.civ + " " + r.client.prenom + " " + r.client.nom)) || "", ad:r.adults, kd:r.kids || 0, tot:r.tarif && r.tarif.total, dt:r.dossierType || ""}; }
   function actQui(r){ return (r.client && (r.client.nom || "").toUpperCase()) || "—"; }
@@ -10367,6 +10375,7 @@
   setInterval(function(){ try { actDiff(); } catch(e){} }, 2000);
   function actEcouter(){
     if (!SYNC.db) return;
+    actMajCles();
     ACT_KEYS.forEach(function(k){
       SYNC.db.doc("journal/" + k).onSnapshot(function(snap){
         if (!snap.exists){ app.actAll[k] = []; } else { var d = snap.data() || {}; if (Array.isArray(d.v)) app.actAll[k] = d.v; }
@@ -10378,8 +10387,10 @@
     ACT_KEYS.forEach(function(k){ app.actAll[k] = []; if (SYNC.actif && SYNC.db && !SYNC.lectureSeule) SYNC.db.doc("journal/" + k).set({v:[], maj:Date.now()}).catch(function(){}); });
   }
   var ACT_COUL = {formatrice:"#1f3a5f", floriane:"#b4467a", soukayna:"#1f8a55", yasmine:"#c06a00", inconnu:"#777"};
+
   function renderJournal(){
     var host = $("journalBox"); if (!host) return;
+    actMajCles();
     if (!estFormatrice()){ host.innerHTML = "<p class='hint'>Le journal des manipulations est réservé à la formatrice.</p>"; return; }
     var f = app.actF || "", all = [];
     ACT_KEYS.forEach(function(k){ (app.actAll[k] || []).forEach(function(e){ all.push({k:k, e:e}); }); });

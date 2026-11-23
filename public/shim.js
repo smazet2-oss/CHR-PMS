@@ -6,7 +6,7 @@
   var peer = null, abonnes = {}, presents = [], ecoutePeers = [], pretPeer, attente = new Promise(function (ok) { pretPeer = ok; });
   var moi = null, moiP = fetch('/api/me', { credentials: 'same-origin' }).then(function (r) {
     if (r.status === 401) { location.href = '/login'; return null; } return r.json();
-  }).then(function (m) { moi = m; return m; }).catch(function () { return null; });
+  }).then(function (m) { moi = m; if (m) window.__CHR_COMPTES = m.comptes || []; return m; }).catch(function () { return null; });
 
   function snap(e) { return { exists: !!e.exists, data: function () { return e.data; } }; }
   function relancer() {
@@ -18,6 +18,7 @@
       presents = Object.freeze(d.peers.map(function (p) { return Object.freeze({ peer: p.peer, by: 'u_' + p.by, isMe: p.peer === peer, sameTab: p.peer === peer, kind: 'viewer', guest: false, presence: p.presence, updatedAt: Date.now() }); }));
       ecoutePeers.forEach(function (f) { try { f({ peers: presents, joined: [], left: [], updated: [] }); } catch (x) { console.error(x); } });
     });
+    es.addEventListener('deconnexion', function () { es.close(); location.href = '/login'; });
     es.onerror = function () { if (es.readyState === 2) { es.close(); setTimeout(relancer, 3000); } };
   }
   relancer();
@@ -72,9 +73,12 @@
   document.addEventListener('DOMContentLoaded', function () {
     moiP.then(function (m) {
       if (!m) return;
-      var b = document.createElement('a'); b.href = '/logout'; b.textContent = 'Se déconnecter (' + m.nom + ')';
-      b.style.cssText = 'position:fixed;right:12px;bottom:10px;z-index:9999;font:600 12px system-ui;background:#0f2742;color:#fff;padding:6px 12px;border-radius:999px;text-decoration:none;opacity:.85';
-      document.body.appendChild(b);
+      var box = document.createElement('div');
+      box.style.cssText = 'position:fixed;right:12px;bottom:10px;z-index:9999;display:flex;gap:6px';
+      var st = 'font:600 12px system-ui;background:#0f2742;color:#fff;padding:6px 12px;border-radius:999px;text-decoration:none;opacity:.9';
+      if (m.proprio){ var a = document.createElement('a'); a.href = '/admin'; a.textContent = '⚙️ Administration'; a.style.cssText = st + ';background:#c9a24a;color:#0f2742'; box.appendChild(a); }
+      var b = document.createElement('a'); b.href = '/logout'; b.textContent = 'Se déconnecter (' + m.nom + ')'; b.style.cssText = st; box.appendChild(b);
+      document.body.appendChild(box);
     });
   });
 })();
