@@ -8,10 +8,15 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 
 const PORT = Number(process.env.PORT) || 3000;
-const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, '..', 'data');
+let DATA_DIR = process.env.DATA_DIR || path.join(__dirname, '..', 'data');
 const PUBLIC = path.join(__dirname, '..', 'public');
 const PROD = process.env.NODE_ENV === 'production';
-fs.mkdirSync(DATA_DIR, { recursive: true });
+try { fs.mkdirSync(DATA_DIR, { recursive: true }); fs.accessSync(DATA_DIR, fs.constants.W_OK); }
+catch (e) {
+  const repli = path.join(__dirname, '..', 'data');
+  console.warn(`[chr-pms] ${DATA_DIR} inaccessible (${e.code}) : disque absent ? Données gardées dans ${repli}, perdues au prochain redémarrage.`);
+  DATA_DIR = repli; fs.mkdirSync(DATA_DIR, { recursive: true });
+}
 
 /* ---------- comptes ---------- */
 const COMPTES = [
