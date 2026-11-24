@@ -76,8 +76,8 @@
       var box = document.createElement('div');
       box.style.cssText = 'position:fixed;right:12px;bottom:10px;z-index:9999;display:flex;gap:6px';
       var st = 'font:600 12px system-ui;background:#0f2742;color:#fff;padding:6px 12px;border-radius:999px;text-decoration:none;opacity:.9';
-      if (m.proprio){ var a = document.createElement('a'); a.href = '/admin'; a.textContent = '⚙️ Administration'; a.style.cssText = st + ';background:#c9a24a;color:#0f2742'; box.appendChild(a); }
-      var b = document.createElement('a'); b.href = '/logout'; b.textContent = 'Se déconnecter (' + m.nom + ')'; b.style.cssText = st; box.appendChild(b);
+      if (m.proprio){ var a = document.createElement('a'); a.href = '/admin'; a.textContent = (window.matchMedia && window.matchMedia('(max-width:700px)').matches) ? '⚙️' : '⚙️ Administration'; a.title = 'Administration'; a.style.cssText = st + ';background:#c9a24a;color:#0f2742'; box.appendChild(a); }
+      var b = document.createElement('a'); b.href = '/logout'; var petit = window.matchMedia && window.matchMedia('(max-width:700px)').matches; b.textContent = petit ? '⎋ ' + m.nom : 'Se déconnecter (' + m.nom + ')'; b.title = 'Se déconnecter'; b.style.cssText = st; box.appendChild(b);
       document.body.appendChild(box);
     });
   });

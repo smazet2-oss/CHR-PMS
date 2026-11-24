@@ -1276,6 +1276,69 @@
     .quick-search{ width:100%; }
     .cli-dl{ grid-template-columns:1fr; }
   }
+/* ================= TÉLÉPHONES ET PETITES TABLETTES ================= */
+.dash-toggle{ display:none; }
+@media (max-width:700px){
+  body{ font-size:15px; }
+  /* en-tête compact, qui défile avec la page : l'écran reste au contenu */
+  .topbar{ position:static !important; padding:10px 12px !important; row-gap:8px !important; border-radius:0 0 12px 12px; }
+  .topbar .brand{ display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; }
+  .brand-logo{ padding:4px 8px !important; }
+  .brand-logo img{ height:28px !important; }
+  .brand-name{ font-size:17px !important; }
+  .brand-tag{ display:none; }
+  .collapse-btn#topbarToggle{ display:none; }
+  /* bandeau des chiffres du jour : masqué, il s'ouvre au toucher */
+  .topbar .dash{ display:none !important; }
+  body.dash-open .topbar .dash{ display:grid !important; grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .dash-toggle{ display:inline-flex; align-items:center; gap:6px; }
+  .dash-toggle[aria-expanded="true"]{ border-color:var(--accent); color:var(--accent); }
+  .topbar .topbar-actions{ gap:6px !important; }
+  .quick-search{ width:100% !important; order:-1; }
+  .quick-search input{ font-size:16px; }               /* évite le zoom automatique d'iOS */
+  .avail-stat{ padding:4px 10px !important; }
+  .avail-stat-num{ font-size:18px !important; }
+  .avail-stat-lbl{ font-size:11px !important; }
+  .avail-stat-lbl br{ display:none; }
+  .topbar-actions .btn{ padding:7px 10px; font-size:13px; }
+  /* menu des modules : une ligne qui défile, toujours visible en haut */
+  .app > ul.tabs, .app > ul#mainTabs{ position:sticky !important; top:0; z-index:60; max-height:none !important; border-radius:0 0 10px 10px; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  .app > ul#mainTabs::-webkit-scrollbar{ display:none; }
+  .app > ul#mainTabs .tab{ padding:9px 12px !important; font-size:14px !important; }
+  .app{ padding-left:0 !important; padding-right:0 !important; }
+  .panel{ padding:12px !important; border-radius:10px; }
+  h2{ font-size:18px; }
+  /* tableaux : défilement horizontal plutôt que débordement */
+  .twrap, .ed-doc, .mc-table, .sc-plan{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  table{ font-size:13px; }
+  .grid{ grid-template-columns:1fr !important; }
+  .field input, .field select, .field textarea, input[type=text], input[type=search], input[type=email], input[type=tel], input[type=number], input[type=date], select, textarea{ font-size:16px; }
+  .btn{ min-height:38px; }
+  .actions{ flex-wrap:wrap; }
+  .bar-ticket{ position:static !important; }
+  .bar-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .sc-cols{ grid-template-columns:1fr; }
+  .sc-svg{ min-width:640px; }
+  .kpis-head{ display:none !important; }
+  .toast, .toasts > *{ max-width:calc(100vw - 24px) !important; }
+  [id$="ModalOverlay"] > *, .modal{ max-width:100vw !important; margin:0 !important; border-radius:12px; }
+  .crumb{ font-size:12px; overflow-x:auto; white-space:nowrap; }
+  .topbar{ grid-template-areas:"brand" "actions" "dash" !important; }
+  .avail-stat-lbl{ font-size:0 !important; }
+  .avail-stat-lbl::after{ content:"chambres à vendre aujourd'hui"; font-size:12px; }
+  .avail-stat{ gap:8px !important; }
+  #rsOpenBtn{ font-size:0 !important; padding:7px 10px; }
+  #rsOpenBtn::after{ content:"🔎 Avancée"; font-size:13px; }
+  #resetAllBtn{ font-size:0 !important; }
+  #resetAllBtn::after{ content:"↺ Réinitialiser"; font-size:13px; }
+  .app > ul#mainTabs{ padding:4px 6px !important; }
+  .twrap > table{ min-width:620px; }
+  .twrap > table td, .twrap > table th{ white-space:nowrap; }
+}
+@media (max-width:400px){
+  body.dash-open .topbar .dash{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .bar-grid{ grid-template-columns:1fr; }
+}
 </style>
 
   <div class="topbar">
@@ -1288,6 +1351,7 @@
     <div class="topbar-actions">
       <button type="button" class="id-chip" id="idChip" hidden></button>
       <span class="sync-badge sync-off" id="syncBadge" title="État de la session : partagée entre tous les postes connectés, ou locale à ce navigateur.">● Session locale</span>
+      <button type="button" class="btn btn-ghost btn-sm dash-toggle" id="dashToggle" aria-expanded="false" aria-controls="dashBoard">📊 Chiffres du jour <span aria-hidden="true">▾</span></button>
       <div class="quick-search" id="quickSearchBox">
         <input type="search" id="quickSearchInput" placeholder="🔎 Rechercher : nom, chambre, n° dossier…" autocomplete="off">
         <div class="quick-search-results" id="quickSearchResults" hidden></div>
@@ -7620,6 +7684,17 @@
     if (el.dataset.scRoom && scState.run && !scState.run.fin){ var rm = el.dataset.scRoom; scState.run.ch[rm] = ((scState.run.ch[rm] || 0) + 1) % 3; renderSecu(); }
   });
 
+
+  /* Téléphone : le bandeau des chiffres du jour est replié ; un toucher l'ouvre ou le ferme. */
+  (function(){
+    var bt = document.getElementById("dashToggle"); if (!bt) return;
+    function poser(o){ document.body.classList.toggle("dash-open", o); bt.setAttribute("aria-expanded", o ? "true" : "false"); bt.lastChild.textContent = o ? "▴" : "▾"; }
+    bt.addEventListener("click", function(){ poser(!document.body.classList.contains("dash-open")); });
+    document.addEventListener("click", function(e){
+      if (!window.matchMedia("(max-width:700px)").matches) return;
+      if (e.target.closest && e.target.closest("#dashBoard button")) setTimeout(function(){ poser(false); }, 0);
+    });
+  })();
   function refreshAll(){
     try { modeAppliquer(); } catch(e){}
     try { actDiff(); } catch(e){ console.error(e); }
