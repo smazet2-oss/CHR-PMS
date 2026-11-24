@@ -335,6 +335,8 @@
   .jr-tab td{ font-size:13px; vertical-align:top; } .jr-who{ font-weight:700; font-size:12px; border:1.5px solid; border-radius:999px; padding:1px 8px; white-space:nowrap; }
   .id-chip{ font:inherit; font-size:12px; font-weight:700; border:1px solid var(--gold); background:#fff8e6; color:var(--navy); border-radius:999px; padding:5px 12px; cursor:pointer; white-space:nowrap; }
   .id-choix{ display:flex; gap:10px; flex-wrap:wrap; } .id-choix .btn{ min-width:120px; }
+  .cl-auto{ display:flex; gap:12px; align-items:center; justify-content:space-between; background:#fff8e6; border:1px dashed var(--gold); border-radius:10px; padding:10px 14px; margin:0 0 12px; }
+  .exam-banner{ position:sticky; top:0; z-index:60; background:#7a1f2b; color:#fff; font-weight:700; text-align:center; padding:8px 12px; letter-spacing:.02em; font-size:13.5px; }
   .grcalc-sw{ display:flex; gap:6px; align-items:center; margin:14px 0 -8px; font-size:12.5px; font-weight:600; color:var(--ink-soft); }
   .grcalc-sw button{ font:inherit; border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:999px; padding:4px 12px; cursor:pointer; }
   .grcalc-sw button.on{ background:var(--navy); color:#fff; border-color:var(--navy); }
@@ -1244,6 +1246,7 @@
       </div>
       <button class="btn btn-ghost btn-sm" id="rsOpenBtn" type="button">🔎 Recherche avancée</button>
       <button class="btn btn-ghost btn-sm" id="resetAllBtn" type="button">Réinitialiser la simulation</button>
+      <button class="btn btn-ghost btn-sm" id="examBtn" type="button" hidden>🎓 Jour d'examen</button>
       <button class="btn btn-primary btn-sm" id="newResBtn" type="button">+ Nouvelle réservation</button>
       <button class="collapse-btn" id="topbarToggle" type="button" title="Replier l'en-tête pour gagner de la place à l'écran" aria-expanded="true">▲</button>
     </div>
@@ -1306,6 +1309,8 @@
       <div class="actions" style="margin:0 0 14px;">
         <button type="button" class="btn btn-primary btn-sm" id="mcDlListe">⬇️ Mouvements à classer (CSV)</button>
         <button type="button" class="btn btn-ghost btn-sm" id="mcDlFull">⬇️ Main courante complète (CSV)</button>
+        <label style="margin-left:auto;font-size:13px;font-weight:600;">Journée : <input type="date" id="mcPick" style="font:inherit;padding:4px 6px;border:1px solid var(--line);border-radius:6px;"></label>
+        <button type="button" class="btn btn-ghost btn-sm" id="mcAuj">Aujourd'hui</button>
       </div>
       <div id="mcBox"></div>
     </section>
@@ -1316,6 +1321,10 @@
     <section class="panel panel-accent">
       <h2>Clôture du jour · <span id="clDate"></span></h2>
       <p class="hint" style="max-width:780px;">La clôture journalière (night audit) arrête la journée hôtelière. Toutes les arrivées et tous les départs doivent être traités, la caisse comptée et les écarts justifiés. Les indicateurs de la nuit sont alors figés dans un rapport numéroté. Après validation, le PMS passe au jour suivant et la caisse repart à zéro. Une clôture validée ne se modifie plus.</p>
+      <div class="cl-auto" id="clAuto" hidden>
+        <div><b>Préparer la journée d'exercice</b><br><span class="hint" style="margin:0;">Traite automatiquement les départs et arrivées qui ne servent pas aux exercices (check-out avec facture, transfert débiteur, check-in), pour que les stagiaires se concentrent sur les dossiers de l'exercice.</span></div>
+        <button type="button" class="btn btn-ghost btn-sm" id="clAutoBtn">⚙️ Traiter les autres dossiers du jour</button>
+      </div>
       <div class="cl-steps">
         <div class="cl-step" id="clStep1">
           <div class="cl-step-h"><h3><span class="cl-n">1</span>Arrivées du jour</h3><span class="chip cl-state"></span></div>
@@ -1370,11 +1379,13 @@
           <ol>
             <li>Onglet Check-out : check-out rapide des chambres 001 et 106.</li>
             <li>Check-in de 003, 008, 102, 103, 205 et 207. Mme Dumas (103) règle tout son séjour en espèces : 115,20 €.</li>
-            <li>Ouvrir la clôture. Faire lire le bandeau : 14 chambres in house, 46,7 %. Les 204 et 110 ne sont pas comptées tant qu'il n'y a pas de check-in.</li>
+            <li>Ouvrir la clôture. Faire lire le bandeau : chambres in house et taux d'occupation. Les 204 et 110 ne sont pas comptées tant qu'il n'y a pas de check-in.</li>
             <li>Jeu de rôle : M. Perrot (204) ne répond pas au téléphone → no-show. Mme Whitmore (110) a écrit : son vol arrive à minuit → arrivée tardive annoncée.</li>
-            <li>Donner la caisse : fond 150 €, aucun dépôt, espèces comptées <strong>263,20 €</strong>, ticket Z <strong>352,50 €</strong>.</li>
+            <li>Donner la caisse : fond 150 €, aucun dépôt, espèces comptées <strong>2 € de moins</strong> que les espèces théoriques (écart à justifier), ticket Z égal au total carte du journal (voir ci-dessous).</li>
           </ol>
-          <p><strong>Résultats attendus :</strong> après les 6 check-in, le bandeau affiche 14 chambres in house (46,7 %). Après traitement, la 110 gardée en arrivée tardive s'ajoute à la clôture mais pas au bandeau : 15 chambres vendues sur 30, TO 50,0 %, CA hébergement 1 635,00 €, prix moyen 109,00 €, RevPAR 54,50 €, 30 personnes (IF 2,00), 21 petits-déjeuners à annoncer. Espèces théoriques 150 + 115,20 = 265,20 € pour 263,20 € comptés : écart −2,00 €, à justifier avant de pouvoir valider. Carte 352,50 € = ticket Z. Fond du lendemain : 263,20 €.</p>
+          <p><strong>Avant de commencer :</strong> l'hôtel compte 60 chambres, 46 départs et 35 arrivées. Cliquez sur « ⚙️ Traiter les autres dossiers du jour » (en haut de la clôture) : il ne reste alors que les 2 départs (001, 106) et les 8 arrivées de l'exercice.</p>
+          <p><strong>Résultats attendus :</strong> ils dépendent de ce qui a été fait dans la séance ; ils sont calculés en direct sur l'état actuel du PMS.</p>
+          <div id="clAttendu" class="cl-attendu"></div>
           <p><strong>Points à faire verbaliser :</strong> la clôture refuse tant qu'un départ ou une arrivée n'est pas traité ; un no-show se décide après avoir essayé de joindre le client ; un écart se justifie, il ne se corrige pas ; le fond du lendemain est l'argent réellement compté.</p>
           <p><strong>Prolongement (jour suivant) :</strong> Mme Whitmore apparaît dans les arrivées. Faire son check-in, ou la passer en no-show à la clôture suivante si elle n'est pas venue.</p>
         </div>
@@ -2280,7 +2291,7 @@
     CONFIG.dateObjs = objs;
     CONFIG.dateLabels = objs.map(function(d){ return FR_WEEKDAYS_SHORT[weekdayIdx(d)] + " " + pad2(d.getDate()) + "/" + pad2(d.getMonth()+1); });
     /* Historique du planning : index négatifs = jours avant le début de la fenêtre (6 mois d'archives consultables). */
-    for (var k=1; k<=200; k++){
+    for (var k=1; k<=372; k++){
       var p = new Date(objs[0].getTime()); p.setDate(p.getDate() - k);
       CONFIG.dateObjs[-k] = p;
       CONFIG.dateLabels[-k] = FR_WEEKDAYS_SHORT[weekdayIdx(p)] + " " + pad2(p.getDate()) + "/" + pad2(p.getMonth()+1);
@@ -2301,21 +2312,18 @@
     today: 2,
     // Horizon du planning : 6 mois de visibilité, comme dans un PMS où l'on prend
     // des réservations plusieurs mois à l'avance (2 jours avant, le reste en avant).
-    horizon: 186,
-    // Établissement de 30 chambres réparties sur 3 niveaux (RDC, 1er étage, 2e étage) — 10 chambres par niveau,
-    // même répartition Double/Twin/Triple/Suite à chaque étage pour rester lisible.
+    horizon: 368,
+    // Établissement de 60 chambres réparties sur 3 niveaux (RDC, 1er étage, 2e étage) — 20 chambres par niveau.
     floors: ["RDC","1er étage","2e étage"],
-    rooms: [
-      {n:"001",cat:"Double",cap:2,floor:"RDC"},{n:"002",cat:"Double",cap:2,floor:"RDC"},{n:"003",cat:"Twin",cap:2,floor:"RDC"},{n:"004",cat:"Twin",cap:2,floor:"RDC"},
-      {n:"005",cat:"Triple",cap:3,floor:"RDC"},{n:"006",cat:"Triple",cap:3,floor:"RDC"},{n:"007",cat:"Triple",cap:3,floor:"RDC"},{n:"008",cat:"Triple",cap:3,floor:"RDC"},
-      {n:"009",cat:"Suite",cap:5,floor:"RDC"},{n:"010",cat:"Suite",cap:5,floor:"RDC"},
-      {n:"101",cat:"Double",cap:2,floor:"1er étage"},{n:"102",cat:"Double",cap:2,floor:"1er étage"},{n:"103",cat:"Twin",cap:2,floor:"1er étage"},{n:"104",cat:"Twin",cap:2,floor:"1er étage"},
-      {n:"105",cat:"Triple",cap:3,floor:"1er étage"},{n:"106",cat:"Triple",cap:3,floor:"1er étage"},{n:"107",cat:"Triple",cap:3,floor:"1er étage"},{n:"108",cat:"Triple",cap:3,floor:"1er étage"},
-      {n:"109",cat:"Suite",cap:5,floor:"1er étage"},{n:"110",cat:"Suite",cap:5,floor:"1er étage"},
-      {n:"201",cat:"Double",cap:2,floor:"2e étage"},{n:"202",cat:"Double",cap:2,floor:"2e étage"},{n:"203",cat:"Twin",cap:2,floor:"2e étage"},{n:"204",cat:"Twin",cap:2,floor:"2e étage"},
-      {n:"205",cat:"Triple",cap:3,floor:"2e étage"},{n:"206",cat:"Triple",cap:3,floor:"2e étage"},{n:"207",cat:"Triple",cap:3,floor:"2e étage"},{n:"208",cat:"Triple",cap:3,floor:"2e étage"},
-      {n:"209",cat:"Suite",cap:5,floor:"2e étage"},{n:"210",cat:"Suite",cap:5,floor:"2e étage"}
-    ],
+    /* 60 chambres sur 3 niveaux (20 par niveau). Par niveau : 7 Double, 6 Twin, 5 Triple, 2 Suite.
+       Les chambres x01 à x10 gardent leur catégorie d'origine (les exercices guidés s'y réfèrent). */
+    rooms: (function(){
+      var plan = ["Double","Double","Twin","Twin","Triple","Triple","Triple","Triple","Suite","Suite",
+                  "Double","Double","Double","Double","Double","Twin","Twin","Twin","Twin","Triple"];
+      var cap = {Double:2, Twin:2, Triple:3, Suite:5}, et = [["0","RDC"],["1","1er étage"],["2","2e étage"]], out = [];
+      et.forEach(function(e){ plan.forEach(function(c, i){ out.push({n:e[0] + String(i + 1).padStart(2, "0"), cat:c, cap:cap[c], floor:e[1]}); }); });
+      return out;
+    })(),
     rates: {Double:89, Twin:89, Triple:109, Suite:149},
     petitDej: 12, parking: 8, taxeSejour: 1.10,
     // Horaires et conditions repris dans le mail de confirmation (texte modifiable).
@@ -2328,7 +2336,9 @@
     // Fiches clients fictives des dossiers déjà en place sur le planning à l'ouverture de l'atelier.
     // "start"/"nNights" repèrent la période sur les 8 jours de la fenêtre du planning (0..7, ancrée sur le
     // jour réel — voir refreshDateWindow), indépendamment de la date calendaire réelle affichée.
-    seedClients: [
+    seedClients: [],
+    /* Dossiers d'origine de l'atelier (conservés dans la journée normale, voir sdBuild). */
+    legacySeeds: [
       {room:"001", civ:"Mme", prenom:"Sophie",    nom:"Martin",   seg:"Loisirs individuel",  email:"sophie.martin@gmail.com",         mobile:"06 14 22 35 47", adresse:"8 rue de la Treille",          ville:"Chamalières",        start:0, nNights:2, adults:2, kids:0, pdj:true,  park:false},
       {room:"001", civ:"M.",  prenom:"Julien",    nom:"Roux",     seg:"Affaires individuel", email:"julien.roux@sfr.fr",               mobile:"06 71 48 29 03", adresse:"15 avenue Kennedy",            ville:"Clermont-Ferrand",   start:4, nNights:2, adults:1, kids:0, pdj:false, park:true},
       {room:"101", civ:"Mme", prenom:"Isabelle",  nom:"Bernard",  seg:"Loisirs individuel",  email:"isabelle.bernard@orange.fr",       mobile:"06 33 87 12 56", adresse:"4 rue Blatin",                 ville:"Clermont-Ferrand",   start:5, nNights:1, adults:2, kids:0, pdj:true,  park:false},
@@ -2509,67 +2519,255 @@
   /* Générateur pseudo-aléatoire à graine : même planning pour tout le monde, séance après séance. */
   function seedRand(n){ var x = Math.sin(n * 9301 + 49297) * 233280; return x - Math.floor(x); }
 
-  function buildLongStayReservations(dejaPris){
-    var out = [];
-    var compteur = 0;
-    // On commence après la semaine de démonstration, jusqu'au bout de l'horizon.
-    for (var jour = 8; jour < CONFIG.horizon - 3; jour++){
-      var dow = weekdayIdx(CONFIG.dateObjs[jour]);          // 0 = lundi
-      var weekend = (dow === 4 || dow === 5);
-      // Taux de remplissage plus fort le week-end et en haute saison (mois d'été).
-      var mois = CONFIG.dateObjs[jour].getMonth();
-      var haute = (mois >= 5 && mois <= 8);                  // juin à septembre
-      var base = weekend ? 0.26 : 0.12;
-      if (haute) base += 0.08;
-      var nbArrivees = Math.round(CONFIG.rooms.length * base * (0.6 + 0.8 * seedRand(jour)));
-      for (var k = 0; k < nbArrivees; k++){
+  /* =====================================================================================================
+     JOURNÉE DE DÉPART DE LA SIMULATION (hôtel de 60 chambres)
+     Journée normale : 46 départs, 14 recouches (clients qui restent), 35 arrivées → hôtel complet la nuit
+     dernière (46 + 14 = 60), 49 chambres occupées ce soir. Journée d'examen : 16 départs, 16 arrivées.
+     Génération déterministe : chaque poste calcule exactement les mêmes dossiers.
+     Les dossiers « historiques » de l'atelier (Faure, Whitmore, Charpentier, option Noguès…) sont conservés
+     dans la journée normale : les exercices guidés s'appuient dessus.
+     ===================================================================================================== */
+  var SD_MODES = {
+    normal:  {seed:20261124, dep:46, stay:14, arr:35, legacy:true},
+    examen:  {seed:20270611, dep:16, stay:12, arr:16, legacy:false}
+  };
+  var SD_PRENOMS_F = ["Camille","Léa","Manon","Chloé","Emma","Inès","Sarah","Julie","Laura","Anaïs","Marie","Pauline","Céline","Hélène","Lucie","Mathilde","Agathe","Margaux","Elsa","Juliette","Noémie","Océane","Romane","Salomé","Victoria","Yasmine","Zoé","Amandine","Charlotte","Coralie","Estelle","Fanny","Gaëlle","Justine","Lola","Mélanie","Nina","Ophélie","Rachel","Tiphaine"];
+  var SD_PRENOMS_H = ["Thomas","Nicolas","Julien","Maxime","Antoine","Lucas","Hugo","Alexandre","Romain","Mathieu","Sébastien","Philippe","David","Vincent","Bastien","Benoît","Cédric","Damien","Étienne","Fabien","Florian","Guillaume","Jérôme","Kévin","Loïc","Mickaël","Quentin","Rémi","Samuel","Tristan","Valentin","Xavier","Yann","Adrien","Arnaud","Baptiste","Clément","Dylan","Enzo","Gaël"];
+  var SD_NOMS = ["Aubry","Bailly","Barthélemy","Benoît","Besson","Blanchard","Boyer","Brunel","Carré","Chauvin","Cordier","Courtois","Delmas","Deschamps","Dufour","Dumont","Fabre","Fleury","Gautier","Germain","Guillot","Hamel","Hoarau","Jacob","Joly","Labbé","Langlois","Laporte","Leblanc","Lebrun","Lemaître","Lenoir","Maillard","Marty","Ménard","Meunier","Millet","Moulin","Navarro","Olivier","Pichon","Poulain","Prévost","Rémy","Riviere","Rocher","Rossignol","Sabatier","Tessier","Thibault","Tournier","Vallet","Vasseur","Verdier","Vial","Weiss","Zimmermann","Charrier","Chastel","Achard","Allard","Baudry","Bazin","Bigot","Bouchet","Boulanger","Bourdon","Bousquet","Briand","Buisson","Cadet","Camus","Carpentier","Chabert","Chapuis","Coste","Cousin","Couturier","Daniel","Delaunay","Delorme","Didier","Drouet","Étienne","Forestier","Gay","Gilles","Grondin","Guyot","Hardy","Hervé","Huguet","Jourdan","Julien","Lacombe","Lamy","Laval","Lecomte","Lefort","Legros","Léger","Mallet","Marchetti","Marion","Martel","Maurin","Michaud","Monnier","Morvan","Noel","Pasquier","Pelletier","Perret","Petitjean","Poirier","Pons","Raynaud","Regnier","Riou","Rolland","Roy","Salmon","Simonet","Tanguy","Teixeira","Texier","Vidal","Voisin"];
+  var SD_VILLES = ["Lyon","Paris","Clermont-Ferrand","Vichy","Riom","Saint-Étienne","Bordeaux","Toulouse","Nantes","Lille","Marseille","Grenoble","Dijon","Limoges","Montpellier","Strasbourg","Rennes","Tours","Orléans","Annecy","Bruxelles","Genève","Londres","Milan","Barcelone"];
+  /* clients étrangers : langue et indicatif pour les exercices d'accueil en anglais */
+  var SD_ETRANGERS = [
+    {civ:"Mr", prenom:"James", nom:"Carter", ville:"Manchester", indic:"+44", email:"j.carter@uk-mail-example.co.uk", langue:"Anglais"},
+    {civ:"Mrs", prenom:"Olivia", nom:"Bennett", ville:"Dublin", indic:"+353", email:"olivia.bennett@ie-mail-example.com", langue:"Anglais"},
+    {civ:"Mr", prenom:"Lukas", nom:"Schneider", ville:"Munich", indic:"+49", email:"lukas.schneider@de-mail-example.de", langue:"Allemand"},
+    {civ:"Ms", prenom:"Sofia", nom:"Romano", ville:"Turin", indic:"+39", email:"sofia.romano@it-mail-example.it", langue:"Italien"},
+    {civ:"Mr", prenom:"Daniel", nom:"Kowalski", ville:"Cracovie", indic:"+48", email:"d.kowalski@pl-mail-example.pl", langue:"Anglais"},
+    {civ:"Mrs", prenom:"Emily", nom:"Johnson", ville:"Boston", indic:"+1", email:"emily.johnson@us-mail-example.com", langue:"Anglais"}
+  ];
+  function sdCivFr(c){ return c === "Mr" ? "M." : (c === "Mrs" || c === "Ms" ? "Mme" : c); }
+
+  /* Les dossiers d'origine de l'atelier : gardés tels quels dans la journée normale. */
+  function sdLegacy(){ return (CONFIG.legacySeeds || []).map(function(s){ var c = {}; for (var k in s) c[k] = s[k]; c.legacy = true; return c; }); }
+
+  function sdBuild(mode){
+    var M = SD_MODES[mode] || SD_MODES.normal, t = CONFIG.today, rnd = lgRng(M.seed);
+    var pick = function(a){ return a[Math.floor(rnd() * a.length)]; };
+    var out = M.legacy ? sdLegacy() : [];
+    var occ = {};                     /* "chambre|nuit" occupée */
+    var mark = function(s){ for (var n = s.start; n < s.start + s.nNights; n++) occ[s.room + "|" + n] = 1; };
+    var free = function(room, a, d){ for (var n = a; n < d; n++) if (occ[room + "|" + n]) return false; return true; };
+    out.forEach(mark);
+    var kind = function(s){ var a = s.start, d = s.start + s.nNights; return d === t && a < t ? "dep" : (a < t && d > t ? "stay" : (a === t ? "arr" : "autre")); };
+    var cnt = function(k){ return out.filter(function(s){ return kind(s) === k; }).length; };
+    var usedNames = {};
+    out.forEach(function(s){ usedNames[s.nom] = 1; });
+    var seq = 0;
+    function person(seg){
+      seq++;
+      if (seg !== "Affaires individuel" && rnd() < 0.09){ var e = SD_ETRANGERS[seq % SD_ETRANGERS.length]; if (!usedNames[e.nom]){ usedNames[e.nom] = 1; return {civ:sdCivFr(e.civ), prenom:e.prenom, nom:e.nom, ville:e.ville, indic:e.indic, email:e.email, langue:e.langue}; } }
+      var f = rnd() < 0.5, prenom = f ? pick(SD_PRENOMS_F) : pick(SD_PRENOMS_H), nom = pick(SD_NOMS), essais = 0;
+      while (usedNames[nom] && essais++ < 40) nom = pick(SD_NOMS);
+      usedNames[nom] = 1;
+      var tel = "0" + (rnd() < 0.5 ? "6" : "7") + " " + [0, 0, 0, 0].map(function(){ return String(10 + Math.floor(rnd() * 90)); }).join(" ");
+      return {civ:f ? "Mme" : "M.", prenom:prenom, nom:nom, ville:pick(SD_VILLES), indic:"+33",
+              email:exoNorm(prenom).replace(/[^a-z]/g, "") + "." + exoNorm(nom).replace(/[^a-z]/g, "") + "@mail-exemple.fr", mobile:tel};
+    }
+    function spec(room, start, n, k, extra){
+      var rm = CONFIG.rooms.filter(function(x){ return x.n === room; })[0];
+      var seg = (extra && extra.seg) || (rnd() < 0.42 ? "Affaires individuel" : "Loisirs individuel");
+      var p = (extra && extra.who) || person(seg);
+      var adults = seg === "Affaires individuel" ? 1 : Math.min(rm.cap, rm.cat === "Triple" ? 2 + Math.floor(rnd() * 2) : (rm.cat === "Suite" ? 2 : 1 + Math.floor(rnd() * 2)));
+      var kids = (rm.cat === "Suite" || rm.cat === "Triple") && seg !== "Affaires individuel" && rnd() < 0.45 ? Math.min(2, Math.max(0, rm.cap - adults)) : 0;
+      var s = {room:room, civ:p.civ, prenom:p.prenom, nom:p.nom, seg:seg, email:p.email, mobile:p.mobile || "", indic:p.indic || "+33", langue:p.langue, adresse:"", ville:p.ville,
+               start:start, nNights:n, adults:adults, kids:kids, pdj:rnd() < 0.68, park:rnd() < 0.3, gen:true, kind:k};
+      if (extra) for (var x in extra) if (x !== "who") s[x] = extra[x];
+      out.push(s); mark(s); return s;
+    }
+    var rooms = CONFIG.rooms.map(function(r){ return r.n; });
+    /* ordre de remplissage mélangé mais reproductible */
+    for (var i = rooms.length - 1; i > 0; i--){ var j = Math.floor(rnd() * (i + 1)), tmp = rooms[i]; rooms[i] = rooms[j]; rooms[j] = tmp; }
+    var nuitsDep = [1, 1, 1, 2, 2, 2, 2, 3, 3, 4], nuitsArr = [1, 1, 2, 2, 2, 3, 3, 4, 5, 6];
+    /* 1. recouches : présents hier soir, encore là ce soir */
+    var needStay = M.stay - cnt("stay");
+    rooms.forEach(function(rn){
+      if (needStay <= 0) return;
+      var avant = 1 + Math.floor(rnd() * 4), apres = 1 + Math.floor(rnd() * 4), a = t - avant, d = t + apres;
+      if (!free(rn, a, d)) { a = t - 1; d = t + 1; if (!free(rn, a, d)) return; }
+      spec(rn, a, d - a, "stay"); needStay--;
+    });
+    /* 2. départs du jour : toutes les autres chambres occupées la nuit dernière */
+    var needDep = M.dep - cnt("dep");
+    rooms.forEach(function(rn){
+      if (needDep <= 0 || !free(rn, t - 1, t)) return;
+      var n = pick(nuitsDep), a = t - n;
+      while (n > 1 && !free(rn, a, t)){ n--; a = t - n; }
+      spec(rn, a, n, "dep"); needDep--;
+    });
+    /* 3. arrivées du jour : dans les chambres libérées ce matin (ménage à prévoir) */
+    var needArr = M.arr - cnt("arr");
+    rooms.forEach(function(rn){
+      if (needArr <= 0 || !free(rn, t, t + 1)) return;
+      var n = pick(nuitsArr);
+      while (n > 1 && !free(rn, t, t + n)) n--;
+      if (t + n > t + 7) n = 7;
+      spec(rn, t, n, "arr"); needArr--;
+    });
+    var gens = function(k){ return out.filter(function(s){ return s.gen && s.kind === k; }); };
+    /* ---- cas pédagogiques, répartis sur les dossiers générés ---- */
+    var D = gens("dep"), S = gens("stay"), A = gens("arr");
+    var setCase = function(s, o){ if (s) for (var k in o) s[k] = o[k]; };
+    var DEBS = [["D0001", "Volcaniq Formation"], ["D0002", "Agrolis"], ["D0005", "Cabinet Durand Conseil"], ["D0004", "Auvergne Événements"]];
+    /* départs */
+    var di = 0;
+    for (var o = 0; o < (mode === "examen" ? 2 : 6); o++) setCase(D[di++], {cas:"otaPrepaye", canal:o % 2 ? "Expedia" : "Booking.com", seg:"Loisirs individuel"});
+    setCase(D[di++], {cas:"erreurCB", canal:"Booking.com"});
+    setCase(D[di++], {cas:"vccADebiter", canal:"Expedia"});
+    for (var c = 0; c < (mode === "examen" ? 2 : 5); c++){ var dd = D[di++]; setCase(dd, {cas:"debiteur", seg:"Affaires individuel", adults:1, kids:0, compte:DEBS[c % DEBS.length][0], societe:DEBS[c % DEBS.length][1]}); }
+    setCase(D[di++], {cas:"arrhes"});
+    if (mode !== "examen"){
+      /* groupe au départ : séminaire, prise en charge globale par l'entreprise */
+      var g = D.slice(di).filter(function(s){ return s.nNights === 2; }).slice(0, 8);
+      D = D.filter(function(s){ return g.indexOf(s) < 0; });
+      g.forEach(function(s, k){ setCase(s, {cas:"groupeDep", groupe:"G-0005", sj:k + 1, seg:"Groupe / séminaire", societe:"Volcaniq Formation", compte:"D0001", adults:1, kids:0}); });
+    }
+    setCase(D[di++], {cas:"litige", note:"Conteste le petit-déjeuner du dernier matin (« pas pris »)."});
+    setCase(D[di++], {cas:"especes"});
+    /* recouches */
+    setCase(S[0], {cas:"vip", note:"Client fidèle (12e séjour) : chambre calme, journal le matin."});
+    setCase(S[1], {cas:"otaPrepaye", canal:"Booking.com"});
+    setCase(S[2], {cas:"debiteur", seg:"Affaires individuel", adults:1, kids:0, compte:"D0002", societe:"Agrolis"});
+    setCase(S[3], {cas:"longSejour", note:"Mission de chantier : facture hebdomadaire."});
+    /* arrivées */
+    var ai = 0;
+    if (mode !== "examen"){
+      var ga = A.filter(function(s){ return s.nNights >= 2; }).slice(0, 8);
+      ga.forEach(function(s, k){ setCase(s, {cas:"groupeArr", groupe:"G-0006", sj:k + 1, seg:"Groupe / séminaire", nNights:2, societe:"Voyages Tramontane (exemple)"}); });
+      A = A.filter(function(s){ return ga.indexOf(s) < 0; });
+    }
+    for (var q = 0; q < (mode === "examen" ? 2 : 4); q++) setCase(A[ai++], {cas:"otaPrepaye", canal:q % 2 ? "Expedia" : "Booking.com"});
+    setCase(A[ai++], {cas:"vccADebiter", canal:"Expedia"});
+    setCase(A[ai++], {cas:"arrhes"});
+    setCase(A[ai++], {cas:"tardive", note:"Arrivée prévue vers 23 h 30 : chambre garantie, clé à préparer pour le veilleur."});
+    /* la chambre PMR doit être au rez-de-chaussée : on prend la prochaine arrivée en 0xx */
+    (function(){ for (var z = ai; z < A.length; z++){ var rz = String(A[z].room || A[z].roomHint || ""); if (rz.charAt(0) === "0"){ var tmp = A[ai]; A[ai] = A[z]; A[z] = tmp; return; } } })();
+    setCase(A[ai++], {cas:"pmr", note:"Personne à mobilité réduite : chambre au rez-de-chaussée, proche de l'ascenseur."});
+    setCase(A[ai++], {cas:"debiteur", seg:"Affaires individuel", adults:1, kids:0, compte:"D0005", societe:"Cabinet Durand Conseil"});
+    var et = A[ai++], E = SD_ETRANGERS.filter(function(x){ return !usedNames[x.nom]; })[0] || SD_ETRANGERS[0]; usedNames[E.nom] = 1;
+    if (et){ et.cas = "etranger"; et.civ = sdCivFr(E.civ); et.prenom = E.prenom; et.nom = E.nom; et.ville = E.ville; et.indic = E.indic; et.email = E.email; et.langue = E.langue; et.mobile = "79 11 46 20 83"; et.seg = "Loisirs individuel";
+      et.note = (et.civ === "Mme" ? "Cliente étrangère" : "Client étranger") + " (" + E.ville + ", indicatif " + E.indic + "), ne parle pas français : accueil en anglais, fiche individuelle de police à faire remplir et signer."; }
+    return out;
+  }
+  /* dossiers de la journée → objets réservation du PMS */
+  function sdCaseApply(r, s){
+    var t = CONFIG.today, ar;
+    if (s.langue) r.client.langue = s.langue;
+    if (s.societe) r.client.societe = s.societe;
+    if (s.note) r.commentaires = (r.commentaires || []).concat([{ts:dayISO(Math.max(0, s.start - 1)) + " 17:20", user:"MG", txt:s.note}]);
+    switch (s.cas){
+      case "otaPrepaye":
+        r.canal = s.canal; r.plan = "nonremb"; r.garantie = "Non remboursable — prépayé (" + s.canal + ")";
+        r.paiements.push({montant:Math.round((r.tarif.heberg + r.tarif.taxe) * 100) / 100, moyen:"Carte manuelle", type:"prepaiement", date:dayISO(s.start - 7 >= -360 ? s.start - 7 : s.start), note:"Prépaiement " + s.canal + " débité à distance (client absent)"});
+        break;
+      case "erreurCB":
+        r.canal = "Booking.com"; r.plan = "nonremb"; r.garantie = "Non remboursable — prépaiement par carte (débité à distance)";
+        r.paiements.push({montant:Math.round(r.tarif.heberg * 100) / 100, moyen:"Carte bancaire", type:"prepaiement", date:dayISO(s.start - 1), note:"Prépaiement Booking.com débité à distance (client absent)"});
+        r.commentaires = (r.commentaires || []).concat([{ts:dayISO(s.start - 1) + " 21:05", user:"MG", txt:"Prépaiement Booking débité ce soir sur la carte du client."}]);
+        break;
+      case "vccADebiter":
+        r.canal = "Expedia"; r.plan = "ota"; r.garantie = "Prépayé par Expedia — carte virtuelle (VCC) à débiter";
+        r.carteCredit = {titulaire:"EXPEDIA VCC", last4:String(7000 + lgHash(r.id) % 999), expiry:"12/27", type:"VCC Mastercard (Expedia)"};
+        r.aDebiter = [{id:"DB" + r.id, montant:Math.round((r.tarif.heberg + r.tarif.taxe) * 100) / 100, motif:"Carte virtuelle Expedia (hébergement et taxe de séjour) — débit autorisé à partir du jour d'arrivée", echeance:s.start, vcc:true, fait:false}];
+        break;
+      case "debiteur": case "groupeDep":
+        r.canal = s.cas === "groupeDep" ? "E-mail" : "Contrat entreprise"; r.plan = "corpo";
+        r.garantie = "Facturation sur compte débiteur " + s.compte + " (" + s.societe + ")";
+        r.compteDeb = s.compte;
+        break;
+      case "arrhes":
+        r.canal = "Téléphone"; r.garantie = "Arrhes versées à la réservation";
+        ar = Math.round(Math.max(40, r.tarif.total * 0.3) / 10) * 10;
+        r.paiements.push({montant:ar, moyen:"Virement", type:"arrhes", date:dayISO(s.start - 20 >= -360 ? s.start - 20 : s.start), note:"Arrhes à la réservation (30 %)"});
+        break;
+      case "especes": r.canal = "Comptoir"; break;
+      case "tardive": r.garantie = "Garantie par carte — arrivée tardive"; r.heureArrivee = "23h30"; break;
+    }
+    if (s.groupe){
+      var nom = s.groupe === "G-0005" ? "Séminaire Volcaniq Formation" : "Voyages Tramontane — circuit Auvergne";
+      r.masterId = s.groupe; r.groupeId = s.groupe; r.sjNo = s.sj;
+      r.masterInfo = {id:s.groupe, resaNo:s.groupe === "G-0005" ? "5300041" : "5300058", nom:nom, societe:s.societe, reservataire:s.societe,
+        priseEnCharge:s.groupe === "G-0005" ? "Globale : hébergement, petit-déjeuner et taxe au compte de l'entreprise (débiteur D0001)" : "Hébergement et petit-déjeuner au compte du voyagiste ; extras à régler par chaque client",
+        contact:s.groupe === "G-0005" ? "Mme Élodie Ferrand" : "M. Bruno Castel (accompagnateur)", gar:s.groupe === "G-0005" ? "Contrat entreprise" : "Contrat voyagiste", origine:"Réception"};
+      if (s.groupe === "G-0006") r.canal = "E-mail";
+    }
+  }
+
+  /* =====================================================================================================
+     CARNET DE COMMANDES SUR UN AN : on remplit chaque nuit jusqu'à un taux d'occupation cible réaliste
+     (saisonnalité, semaine / week-end, événements et jours fériés complets). Déterministe.
+     ===================================================================================================== */
+  var LS_COMPLETS = ["12-05","12-31","01-01","02-14","03-20","04-03","04-24","05-08","05-15","05-29","06-12","06-26","07-03","07-14","07-24","08-07","08-14","09-18","10-09","10-30","11-13"];
+  function lsCible(d){
+    var dt = CONFIG.dateObjs[d]; if (!dt) return 0.6;
+    var m = dt.getMonth(), wd = dt.getDay(), md = String(m + 1).padStart(2, "0") + "-" + String(dt.getDate()).padStart(2, "0");
+    if (LS_COMPLETS.indexOf(md) >= 0) return 1;
+    var saison = [0.55, 0.6, 0.66, 0.72, 0.8, 0.86, 0.92, 0.94, 0.84, 0.76, 0.66, 0.62][m];
+    var sem = (wd === 5 || wd === 6) ? 0.1 : (wd === 0 ? -0.18 : (wd >= 1 && wd <= 4 ? 0.02 : 0));
+    var c = saison + sem + (seedRand(d * 3.7) - 0.5) * 0.12;
+    /* plus loin dans le temps, le carnet est moins rempli (on réserve de moins en moins tôt) */
+    var loin = d - CONFIG.today;
+    if (loin > 90) c -= Math.min(0.2, (loin - 90) / 1100);
+    return Math.max(0.25, Math.min(0.98, c));
+  }
+  function buildLongStayReservations(dejaPris, reserve){
+    var out = [], compteur = 0, t = CONFIG.today, R = CONFIG.rooms.length;
+    var occ = {};
+    Object.keys(dejaPris).forEach(function(k){ var n = +k.split("|")[1]; occ[n] = (occ[n] || 0) + 1; });
+    var catW = [["Double", 0.36], ["Twin", 0.28], ["Triple", 0.24], ["Suite", 0.12]];
+    for (var jour = t + 1; jour < CONFIG.horizon - 2; jour++){
+      var cible = lsCible(jour);
+      if (jour >= 6 && jour <= 13) cible = Math.min(cible, 0.62);          /* jours des exercices guidés */
+      var objectif = Math.round(R * cible) - ((reserve && reserve[jour]) || 0);
+      var essais = 0;
+      while ((occ[jour] || 0) < objectif && essais++ < 200){
         compteur++;
-        var rr = seedRand(jour * 100 + k);
-        var nuits = weekend ? (1 + Math.floor(rr * 2)) : (1 + Math.floor(rr * 3));
-        if (jour + nuits >= CONFIG.horizon) continue;
-        // Choix d'une chambre libre sur toute la période
-        var libres = CONFIG.rooms.filter(function(rm){
-          for (var d = jour; d < jour + nuits; d++){ if (dejaPris[rm.n + "|" + d]) return false; }
-          return true;
-        });
-        if (!libres.length) continue;
-        var rm = libres[Math.floor(seedRand(jour * 7 + k * 13) * libres.length)];
-        for (var d2 = jour; d2 < jour + nuits; d2++){ dejaPris[rm.n + "|" + d2] = true; }
-
-        var prenom = LONG_PRENOMS[Math.floor(seedRand(compteur * 3) * LONG_PRENOMS.length)];
-        var nom = LONG_NOMS[Math.floor(seedRand(compteur * 5 + 1) * LONG_NOMS.length)];
-        var seg = LONG_SEGS[Math.floor(seedRand(compteur * 11) * LONG_SEGS.length)];
-        var ville = LONG_VILLES[Math.floor(seedRand(compteur * 17) * LONG_VILLES.length)];
-        var adultes = Math.min(rm.cap, 1 + Math.floor(seedRand(compteur * 19) * 2) + (rm.cat === "Suite" ? 1 : 0));
-        var enfants = (rm.cat === "Triple" || rm.cat === "Suite") && seedRand(compteur * 23) > 0.6 ? 2 : 0;
-        var pdj = seedRand(compteur * 29) > 0.35;
-        var park = seedRand(compteur * 31) > 0.7;
-
+        var rr = seedRand(jour * 100 + essais), dt = CONFIG.dateObjs[jour], wd = dt.getDay(), weekend = wd === 5 || wd === 6;
+        var nuits = cible >= 1 ? 1 : (weekend ? 1 + Math.floor(rr * 2) : 1 + Math.floor(rr * 4));
+        if (jour + nuits >= CONFIG.horizon) nuits = 1;
+        var x = seedRand(compteur * 1.37), acc = 0, cat = "Double";
+        for (var c = 0; c < catW.length; c++){ acc += catW[c][1]; if (x < acc){ cat = catW[c][0]; break; } }
+        var libre = function(rm, n){ for (var d = jour; d < jour + n; d++){ if (dejaPris[rm.n + "|" + d]) return false; } return true; };
+        var libres = CONFIG.rooms.filter(function(rm){ return rm.cat === cat && libre(rm, nuits); });
+        if (!libres.length) libres = CONFIG.rooms.filter(function(rm){ return libre(rm, nuits); });
+        while (!libres.length && nuits > 1){ nuits--; libres = CONFIG.rooms.filter(function(rm){ return libre(rm, nuits); }); }
+        if (!libres.length) break;
+        var rm = libres[Math.floor(seedRand(jour * 7 + compteur * 13) * libres.length)];
+        for (var d2 = jour; d2 < jour + nuits; d2++){ dejaPris[rm.n + "|" + d2] = true; occ[d2] = (occ[d2] || 0) + 1; }
+        var f = seedRand(compteur * 41) > 0.5;
+        var prenom = f ? SD_PRENOMS_F[Math.floor(seedRand(compteur * 3) * SD_PRENOMS_F.length)] : SD_PRENOMS_H[Math.floor(seedRand(compteur * 3) * SD_PRENOMS_H.length)];
+        var nom = (seedRand(compteur * 7) < 0.5 ? SD_NOMS : LONG_NOMS)[Math.floor(seedRand(compteur * 5 + 1) * (seedRand(compteur * 7) < 0.5 ? SD_NOMS.length : LONG_NOMS.length))];
+        var seg = (wd >= 1 && wd <= 4 && seedRand(compteur * 11) < 0.55) ? "Affaires individuel" : (seedRand(compteur * 11) < 0.93 ? "Loisirs individuel" : "Groupe / séminaire");
+        var ville = SD_VILLES[Math.floor(seedRand(compteur * 17) * SD_VILLES.length)];
+        var adultes = seg === "Affaires individuel" ? 1 : Math.min(rm.cap, 1 + Math.floor(seedRand(compteur * 19) * 2) + (rm.cat === "Suite" || rm.cat === "Triple" ? 1 : 0));
+        var enfants = (rm.cat === "Triple" || rm.cat === "Suite") && seg !== "Affaires individuel" && seedRand(compteur * 23) > 0.6 ? Math.min(2, Math.max(0, rm.cap - adultes)) : 0;
+        var pdj = seedRand(compteur * 29) > 0.32, park = seedRand(compteur * 31) > 0.7;
         var pdjDays = [], parkDays = [];
         for (var z = 0; z < nuits; z++){ pdjDays.push(pdj ? adultes + enfants : 0); parkDays.push(park ? 1 : 0); }
-        var heberg = CONFIG.rates[rm.cat] * nuits;
-        var pdjTotal = CONFIG.petitDej * sumArr(pdjDays);
-        var parkTotal = CONFIG.parking * sumArr(parkDays);
-        var taxe = CONFIG.taxeSejour * adultes * nuits;
-
-        // Quelques dossiers restent en option ou en devis, pour que l'horizon lointain reste réaliste.
-        var typeDossier = "reservation", dateOption = null;
-        var tirage = seedRand(compteur * 37);
-        if (jour > CONFIG.today + 20 && tirage > 0.88){ typeDossier = "option"; dateOption = Math.max(CONFIG.today, jour - 14); }
-        else if (jour > CONFIG.today + 20 && tirage > 0.82){ typeDossier = "devis"; dateOption = Math.max(CONFIG.today, jour - 20); }
-
+        var heberg = CONFIG.rates[rm.cat] * nuits, pdjTotal = CONFIG.petitDej * sumArr(pdjDays), parkTotal = CONFIG.parking * sumArr(parkDays);
+        var taxe = Math.round(CONFIG.taxeSejour * adultes * nuits * 100) / 100;
+        var typeDossier = "reservation", dateOption = null, tirage = seedRand(compteur * 37);
+        if (jour > t + 20 && tirage > 0.93){ typeDossier = "option"; dateOption = Math.max(t, jour - 14); }
+        else if (jour > t + 20 && tirage > 0.89){ typeDossier = "devis"; dateOption = Math.max(t, jour - 20); }
         out.push({
-          id: "3" + String(100000 + compteur),
-          room: rm.n, cat: rm.cat, arr: jour, dep: jour + nuits,
-          client: {civ: (seedRand(compteur*41) > 0.5 ? "Mme" : "M."), prenom: prenom, nom: nom.toUpperCase(), seg: seg,
-                   email: prenom.toLowerCase() + "." + nom.toLowerCase() + "@mail.fr", mobile: formatPhone("06" + String(Math.floor(seedRand(compteur*59)*1e8)).padStart(8,"0")),
-                   adresse: "", ville: ville, societe: (seg === "Affaires individuel" ? nom + " Conseil" : "")},
-          adults: adultes, kids: enfants, pdj: pdj, park: park, pdjDays: pdjDays, parkDays: parkDays,
-          tarif: {heberg: heberg, pdjTotal: pdjTotal, parkTotal: parkTotal, taxe: taxe,
-                  total: heberg + pdjTotal + parkTotal + taxe, n: nuits},
-          paiements: [], recouvrements: [], status: "confirmee", facture: null, origin: "horizon",
-          dossierType: typeDossier, optionDate: dateOption,
-          carteCredit: {titulaire: prenom + " " + nom.toUpperCase(), last4: "····", expiry: "—", type: "Visa"}
+          id:"3" + String(100000 + compteur), room:rm.n, cat:rm.cat, arr:jour, dep:jour + nuits,
+          client:{civ:f ? "Mme" : "M.", prenom:prenom, nom:nom.toUpperCase(), seg:seg,
+                  email:exoNorm(prenom).replace(/[^a-z]/g, "") + "." + exoNorm(nom).replace(/[^a-z]/g, "") + "@mail-exemple.fr",
+                  mobile:formatPhone("0" + (seedRand(compteur * 61) < 0.5 ? "6" : "7") + String(Math.floor(seedRand(compteur * 59) * 1e8)).padStart(8, "0")),
+                  adresse:"", ville:ville, societe:(seg === "Affaires individuel" ? nom + " " + ["Conseil", "Industrie", "Services", "Ingénierie"][compteur % 4] : "")},
+          adults:adultes, kids:enfants, pdj:pdj, park:park, pdjDays:pdjDays, parkDays:parkDays,
+          tarif:{heberg:heberg, pdjTotal:pdjTotal, parkTotal:parkTotal, taxe:taxe, total:Math.round((heberg + pdjTotal + parkTotal + taxe) * 100) / 100, n:nuits},
+          paiements:[], recouvrements:[], status:"confirmee", facture:null, origin:"horizon",
+          dossierType:typeDossier, optionDate:dateOption,
+          carteCredit:{titulaire:prenom + " " + nom.toUpperCase(), last4:"····", expiry:"—", type:"Visa"}
         });
       }
     }
@@ -2577,40 +2775,48 @@
   }
 
   function buildSeedReservations(){
+    CONFIG.seedClients = sdBuild(app.mode || "normal");
     return CONFIG.seedClients.map(function(s, idx){
       var cat = roomOf(s.room).cat;
       var n = s.nNights;
       var rate = CONFIG.rates[cat];
       var heberg = rate * n;
-      var pdjTotal = s.pdj ? CONFIG.petitDej * s.adults * n : 0;
+      var pdjPers = s.adults + (s.gen ? (s.kids || 0) : 0);
+      var pdjTotal = s.pdj ? CONFIG.petitDej * pdjPers * n : 0;
       var parkTotal = s.park ? CONFIG.parking * n : 0;
-      var taxe = CONFIG.taxeSejour * s.adults * n;
-      var total = heberg + pdjTotal + parkTotal + taxe;
-      return {
+      var taxe = Math.round(CONFIG.taxeSejour * s.adults * n * 100) / 100;
+      var total = Math.round((heberg + pdjTotal + parkTotal + taxe) * 100) / 100;
+      var r = {
         id: "19" + String(idx+1).padStart(5,"0"),
         room: s.room, cat: cat, arr: s.start, dep: s.start + n,
         client: {civ:s.civ, nom:s.nom, prenom:s.prenom, seg:s.seg, email:s.email, mobile:s.mobile, indic:s.indic||"+33", adresse:s.adresse, ville:s.ville},
         adults: s.adults, kids: s.kids, pdj: s.pdj, park: s.park,
-        pdjDays: Array.apply(null,{length:n}).map(function(){ return s.pdj ? s.adults : 0; }),
+        pdjDays: Array.apply(null,{length:n}).map(function(){ return s.pdj ? pdjPers : 0; }),
         parkDays: Array.apply(null,{length:n}).map(function(){ return s.park ? 1 : 0; }),
         tarif: {heberg:heberg, pdjTotal:pdjTotal, parkTotal:parkTotal, taxe:taxe, total:total, n:n},
         paiements: [], recouvrements: [], status: seedStatus(s.start, s.start + n), facture: null, origin: "seed",
         dossierType: s.dossierType || "reservation", optionDate: (s.optionDate!==undefined ? s.optionDate : null),
-        carteCredit: buildFakeSeedCard(idx, s.civ+" "+s.prenom+" "+s.nom)
+        carteCredit: buildFakeSeedCard(idx, s.civ+" "+s.prenom+" "+s.nom), commentaires: []
       };
+      sdCaseApply(r, s);
+      return r;
     });
   }
 
-  /* Planning complet : les dossiers de la semaine de démonstration, puis le carnet de commandes
-     réparti sur les 6 mois d'horizon. */
+  /* Planning complet : la journée de départ (départs, recouches, arrivées), les cas particuliers (doublons,
+     surbooking, complets), les groupes, puis le carnet de commandes rempli sur un an. */
   function buildAllReservations(){
     var base = buildSeedReservations();
     var pris = {};
     base.forEach(function(r){ for (var d=r.arr; d<r.dep; d++){ pris[r.room+"|"+d] = true; } });
-    var longs = buildLongStayReservations(pris);
-    longs.forEach(function(r){ for (var d=r.arr; d<r.dep; d++){ pris[r.room+"|"+d] = true; } });
-    longs = longs.concat(buildSpecialReservations(pris));
+    var longs = buildSpecialReservations(pris);
     longs = longs.concat(grSeed(pris));
+    longs.forEach(function(r){ if (r.room) for (var d=r.arr; d<r.dep; d++){ pris[r.room+"|"+d] = true; } });
+    /* chambres à garder libres pour les dossiers groupes en cours de négociation */
+    var reserve = {};
+    try { buildSeedGroups().forEach(function(g){ if (g.statut === "perdu" || !(g.dep > g.arr)) return; var q = (g.chambres || []).reduce(function(x, c){ return x + c.qte; }, 0);
+      for (var n = g.arr; n < g.dep; n++) reserve[n] = (reserve[n] || 0) + Math.min(q, 14); }); } catch(e){}
+    longs = longs.concat(buildLongStayReservations(pris, reserve));
     spPostSeed(base.concat(longs));
     chAssignAll(base.concat(longs));
     spOtaDebits(base.concat(longs));
@@ -2641,9 +2847,27 @@
     r.segments.forEach(function(sg){ if (sg.from <= night) room = sg.room; });
     return room;
   }
+  /* Index chambre → dossiers, valable le temps d'un traitement (vidé à la fin de la tâche en cours) :
+     avec 60 chambres et un an de réservations, parcourir tous les dossiers à chaque case du planning est trop lent. */
+  var OCC_IDX = null;
+  function occIndex(){
+    var R = app.reservations;
+    if (OCC_IDX && OCC_IDX.arr === R && OCC_IDX.len === R.length) return OCC_IDX.by;
+    var by = {};
+    for (var i = 0; i < R.length; i++){
+      var r = R[i], rooms = {};
+      if (r.room) rooms[r.room] = 1;
+      if (r.segments) r.segments.forEach(function(sg){ rooms[sg.room] = 1; });
+      for (var k in rooms) (by[k] = by[k] || []).push(r);
+    }
+    if (!OCC_IDX) Promise.resolve().then(function(){ OCC_IDX = null; });
+    OCC_IDX = {arr:R, len:R.length, by:by};
+    return by;
+  }
   function occupantOf(roomNum, night, excludeId){
-    for (var i=0;i<app.reservations.length;i++){
-      var r = app.reservations[i];
+    var liste = occIndex()[roomNum] || [];
+    for (var i=0;i<liste.length;i++){
+      var r = liste[i];
       if (r.id===excludeId) continue;
       // Une réservation annulée ou en no-show libère immédiatement la chambre pour les nuits restantes,
       // comme dans un PMS réel (Opera, Mews…) : elle redevient disponible à la vente sans délai.
@@ -3689,6 +3913,42 @@
     rows.sort(function(a, b){ return String(a.r.room).localeCompare(String(b.r.room)); });
     return rows;
   }
+  /* Main courante d'une journée passée, reconstituée à partir de l'historique (séjours archivés) et des dossiers
+     de la journée de départ : mêmes règles que la main courante du jour, pour consulter et contrôler le passé. */
+  function mcRowsPast(D){
+    var rows = [], base = isoOf(CONFIG.dateObjs[0]), nD = diffDaysISO(base, D);
+    var mode = function(m){ return m === "Carte manuelle" ? "Carte bancaire" : (MC_CREDITS.indexOf(m) >= 0 ? m : "Carte bancaire"); };
+    archBuild().forEach(function(a){
+      if (a.statut === "annulee") return;
+      var nuits = a.statut === "noshow" ? 1 : a.n, fin = a.statut === "noshow" ? addDaysISO(a.arr, 1) : a.dep;
+      var occupe = a.arr <= D && D < fin && a.statut !== "noshow", payeLe = a.facture ? a.facture.date : null, part = fin === D;
+      if (!occupe && payeLe !== D) return;
+      var parNuit = {heb:a.heb / nuits, pdj:a.pdjT / nuits, park:a.parkT / nuits, taxe:a.taxe / nuits};
+      var avant = diffDaysISO(a.arr, D < fin ? D : fin); avant = Math.max(0, Math.min(nuits, avant));
+      var report = mcR((parNuit.heb + parNuit.pdj + parNuit.park + parNuit.taxe) * avant);
+      var deb = occupe ? {heb:mcR(parNuit.heb), pdj:mcR(parNuit.pdj), park:mcR(parNuit.park), taxe:mcR(parNuit.taxe)} : {heb:0, pdj:0, park:0, taxe:0};
+      var cr = {}; MC_CREDITS.forEach(function(k){ cr[k] = 0; });
+      if (payeLe === D && a.moyen !== "—") cr[mode(a.moyen)] = a.montant;
+      var totDeb = deb.heb + deb.pdj + deb.park + deb.taxe, totCr = MC_CREDITS.reduce(function(x, k){ return x + cr[k]; }, 0);
+      /* un séjour réglé le jour du départ : le solde tombe à zéro (arrondis répartis sur la dernière nuit) */
+      var solde = payeLe === D ? 0 : mcR(report + totDeb - totCr);
+      if (payeLe === D){ report = mcR(totCr - totDeb); }
+      rows.push({r:{room:a.room, client:{civ:a.client.civ, nom:a.client.nom.toUpperCase()}, status:part ? "terminee" : "encours", dep:-999, ref:a.id}, report:report, deb:deb, cr:cr,
+        totDeb:mcR(totDeb), totCr:mcR(totCr), solde:solde, occupe:occupe, parti:part && !occupe});
+    });
+    /* dossiers de la journée de départ arrivés avant aujourd'hui */
+    app.reservations.forEach(function(r){
+      if (r.status === "annulee" || r.origin !== "seed" || !(r.arr <= nD && nD < r.dep)) return;
+      var avant = 0; for (var n = r.arr; n < nD; n++){ var c = mcNight(r, n); avant += c.heb + c.pdj + c.park + c.taxe; }
+      var payAvant = (r.paiements || []).filter(function(x){ return x.date && x.date < D; }).reduce(function(t, x){ return t + x.montant; }, 0);
+      var cr = {}; MC_CREDITS.forEach(function(k){ cr[k] = 0; });
+      (r.paiements || []).filter(function(x){ return x.date === D; }).forEach(function(x){ cr[mode(x.moyen)] += x.montant; });
+      var deb = mcNight(r, nD), totDeb = deb.heb + deb.pdj + deb.park + deb.taxe, totCr = MC_CREDITS.reduce(function(t, k){ return t + cr[k]; }, 0), report = mcR(avant - payAvant);
+      rows.push({r:r, report:report, deb:deb, cr:cr, totDeb:mcR(totDeb), totCr:mcR(totCr), solde:mcR(report + totDeb - totCr), occupe:true, parti:false});
+    });
+    rows.sort(function(a, b){ return String(a.r.room).localeCompare(String(b.r.room)); });
+    return rows;
+  }
   function mcTotals(rows){
     var T = {report:0, heb:0, pdj:0, park:0, taxe:0, totDeb:0, totCr:0, solde:0, cr:{}};
     MC_CREDITS.forEach(function(k){ T.cr[k] = 0; });
@@ -3701,8 +3961,10 @@
   }
   function renderMainCourante(){
     var box = $("mcBox"); if (!box) return;
-    var t = CONFIG.today, rows = mcRows(), T = mcTotals(rows);
-    $("mcDate").textContent = CONFIG.dateLabels[t];
+    var t = CONFIG.today, auj = hotelISO(), D = app.mcDate && app.mcDate < auj ? app.mcDate : auj, passe = D !== auj;
+    var rows = passe ? mcRowsPast(D) : mcRows(), T = mcTotals(rows);
+    $("mcDate").textContent = passe ? frOf(D) + " (journée passée)" : CONFIG.dateLabels[t];
+    var dp = $("mcPick"); if (dp){ dp.min = addDaysISO(auj, -365); dp.max = auj; dp.value = D; }
     function m(v){ return Math.abs(v) < 0.005 ? "<span class='mc-zero'>—</span>" : eur(v); }
     var body = rows.map(function(x){
       var st = x.occupe ? "" : (x.parti ? " <span class='chip chip-muted'>parti</span>" : (x.r.status === "encours" && x.r.dep === CONFIG.today ? " <span class='chip chip-warn'>départ du jour</span>" : ""));
@@ -3716,7 +3978,8 @@
       "<td class='num'>"+eur(T.heb)+"</td><td class='num'>"+eur(T.pdj)+"</td><td class='num'>"+eur(T.park)+"</td><td class='num'>"+eur(T.taxe)+"</td><td class='num'><b>"+eur(T.totDeb)+"</b></td>"+
       MC_CREDITS.map(function(k){ return "<td class='num'>"+eur(T.cr[k])+"</td>"; }).join("")+
       "<td class='num'><b>"+eur(T.totCr)+"</b></td><td class='num'><b>"+eur(T.solde)+"</b></td></tr>";
-    var caisse = app.journal.filter(function(x){ return x.kind === "encaissement"; }).reduce(function(s, x){ return s + x.montant; }, 0);
+    var caisse = passe ? edMouvements(D).filter(function(m){ return m.room !== "DD" && m.mode !== "Débiteur"; }).reduce(function(s, x){ return s + x.montant; }, 0) + T.cr["Débiteur"]
+                       : app.journal.filter(function(x){ return x.kind === "encaissement"; }).reduce(function(s, x){ return s + x.montant; }, 0);
     var equilibre = Math.abs((T.report + T.totDeb - T.totCr) - T.solde) < 0.01;
     var concord = Math.abs(caisse - T.totCr) < 0.01;
     box.innerHTML =
@@ -3728,14 +3991,15 @@
       "</thead><tbody>"+body+"</tbody><tfoot>"+foot+"</tfoot></table></div>"+
       "<div class='mc-checks'>"+
         "<span class='chip "+(equilibre?"chip-good":"chip-bad")+"'>Report + débit − crédit = solde : "+(equilibre?"équilibré":"déséquilibré")+"</span> "+
-        "<span class='chip "+(concord?"chip-good":"chip-warn")+"'>Total crédit "+eur(T.totCr)+" · caisse du jour "+eur(caisse)+(concord?" : concordent":" : à vérifier")+"</span>"+
-      "</div>";
+        "<span class='chip "+(concord?"chip-good":"chip-warn")+"'>Total crédit "+eur(T.totCr)+" · "+(passe ? "journal de caisse du " + frOf(D) : "caisse du jour")+" "+eur(caisse)+(concord?" : concordent":" : à vérifier")+"</span>"+
+      "</div>" + (passe ? "<p class='hint'>Journée passée en lecture seule, reconstituée à partir de l'historique des séjours. Le journal de caisse correspondant est dans Éditions › Journal de caisse.</p>" : "");
   }
   function mcCsvNum(v){ return (Math.round(v*100)/100).toFixed(2).replace(".", ","); }
   function mcCsvCell(s){ s = String(s == null ? "" : s); return /[;"\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
   async function mcDownload(kind){
     if (!DL){ toast("Téléchargement de fichiers indisponible dans cette session."); return; }
-    var rows = mcRows(), t = CONFIG.today, L = [], date = CONFIG.dateLabels[t];
+    var auj = hotelISO(), Dp = app.mcDate && app.mcDate < auj ? app.mcDate : null;
+    var rows = Dp ? mcRowsPast(Dp) : mcRows(), t = CONFIG.today, L = [], date = Dp ? frOf(Dp) : CONFIG.dateLabels[t];
     if (kind === "liste"){
       L.push(["Mouvements de la journée du " + date + " — " + CONFIG.hotel]);
       L.push(["Consigne : classer chaque montant au débit ou au crédit de la main courante, puis calculer les totaux avec des formules."]);
@@ -3774,6 +4038,11 @@
     var a = $("mcDlListe"), b = $("mcDlFull");
     if (a) a.addEventListener("click", function(){ mcDownload("liste"); });
     if (b) b.addEventListener("click", function(){ mcDownload("complete"); });
+    var ab = $("clAutoBtn"); if (ab) ab.addEventListener("click", function(){ autoTraiterJour(); clAttenduMaj(); });
+    var cn = $("clAttendu"); var dt = cn && cn.closest("details"); if (dt) dt.addEventListener("toggle", function(){ if (dt.open) clAttenduMaj(); });
+    var pk = $("mcPick"), aj = $("mcAuj");
+    if (pk) pk.addEventListener("change", function(){ app.mcDate = pk.value || null; renderMainCourante(); });
+    if (aj) aj.addEventListener("click", function(){ app.mcDate = null; renderMainCourante(); });
   })();
 
   /* ================= EXERCICES DU GUIDE « LES LOGICIELS INFORMATIQUES » ================= */
@@ -4443,13 +4712,22 @@
     var d0 = CONFIG.dateObjs && CONFIG.dateObjs[0]; if (!d0) return [];
     var key = isoOf(d0); if (LG_ARCH && LG_ARCH_KEY === key) return LG_ARCH;
     var rnd = lgRng(20260101), pick = function(a){ return a[Math.floor(rnd() * a.length)]; };
-    var start = new Date(d0.getFullYear(), 0, 1), totalDays = Math.round((d0 - start) / 86400000);
+    /* un an d'historique avant la fenêtre de la journée de départ */
+    /* jusqu'à la nuit d'avant-hier incluse (index 0) : des clients sont donc partis hier, avec leurs factures et encaissements */
+    /* point de départ fixe (20/11/2025) : l'historique reste identique d'un jour à l'autre (factures, montants des corrigés),
+       il s'allonge simplement à mesure que les jours passent. Au moins un an d'archives. */
+    var start = new Date(2025, 10, 20); if ((d0 - start) / 86400000 < 365) start = new Date(d0.getFullYear(), d0.getMonth(), d0.getDate() - 365);
+    var totalDays = Math.round((d0 - start) / 86400000) + 1;
+    /* nuits déjà occupées par les dossiers de la journée de départ (arrivés avant la fenêtre) : on n'y met pas d'archive */
+    var bloc = {};
+    ["normal", "examen"].forEach(function(md){ sdBuild(md).forEach(function(sp){ if (sp.start <= 0){ var b = totalDays - 1 + sp.start; bloc[sp.room] = bloc[sp.room] == null ? b : Math.min(bloc[sp.room], b); } }); });
     var seeded = buildGuests();
     /* clientèle générée : particuliers et salariés des comptes débiteurs */
     var pool = [], seq = 1001;
-    for (var k = 0; k < 80; k++){
-      var f = rnd() < 0.5, seg = rnd() < 0.62 ? "Loisirs individuel" : "Affaires individuel";
-      var prenom = f ? pick(LG_PRENOMS_F) : pick(LG_PRENOMS_H), nom = pick(LG_NOMS);
+    var NOMS_A = LG_NOMS.concat(SD_NOMS), PF = LG_PRENOMS_F.concat(SD_PRENOMS_F), PH = LG_PRENOMS_H.concat(SD_PRENOMS_H);
+    for (var k = 0; k < 480; k++){
+      var f = rnd() < 0.5, seg = rnd() < 0.6 ? "Loisirs individuel" : "Affaires individuel";
+      var prenom = f ? pick(PF) : pick(PH), nom = pick(NOMS_A);
       pool.push({id:"CL-" + (seq++), civ:f ? "Mme" : "M.", prenom:prenom, nom:nom, seg:seg, societe:"", compte:null, ville:pick(LG_VILLES),
                  email:exoNorm(prenom).replace(/[^a-z]/g, "") + "." + exoNorm(nom).replace(/[^a-z]/g, "") + "@mail-exemple.fr",
                  mobile:"06 " + String(10 + Math.floor(rnd() * 89)) + " " + String(10 + Math.floor(rnd() * 89)) + " " + String(10 + Math.floor(rnd() * 89)) + " " + String(10 + Math.floor(rnd() * 89))});
@@ -4464,21 +4742,23 @@
     var roomsFree = {}; CONFIG.rooms.forEach(function(r){ roomsFree[r.n] = 0; });
     var catW = [["Double", 0.38], ["Twin", 0.24], ["Triple", 0.22], ["Suite", 0.16]];
     var recs = [], id = 1;
+    var occN = {};   /* nuit (rang depuis le début de l'historique) → chambres occupées */
     for (var day = 0; day < totalDays; day++){
-      var dt = new Date(start.getFullYear(), 0, 1 + day), m = dt.getMonth(), wd = dt.getDay();
-      var base = (m >= 5 && m <= 7) ? 3.2 : (m === 0 || m === 10 ? 1.4 : 2.2);
-      if (wd === 5 || wd === 6) base += 0.8;
-      var nArr = Math.floor(base + rnd() * 1.6);
-      for (var a = 0; a < nArr; a++){
+      var dt = new Date(start.getFullYear(), start.getMonth(), start.getDate() + day), m = dt.getMonth(), wd = dt.getDay();
+      var md = String(m + 1).padStart(2, "0") + "-" + String(dt.getDate()).padStart(2, "0");
+      var cible = LS_COMPLETS.indexOf(md) >= 0 ? 1 : Math.max(0.3, Math.min(0.97, [0.55, 0.6, 0.66, 0.72, 0.8, 0.86, 0.92, 0.94, 0.84, 0.76, 0.66, 0.62][m] + ((wd === 5 || wd === 6) ? 0.1 : (wd === 0 ? -0.18 : 0.02)) + (rnd() - 0.5) * 0.14));
+      var objectif = Math.round(CONFIG.rooms.length * cible), essai = 0;
+      while ((occN[day] || 0) < objectif && essai++ < 160){
         var x = rnd(), cat = "Double", acc = 0;
         for (var c = 0; c < catW.length; c++){ acc += catW[c][1]; if (x < acc){ cat = catW[c][0]; break; } }
-        var free = CONFIG.rooms.filter(function(r){ return r.cat === cat && roomsFree[r.n] <= day; });
-        if (!free.length) free = CONFIG.rooms.filter(function(r){ return roomsFree[r.n] <= day; });
-        if (!free.length) continue;
-        var room = pick(free); cat = room.cat;
-        var y = rnd(), n = y < 0.36 ? 1 : (y < 0.71 ? 2 : (y < 0.89 ? 3 : (y < 0.97 ? 4 : 5)));
+        var y = rnd(), n = cible >= 1 ? 1 : (y < 0.36 ? 1 : (y < 0.71 ? 2 : (y < 0.89 ? 3 : (y < 0.97 ? 4 : 5))));
         if (day + n > totalDays) n = Math.max(1, totalDays - day);
-        if (day + n > totalDays) continue;
+        var okRoom = function(r, nn){ return roomsFree[r.n] <= day && (bloc[r.n] == null || day + nn <= bloc[r.n]); };
+        var free = CONFIG.rooms.filter(function(r){ return r.cat === cat && okRoom(r, n); });
+        if (!free.length) free = CONFIG.rooms.filter(function(r){ return okRoom(r, n); });
+        while (!free.length && n > 1){ n--; free = CONFIG.rooms.filter(function(r){ return okRoom(r, n); }); }
+        if (!free.length) break;
+        var room = pick(free); cat = room.cat;
         var weekdayBiz = wd >= 1 && wd <= 4;
         var cl = (weekdayBiz && rnd() < 0.3) ? pick(corp) : (rnd() < 0.18 ? pick(seeded) : pick(pool));
         var adults = cat === "Triple" ? 2 + Math.floor(rnd() * 2) : (cat === "Suite" ? 2 + Math.floor(rnd() * 3) : (cl.seg === "Affaires individuel" ? 1 : 1 + Math.floor(rnd() * 2)));
@@ -4490,30 +4770,18 @@
         var compte = cl.compte || null;
         var moyen = statut === "annulee" ? "—" : (compte && rnd() < 0.85 ? "Débiteur" : (rnd() < 0.7 ? "Carte bancaire" : (rnd() < 0.5 ? "Espèces" : "Virement")));
         if (moyen !== "Débiteur") compte = null;
+        /* un no-show n'est pas là pour payer : la nuit est débitée à distance sur la carte de garantie */
+        if (statut === "noshow" && moyen !== "Débiteur") moyen = "Carte manuelle";
         var canal = cl.compte ? "Contrat entreprise" : pick(["Site officiel", "Téléphone", "Booking", "Expedia", "Comptoir", "E-mail"]);
         recs.push({src:"arch", id:"26" + String(id++).padStart(5, "0"),
           client:{id:cl.id, civ:cl.civ, prenom:cl.prenom, nom:cl.nom, societe:cl.societe || "", seg:cl.seg, email:cl.email || "", mobile:cl.mobile || "", ville:cl.ville || ""},
           room:room.n, cat:cat, arr:isoOf(dt), dep:isoOf(new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + n)), n:n, adults:adults,
           pdj:pdj, park:park, heb:statut === "noshow" ? CONFIG.rates[cat] : heb, pdjT:statut === "terminee" ? pdjT : 0, parkT:statut === "terminee" ? parkT : 0, taxe:statut === "terminee" ? taxe : 0,
           montant:Math.round(montant * 100) / 100, statut:statut, moyen:moyen, compte:compte, canal:canal, facture:null});
-        if (statut !== "annulee") roomsFree[room.n] = day + n;
+        if (statut !== "annulee" && statut !== "noshow"){ roomsFree[room.n] = day + n; for (var q = day; q < day + n; q++) occN[q] = (occN[q] || 0) + 1; }
+        else if (statut === "noshow"){ roomsFree[room.n] = day + 1; occN[day] = (occN[day] || 0) + 1; }
       }
     }
-    /* complets passés : toutes les chambres vendues certaines nuits (ajout déterministe, sans toucher au tirage ci-dessus) */
-    ["2026-09-19", "2026-10-10", "2026-10-31"].forEach(function(D, di){
-      if (D >= key) return;
-      var occ = {}; recs.forEach(function(r){ if (r.statut !== "annulee" && r.statut !== "noshow" && r.arr <= D && r.dep > D) occ[r.room] = 1; });
-      CONFIG.rooms.forEach(function(room, ri){
-        if (occ[room.n]) return;
-        var h = lgHash(D + room.n), cl = pool[h % 80], ad = Math.min(room.cap || 2, room.cat === "Triple" ? 3 : 2);
-        var pdj = h % 3 !== 0, heb = CONFIG.rates[room.cat], pdjT = pdj ? CONFIG.petitDej * ad : 0, taxe = CONFIG.taxeSejour * ad;
-        var canal = ["Booking", "Expedia", "Site officiel", "Téléphone", "Booking"][h % 5];
-        recs.push({src:"arch", id:"26" + String(id++).padStart(5, "0"),
-          client:{id:cl.id, civ:cl.civ, prenom:cl.prenom, nom:cl.nom, societe:"", seg:cl.seg, email:cl.email || "", mobile:cl.mobile || "", ville:cl.ville || ""},
-          room:room.n, cat:room.cat, arr:D, dep:addDaysISO(D, 1), n:1, adults:ad, pdj:pdj, park:false, heb:heb, pdjT:pdjT, parkT:0, taxe:taxe,
-          montant:Math.round((heb + pdjT + taxe) * 100) / 100, statut:"terminee", moyen:"Carte bancaire", compte:null, canal:canal, facture:null, complet:true});
-      });
-    });
     /* prépaiements OTA en carte manuelle (vente à distance) ; quelques-uns saisis à tort en « Carte bancaire » (erreur d'encaissement à repérer) */
     recs.forEach(function(r){
       if (r.statut !== "terminee" || r.moyen !== "Carte bancaire") return;
@@ -4524,11 +4792,15 @@
     });
     /* numéros de facture dans l'ordre chronologique des départs */
     var fact = recs.filter(function(r){ return r.statut !== "annulee"; }).sort(function(a, b){ return (a.statut === "noshow" ? a.arr : a.dep) < (b.statut === "noshow" ? b.arr : b.dep) ? -1 : 1; });
-    fact.forEach(function(r, i){ r.facture = {numero:"FA-" + d0.getFullYear() + "-" + String(i + 1).padStart(4, "0"), date:r.statut === "noshow" ? r.arr : r.dep}; });
+    var parAn = {};
+    fact.forEach(function(r){ var dte = r.statut === "noshow" ? r.arr : r.dep, an = dte.slice(0, 4); parAn[an] = (parAn[an] || 0) + 1;
+      r.facture = {numero:"FA-" + an + "-" + String(parAn[an]).padStart(4, "0"), date:dte}; });
     LG_ARCH = recs; LG_ARCH_KEY = key;
     return recs;
   }
-  function archFactureCount(){ return archBuild().filter(function(r){ return r.facture; }).length; }
+  /* factures de l'historique déjà émises sur l'année en cours (la numérotation repart à 1 chaque 1er janvier) */
+  function archFactureCount(){ var an = hotelISO().slice(0, 4); return archBuild().filter(function(r){ return r.facture && r.facture.numero.slice(3, 7) === an; }).length; }
+  function faNumero(seq){ return "FA-" + hotelISO().slice(0, 4) + "-" + String(seq).padStart(4, "0"); }
 
   /* Les clients de l'historique rejoignent le fichier clients (fiches existantes complétées, fiches créées sinon). */
   function archGuestsSync(){
@@ -4539,7 +4811,7 @@
       var e = byId[cid], g = findGuestById(cid);
       var hist = e.list.filter(function(r){ return r.statut === "terminee"; }).map(function(r){ return {date:frOf(r.arr), nuits:r.n, chambre:r.room, cat:r.cat, montant:r.montant, canal:r.canal, arch:true}; });
       if (!g){
-        g = {id:cid, civ:e.c.civ, prenom:e.c.prenom, nom:e.c.nom, seg:e.c.seg, email:e.c.email, mobile:e.c.mobile, adresse:"", cp:"", ville:e.c.ville, pays:"France",
+        g = {id:cid, archOnly:true, civ:e.c.civ, prenom:e.c.prenom, nom:e.c.nom, seg:e.c.seg, email:e.c.email, mobile:e.c.mobile, adresse:"", cp:"", ville:e.c.ville, pays:"France",
              langue:"Français", societe:e.c.societe, fidelite:"Aucun", vip:false, canal:e.list[0].canal, rgpd:true, depuis:String(new Date().getFullYear()), prefs:[], allergies:"", notes:"", history:[]};
         app.guests.push(g);
       }
@@ -4588,7 +4860,11 @@
     return D;
   }
   function debMakeFacture(D, acc, list, dateISO, year){
-    var num = "FD-" + (year || dateISO.slice(0, 4)) + "-" + String(D.seqF++).padStart(4, "0");
+    /* numérotation continue par année civile, comme les factures clients */
+    var an = dateISO.slice(0, 4); D.seqFY = D.seqFY || {};
+    if (D.seqFY[an] == null) D.seqFY[an] = D.factures.filter(function(f){ return f.num.slice(3, 7) === an; }).length;
+    D.seqFY[an]++; D.seqF++;
+    var num = "FD-" + an + "-" + String(D.seqFY[an]).padStart(4, "0");
     var total = Math.round(list.reduce(function(s, t){ return s + t.montant; }, 0) * 100) / 100;
     list.forEach(function(t){ t.fd = num; });
     var fd = {num:num, compte:acc.code, date:dateISO, echeance:addDaysISO(dateISO, acc.delai || 0), transferts:list.map(function(t){ return t.id; }), total:total};
@@ -5229,7 +5505,7 @@
        civ:"", prenom:"", nom:"", adresse:"12 rue Blaise-Pascal", cp:"63000", ville:"Clermont-Ferrand", email:"compta@volcaniq-exemple.com", tel:"04 73 20 45 10", cree:d(-40),
        lignes:[{id:"L1", date:d(-2), label:"Location de salle — demi-journée", qte:1, pu:180, tva:0.20}, {id:"L2", date:d(-2), label:"Pause café", qte:12, pu:8, tva:0.10}],
        paiements:[],
-       factures:[{numero:"FA-" + (CONFIG.dateObjs[0] || new Date()).getFullYear() + "-" + String((lgEnsure(), app.nextInvoiceSeq++)).padStart(4, "0"), date:d(-25), lignes:[{label:"Location de salle — journée", qte:1, pu:300, tva:0.20},{label:"Pause café", qte:24, pu:8, tva:0.10},{label:"Déjeuner / repas", qte:12, pu:28, tva:0.10}],
+       factures:[{numero:(lgEnsure(), faNumero(app.nextInvoiceSeq++)), date:d(-25), lignes:[{label:"Location de salle — journée", qte:1, pu:300, tva:0.20},{label:"Pause café", qte:24, pu:8, tva:0.10},{label:"Déjeuner / repas", qte:12, pu:28, tva:0.10}],
                   paiements:[{date:d(-25), montant:828, moyen:"Virement"}]}]},
       {code:"CP-0002", type:"individuel", raison:"", siret:"", tva:"", contact:"", civ:"Mme", prenom:"Odile", nom:"Verdier",
        adresse:"4 rue des Gras", cp:"63000", ville:"Clermont-Ferrand", email:"odile.verdier@mail-exemple.fr", tel:"06 31 52 84 17", cree:d(-10),
@@ -5380,7 +5656,7 @@
     $("cp-close").onclick = function(){ closeInvoiceModal(); renderPerm(); };
     $("cp-fact").onclick = function(){
       if (!c.lignes.length) return;
-      var num = "FA-" + (CONFIG.dateObjs[0] || new Date()).getFullYear() + "-" + String(app.nextInvoiceSeq++).padStart(4, "0");
+      var num = faNumero(app.nextInvoiceSeq++);
       c.factures.push({numero:num, date:hotelISO(), lignes:c.lignes.map(function(l){ return {label:l.label + " (" + frOf(l.date) + ")", qte:l.qte, pu:l.pu, tva:l.tva}; }), paiements:c.paiements.slice()});
       c.lignes = []; c.paiements = [];
       refreshAll(); renderPerm(); cpFacture(code, num, "Facture " + num + " émise. Le compte reste ouvert pour les prochaines prestations.");
@@ -5918,7 +6194,19 @@
       openGrpMail(m.id);
     };
   }
-  function grpMajBoutonFormatrice(){ var b = $("grpNewBtn"); if (b) b.hidden = !estFormatrice(); }
+  function grpMajBoutonFormatrice(){ var b = $("grpNewBtn"); if (b) b.hidden = !estFormatrice(); modeAppliquer(); }
+  /* Mode examen : bandeau visible par tous, exercices et corrigés masqués pour les candidates. */
+  function modeAppliquer(){
+    var ex = app.mode === "examen", f = estFormatrice();
+    var b = $("examBtn"); if (b){ b.hidden = !f; b.textContent = ex ? "↩️ Revenir à la journée de formation" : "🎓 Jour d'examen"; }
+    var ban = $("examBanner");
+    if (!ban){ ban = document.createElement("div"); ban.id = "examBanner"; ban.className = "exam-banner"; document.body.insertBefore(ban, document.body.firstChild); }
+    ban.hidden = !ex;
+    ban.textContent = "🎓 JOUR D'EXAMEN — 16 arrivées, 16 départs. Travaillez seule ; les exercices et les corrigés sont fermés pendant l'épreuve.";
+    var tab = document.querySelector('#mainTabs [data-tab="exercices"]'); if (tab) tab.hidden = ex && !f;
+    var au = $("clAuto"); if (au) au.hidden = ex;
+    if (ex && !f && app.view === "exercices") showMainTab("planning");
+  }
 
   /* =====================================================================================================
      COMPLETS, SURBOOKING, DOUBLONS, CANAUX OTA / GDS, PRÉPAIEMENTS, DÉBITS CB À FAIRE (CARTE MANUELLE), ARRHES,
@@ -6016,15 +6304,7 @@
       r.canal = spHash(r.id) % 2 ? "Site officiel" : "Téléphone"; r.garantie = "Arrhes versées à la réservation";
       r.paiements.push({montant:ar, moyen:spHash(r.id + "m") % 3 ? "Virement" : "Carte manuelle", type:"arrhes", date:dayISO(Math.max(0, t - 2 - spHash(r.id + "d") % 25)), note:"Arrhes à la réservation"});
     });
-    var byRoom = function(n){ return all.filter(function(r){ return r.room === n && r.status === "encours"; })[0]; };
-    var r107 = byRoom("107");
-    if (r107){ r107.canal = "Booking.com"; r107.plan = "nonremb"; r107.garantie = "Non remboursable — prépaiement par carte (débité à distance)";
-      r107.paiements.push({montant:Math.round(r107.tarif.heberg * 100) / 100, moyen:"Carte bancaire", type:"prepaiement", date:dayISO(Math.max(0, t - 1)), note:"Prépaiement Booking.com débité à distance (client absent)"});
-      r107.commentaires = (r107.commentaires || []).concat([{ts:dayISO(Math.max(0, t - 1)) + " 21:05", user:"MG", txt:"Prépaiement Booking débité ce soir sur la carte du client."}]); }
-    var r201 = byRoom("201");
-    if (r201){ r201.canal = "Expedia (Expedia Collect)"; r201.plan = "ota"; r201.garantie = "Prépayé par Expedia — carte virtuelle (VCC) à débiter";
-      r201.carteCredit = {titulaire:"EXPEDIA VCC", last4:"7731", expiry:"12/26", type:"VCC Mastercard (Expedia)"};
-      r201.aDebiter = [{id:"DB" + r201.id, montant:Math.round((r201.tarif.heberg + r201.tarif.taxe) * 100) / 100, motif:"Carte virtuelle Expedia (hébergement et taxe de séjour) — à débiter depuis l'arrivée", echeance:r201.arr, vcc:true, fait:false}]; }
+    /* les cas « prépaiement saisi en carte bancaire » et « VCC Expedia à débiter » sont posés sur la journée de départ (sdCaseApply). */
   }
   function spAutoComment(r, d){
     r.commentaires = r.commentaires || [];
@@ -6222,10 +6502,10 @@
     {k:"E-mail",             t:"Direct", com:0,    alloc:null, ico:"✉️"},
     {k:"Comptoir",           t:"Direct", com:0,    alloc:null, ico:"🛎️"},
     {k:"Contrat entreprise", t:"Direct", com:0,    alloc:null, ico:"🏢"},
-    {k:"Booking.com",        t:"OTA",    com:0.17, alloc:8,    ico:"🅱️"},
-    {k:"Expedia",            t:"OTA",    com:0.18, alloc:6,    ico:"🧳"},
-    {k:"Airbnb",             t:"OTA",    com:0.15, alloc:3,    ico:"🏠"},
-    {k:"GDS Amadeus",        t:"GDS",    com:0.10, alloc:4,    ico:"🛰️"}
+    {k:"Booking.com",        t:"OTA",    com:0.17, alloc:16,    ico:"🅱️"},
+    {k:"Expedia",            t:"OTA",    com:0.18, alloc:12,    ico:"🧳"},
+    {k:"Airbnb",             t:"OTA",    com:0.15, alloc:6,    ico:"🏠"},
+    {k:"GDS Amadeus",        t:"GDS",    com:0.10, alloc:8,    ico:"🛰️"}
   ];
   function chKey(c){
     c = String(c || "");
@@ -6813,6 +7093,7 @@
     Array.prototype.forEach.call(box.querySelectorAll("[data-grp-pl]"), function(b){ b.onclick = function(){ grsShowOnPlanning(b.getAttribute("data-grp-pl")); }; });
   }
   function refreshAll(){
+    try { modeAppliquer(); } catch(e){}
     try { actDiff(); } catch(e){ console.error(e); }
     try { grSyncAll(); } catch(e){ console.error(e); }
     try { app._actSnap && app.reservations.forEach(function(r){ if (!app._actSnap[r.id] && r.auto) app._actSnap[r.id] = actSig(r); }); } catch(e){}
@@ -6858,7 +7139,7 @@
   var PLANNING_CATS = ["Double","Twin","Triple","Suite"];
   /* Fenêtre visible du planning : on n'affiche jamais les 186 jours d'un coup, mais une tranche
      déplaçable avec la barre de défilement, le calendrier ou les flèches. */
-  function plMin(){ return CONFIG.today - 183; }
+  function plMin(){ return CONFIG.today - 365; }
   function plStart(){ return Math.max(plMin(), Math.min(app.plStart, CONFIG.horizon - app.plDays)); }
   function plLast(){ return Math.min(CONFIG.horizon-1, plStart() + app.plDays - 1); }
   function plWindow(){ var out=[]; for (var i=plStart(); i<=plLast(); i++) out.push(i); return out; }
@@ -6998,7 +7279,7 @@
         grid.appendChild(roomCell);
 
         var night = plStart();
-        var occAt = function(n){ return n < 0 ? plArchOcc(r.n, n) : occupantOf(r.n, n, null); };
+        var occAt = function(n){ return n < 0 ? plArchOcc(r.n, n) : (occupantOf(r.n, n, null) || (n === 0 ? plArchOcc(r.n, n) : null)); };
         while (night <= plLast()){
           var occ = occAt(night);
           if (!occ){
@@ -7513,6 +7794,50 @@
      carte bancaire, génère la facture définitive (numéro attribué, puisque le client est déjà en séjour)
      puis effectue le check-out. Un trop-perçu existant n'est pas traité ici : il faut ouvrir le dossier
      pour le régulariser manuellement avant de pouvoir facturer. */
+  /* Formatrice : traite d'un coup les départs et arrivées du jour qui ne font pas partie des exercices guidés. */
+  function clAttenduMaj(){
+    var box = $("clAttendu"); if (!box) return;
+    var i = clIndicateurs(), J = app.journal.filter(function(m){ return m.kind === "encaissement"; });
+    var esp = J.filter(function(m){ return m.moyen === "Espèces"; }).reduce(function(x, m){ return x + m.montant; }, 0);
+    var cb = J.filter(function(m){ return m.moyen === "Carte bancaire"; }).reduce(function(x, m){ return x + m.montant; }, 0);
+    var cm = J.filter(function(m){ return m.moyen === "Carte manuelle"; }).reduce(function(x, m){ return x + m.montant; }, 0);
+    var fond = typeof app.clotureFond === "number" ? app.clotureFond : 150, theo = clR(fond + esp);
+    box.innerHTML = "<ul><li>Chambres vendues cette nuit : <b>" + i.vendues + " / " + i.total + "</b> · TO <b>" + (i.to * 100).toFixed(1).replace(".", ",") + " %</b></li>" +
+      "<li>CA hébergement <b>" + eur(i.ca) + "</b> · prix moyen <b>" + eur(i.pmc) + "</b> · RevPAR <b>" + eur(i.revpar) + "</b></li>" +
+      "<li>Personnes <b>" + i.pers + "</b> (indice de fréquentation " + i.if_.toFixed(2).replace(".", ",") + ") · petits-déjeuners à annoncer <b>" + i.pdj + "</b></li>" +
+      "<li>Espèces théoriques : fond " + eur(fond) + " + encaissé " + eur(esp) + " = <b>" + eur(theo) + "</b> · à compter pour l'exercice : <b>" + eur(theo - 2) + "</b> (écart −2,00 €)</li>" +
+      "<li>Ticket Z carte bancaire = <b>" + eur(cb) + "</b>" + (cm ? " · carte manuelle (vente à distance) : " + eur(cm) : "") + "</li></ul>";
+  }
+  function autoTraiterJour(){
+    if (!estFormatrice()) return;
+    var t = CONFIG.today, garde = {}, nd = 0, na = 0;
+    /* on garde les dossiers d'origine des exercices et les cas particuliers (groupes, arrivée tardive, client étranger,
+       PMR, arrhes, carte virtuelle à débiter, litige, erreur d'encaissement) : ce sont eux que les stagiaires traitent */
+    var CAS_GARDES = ["groupeArr", "groupeDep", "tardive", "etranger", "pmr", "arrhes", "vccADebiter", "litige", "erreurCB"];
+    (CONFIG.seedClients || []).forEach(function(s, i){ if (s.legacy || CAS_GARDES.indexOf(s.cas) >= 0) garde["19" + String(i + 1).padStart(5, "0")] = 1; });
+    app.reservations.forEach(function(r){
+      if (garde[r.id] || r.status !== "encours" || r.dep !== t || !r.room) return;
+      (r.aDebiter || []).forEach(function(d){ if (!d.fait){ d.fait = true; d.faitLe = t; d.moyen = "Carte manuelle"; r.paiements.push({montant:d.montant, moyen:"Carte manuelle", type:"debit", date:hotelISO(), note:d.motif}); logCaisse(r, d.montant, "Carte manuelle", "encaissement"); } });
+      var b = balanceOf(r);
+      if (b.due < -0.001) return;
+      if (b.due > 0.001){
+        if (r.compteDeb){ r.paiements.push({montant:b.due, moyen:"Débiteur", compte:r.compteDeb}); debTransfer(r, b.due, r.compteDeb); logCaisse(r, b.due, "Débiteur", "encaissement"); }
+        else { r.paiements.push({montant:b.due, moyen:"Carte bancaire"}); logCaisse(r, b.due, "Carte bancaire", "encaissement"); }
+      }
+      if (!r.facture) r.facture = {numero:null, date:CONFIG.dateLabels[r.arr]};
+      if (!r.facture.numero && canInvoice(r)){ r.facture.numero = faNumero(app.nextInvoiceSeq); r.facture.jour = t; app.nextInvoiceSeq++; }
+      if (r.facture.numero){ r.status = "terminee"; r.checkoutJour = t; app.hk[r.room] = false; nd++; }
+    });
+    app.reservations.forEach(function(r){
+      if (garde[r.id] || r.status !== "confirmee" || r.arr !== t || !r.room || (r.dossierType && r.dossierType !== "reservation") || r.unnamed) return;
+      /* la chambre n'est pas encore libérée par un départ de l'exercice : on attend */
+      if (app.reservations.some(function(o){ return o !== r && o.room === r.room && o.status === "encours" && o.dep === t; })) return;
+      r.status = "encours"; r.checkinJour = t; app.hk[r.room] = true; na++;   /* chambre faite avant l'arrivée */
+      (r.aDebiter || []).forEach(function(d){ if (!d.fait && d.echeance <= t){ d.fait = true; d.faitLe = t; d.moyen = "Carte manuelle"; r.paiements.push({montant:d.montant, moyen:"Carte manuelle", type:"debit", date:hotelISO(), note:d.motif}); logCaisse(r, d.montant, "Carte manuelle", "encaissement"); } });
+    });
+    refreshAll();
+    toast(nd + " départ(s) et " + na + " arrivée(s) traités automatiquement. Restent les dossiers des exercices.");
+  }
   function quickCheckout(id){
     var r = app.reservations.filter(function(x){return x.id===id;})[0];
     if (!r || r.status!=="encours") return;
@@ -7525,7 +7850,7 @@
     if (!r.facture){ r.facture = {numero:null, date: CONFIG.dateLabels[r.arr]}; }
     var bAfter = balanceOf(r);
     if (bAfter.due<=0.001 && !r.facture.numero && canInvoice(r)){
-      r.facture.numero = "FA-2026-"+String(app.nextInvoiceSeq).padStart(4,"0"); r.facture.jour = CONFIG.today;
+      r.facture.numero = faNumero(app.nextInvoiceSeq); r.facture.jour = CONFIG.today;
       app.nextInvoiceSeq++;
     }
     if (r.facture && r.facture.numero){ r.status = "terminee"; r.checkoutJour = CONFIG.today; app.hk[r.room] = false; }
@@ -8799,6 +9124,19 @@
      history:[{date:"17/05/2025", nuits:2, chambre:"Groupe (7 ch.)", cat:"Twin", montant:2134.00, canal:"Demande groupe"}]}
   ];
 
+  /* Les clients de la journée de départ ont leur fiche dans le fichier clients. */
+  function sdGuestsSync(){
+    if (!app.guests) return;
+    var n = 0;
+    app.reservations.forEach(function(r){
+      if (r.origin !== "seed" || findGuestByName(r.client.prenom, r.client.nom)) return;
+      n++;
+      app.guests.push({id:"CL-S" + String(n).padStart(3, "0"), civ:r.client.civ, prenom:r.client.prenom, nom:r.client.nom, seg:r.client.seg, email:r.client.email || "", mobile:r.client.mobile || "",
+        adresse:r.client.adresse || "", cp:"", ville:r.client.ville || "", pays:r.client.indic && r.client.indic !== "+33" ? "Étranger" : "France", langue:r.client.langue || "Français",
+        societe:r.client.societe || "", fidelite:"Aucun", vip:false, canal:r.canal || "Téléphone", rgpd:lgHash(r.id) % 5 !== 0, depuis:String((CONFIG.dateObjs[0] || new Date()).getFullYear()),
+        prefs:[], allergies:"", notes:"", history:[]});
+    });
+  }
   function buildGuests(){ return GUEST_SEED.map(function(g){ var c = {}; for (var k in g) c[k] = (g[k] instanceof Array) ? g[k].slice() : g[k]; return c; }); }
 
   function guestKey(prenom, nom){ return normalizeSearch((prenom||"")+"|"+(nom||"")); }
@@ -8809,8 +9147,16 @@
   function findGuestById(id){ return app.guests.filter(function(g){ return g.id===id; })[0] || null; }
 
   /* Séjours de la simulation en cours rattachés à une fiche client (hors annulations et no-shows). */
+  var GST_IDX = null;
   function guestCurrentStays(g){
-    return app.reservations.filter(function(r){
+    var R = app.reservations;
+    if (!GST_IDX || GST_IDX.arr !== R || GST_IDX.len !== R.length){
+      var by = {};
+      R.forEach(function(r){ var k = guestKey(r.client.prenom, r.client.nom); (by[k] = by[k] || []).push(r); });
+      if (!GST_IDX) Promise.resolve().then(function(){ GST_IDX = null; });
+      GST_IDX = {arr:R, len:R.length, by:by};
+    }
+    return (GST_IDX.by[guestKey(g.prenom, g.nom)] || []).filter(function(r){
       return guestKey(r.client.prenom, r.client.nom) === guestKey(g.prenom, g.nom) && r.status!=="annulee" && r.status!=="noshow";
     });
   }
@@ -10168,6 +10514,13 @@
   /* Les parties synchronisées. Un document par partie : on ne réécrit que celle qui a changé,
      ce qui évite d'écraser le travail d'un collègue sur une autre partie. */
   var SYNC_PARTS = [
+    {k:"mode",         get:function(){ return {m:app.mode || "normal"}; },
+                       set:function(v){ var m = (v && v.m) || "normal"; if (m === (app.mode || "normal")) return;
+                         /* changement de journée (formation / examen) : le carnet de commandes généré dépend de la journée */
+                         app.mode = m; var recus = app._recusIds || {}, frais = buildAllReservations();
+                         app.reservations = frais.filter(function(r){ return r.origin === "horizon" && !recus[r.id]; })
+                           .concat(app.reservations.filter(function(r){ return r.origin !== "horizon" || recus[r.id]; }));
+                         modeAppliquer(); }},
     {k:"reservations",
      get:function(){
        // Dossiers de la séance + dossiers du carnet 6 mois réellement modifiés : le volume reste raisonnable.
@@ -10179,10 +10532,13 @@
      set:function(v){
        var recus = {};
        v.forEach(function(r){ recus[r.id] = true; });
+       app._recusIds = recus;
        var intacts = app.reservations.filter(function(r){ return r.origin==="horizon" && !recus[r.id]; });
        app.reservations = intacts.concat(v);
      }},
-    {k:"guests",       get:function(){ return app.guests; },                 set:function(v){ app.guests = v; }},
+    {k:"guests",       get:function(){ /* l'historique d'archives se recalcule sur chaque poste : on ne le partage pas */
+                         return app.guests.filter(function(g){ return !g.archOnly; }).map(function(g){ var c = {}; for (var k in g) c[k] = g[k]; c.history = (g.history || []).filter(function(h){ return !h.arch; }); return c; }); },
+                       set:function(v){ app.guests = v; try { archGuestsSync(); } catch(e){} }},
     {k:"groupes",      get:function(){ return app.groupes; },                set:function(v){ app.groupes = v; }},
     {k:"rateGrid",     get:function(){ return app.rateGrid; },               set:function(v){ app.rateGrid = v; }},
     {k:"journal",      get:function(){ return app.journal; },                set:function(v){ app.journal = v; }},
@@ -10912,16 +11268,28 @@
     $("newBack").addEventListener("click", function(){ showMainTab(app.lastTab||"planning"); });
     $("resetAllBtn").addEventListener("click", function(){
       if (!confirm2("Réinitialiser effacera les réservations, la caisse et les devis créés pendant la séance, et restaurera les dossiers de démonstration. Continuer ?")) return;
+      resetSimulation(app.mode || "normal");
+    });
+    $("examBtn").addEventListener("click", function(){
+      if (!estFormatrice()) return;
+      var vers = app.mode === "examen" ? "normal" : "examen";
+      resetSimulation(vers);
+      toast(vers === "examen" ? "Jour d'examen chargé : 16 arrivées, 16 départs. Les corrigés et les exercices sont masqués pour les candidates." : "Retour à la journée de formation : 35 arrivées, 46 départs, 14 recouches.");
+    });
+    function resetSimulation(mode){
+      app.mode = mode || "normal";
+      CONFIG.today = 2; refreshDateWindow();
       app.reservations = buildAllReservations(); app.nextInvoiceSeq = 1; app.nextDevisSeq = 1; app.activeResId = null;
       clearPlSel(); app.journal = []; app.devisList = []; app.dayPickerOpen = {}; app.hk = buildHkState();
       app.guests = buildGuests(); app.activeGuestId = null; app.pendingGuestId = null; renderKnownBox(null);
       app.groupes = buildSeedGroups(); app.activeGroupId = null; app.mailsTraites = []; app.demMiss = null; app.exoDem = null; app.exoDemShown = null; app._actSilent = true; try { actPush([{a:"🔄 Réinitialisation de la simulation"}]); } catch(e){} app.rateGrid = buildRateGrid();
       app.clotures = []; app.clotureFond = 150; app.clOpen = null; clViderSaisie(); app.salleResas = null; app.salleSeq = 1; app.deb = null; app.cperm = null; app.hs = {}; app.mm = {}; app.plTool = null; app.chan = null;
-      CONFIG.today = 2; refreshDateWindow();
       app.plStart = Math.max(0, CONFIG.today - 1); app.rtStart = Math.max(0, CONFIG.today - 1);
+      try { sdGuestsSync(); } catch(e){ console.error(e); }
+      modeAppliquer();
       syncResetPartage();
       showMainTab("planning");
-    });
+    }
     function confirm2(msg){ return true; } // confirm() is inert in this viewer; proceed directly
 
     // Ferme la modale de visualisation de facture au clic sur le fond (en dehors du document lui-même).
@@ -10998,7 +11366,7 @@
       // La facture définitive (numérotée) n'est émise que si toutes les conditions sont réunies : solde à 0 €
       // ET client arrivé (jour d'arrivée atteint ou déjà en séjour). Sinon la facture reste en pro forma.
       if (b.due <= 0.001 && !r.facture.numero && canInvoice(r)){
-        r.facture.numero = "FA-2026-"+String(app.nextInvoiceSeq).padStart(4,"0"); r.facture.jour = CONFIG.today;
+        r.facture.numero = faNumero(app.nextInvoiceSeq); r.facture.jour = CONFIG.today;
         app.nextInvoiceSeq++;
       }
       refreshAll();
@@ -11154,9 +11522,12 @@
 
     initWizardDom();
     initDevisDom();
+    app.mode = app.mode || "normal";
     app.reservations = buildAllReservations();
     app.guests = buildGuests();
+    try { sdGuestsSync(); } catch(e){ console.error(e); }
     app.groupes = buildSeedGroups();
+    setTimeout(function(){ try { modeAppliquer(); } catch(e){} }, 0);
     app.rateGrid = buildRateGrid();
     app.hk = buildHkState();
     ["cli-q","cli-seg","cli-tri"].forEach(function(id){ var e=$(id); if(e) e.addEventListener("input", renderGuests); });
