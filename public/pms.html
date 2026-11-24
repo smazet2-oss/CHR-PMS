@@ -1,4 +1,56 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}/* ---- Bar & boutique ---- */
+.bar-layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;align-items:start}
+@media (max-width:980px){.bar-layout{grid-template-columns:1fr}}
+.bar-fam h3{font-size:14px;margin:10px 0 6px}
+.bar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.bar-prod{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;font:inherit;font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel,#fff);cursor:pointer;color:inherit}
+.bar-prod:hover{border-color:var(--accent)}
+.bar-prod b{font-size:12px}
+.bar-bar10{border-left:4px solid #2e86c1}.bar-bar20{border-left:4px solid #8e44ad}.bar-snack{border-left:4px solid #d68910}.bar-boutique{border-left:4px solid #17a589}
+.bar-ticket{position:sticky;top:8px;margin:0}
+.bar-ticket h3{margin:0 0 8px}
+/* ---- Plan de secours ---- */
+.sc-head{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:10px}
+.sc-timer{font-size:22px;font-weight:700;color:var(--bad);padding:0 8px}
+.sc-kpis{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px}
+.sc-kpis span{border:1px solid var(--line);border-radius:6px;padding:4px 10px;font-size:13px}
+.sc-scen{border-left:4px solid var(--bad);background:rgba(192,57,43,.06);padding:8px 12px;border-radius:4px;margin-bottom:10px}
+.sc-scen p{margin:4px 0}
+.sc-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:900px){.sc-cols{grid-template-columns:1fr}}
+.sc-steps{margin:0 0 10px 18px;padding:0}
+.sc-steps li{margin:4px 0;display:flex;gap:8px;align-items:center}
+.sc-step{font:inherit;font-size:13px;text-align:left;background:none;border:1px solid var(--line);border-radius:6px;padding:5px 8px;cursor:pointer;color:inherit;flex:1}
+.sc-steps li.done .sc-step{border-color:#1e8449;background:rgba(30,132,73,.08)}
+.sc-step:disabled{cursor:default;opacity:.8}
+.sc-at{font-size:12px;color:var(--ink-soft)}
+.sc-msg{border:1px dashed var(--line);border-radius:6px;padding:8px 10px;font-size:13px}
+.sc-cons{font-size:13px;margin:0 0 0 18px;padding:0}
+.sc-cons li{margin:3px 0}
+.sc-tabs{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:14px 0 6px}
+.sc-plan{border:1px solid var(--line);border-radius:8px;overflow-x:auto;background:#fff}
+.sc-svg{display:block;width:100%;min-width:760px;height:auto;font-family:inherit}
+.sc-t{font-size:16px;font-weight:700;fill:#1b2b30}
+.sc-lbl{font-size:12px;fill:#1b2b30}
+.sc-small{font-size:10.5px;fill:#34495e}
+.sc-num{font-size:12px;font-weight:700;fill:#1b2b30}
+.sc-pers{font-size:11px;fill:#1b4f72;font-weight:600}
+.sc-ico{font-size:13px}
+.sc-eq{font-size:9px;fill:#fff;font-weight:700}
+.sc-wall{fill:#fbfcfc;stroke:#566573;stroke-width:2}
+.sc-corr{fill:#eef2f3;stroke:none}
+.sc-esc{fill:#d6eaf8;stroke:#566573}
+.sc-loc{fill:#f2f3f4;stroke:#566573}
+.sc-asc{fill:#e5e8e8;stroke:#566573}
+.sc-pav{fill:#fef9e7;stroke:#566573;stroke-width:1.5}
+.sc-room{fill:#fff;stroke:#7f8c8d;cursor:pointer}
+.sc-room.occ{fill:#d6eaf8}
+.sc-room.ok{fill:#d5f5e3}
+.sc-room.ko{fill:#f5b7b1}
+.sc-rg:hover .sc-room{stroke:#1b2b30;stroke-width:2}
+.sc-bilan{border:1px solid #1e8449;border-radius:8px;padding:10px 14px;margin-top:12px;background:rgba(30,132,73,.05)}
+.sc-bilan h3{margin:0 0 6px}
+</style></head><body>
 <title>CHR PMS — Les Trois Sources</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&family=IBM+Plex+Mono:wght@500;600&display=swap">
@@ -1278,6 +1330,7 @@
     <li class="tab-sub" aria-hidden="true">Accueil</li>
     <li class="tab" data-tab="list" data-also="inhouse checkout" type="button">🛎️ Arrivées &amp; départs <span class="count num" id="resCount">(0)</span><span id="coCount" hidden></span><span id="ihCount" hidden></span></li>
     <li class="tab" data-tab="caisse" type="button">💶 Caisse <span class="count num" id="caisseCount">(0)</span></li>
+    <li class="tab" data-tab="bar" type="button">🍸 Bar &amp; boutique</li>
     <li class="tab" data-tab="recherche" type="button">🔎 Recherche</li>
     <li class="tab-sub" aria-hidden="true">Réservations</li>
     <li class="tab" data-tab="planning" type="button">🗓️ Planning des chambres</li>
@@ -1296,16 +1349,37 @@
     <li class="tab-sub" aria-hidden="true">Fin de journée</li>
     <li class="tab" data-tab="cloture" type="button">🌙 Clôture du jour <span class="count num" id="clCount">(0)</span></li>
     <li class="tab" data-tab="editions" type="button">📑 Éditions</li>
+    <li class="tab-cat" aria-hidden="true">Sécurité</li>
+    <li class="tab-sub" aria-hidden="true">Incendie et évacuation</li>
+    <li class="tab" data-tab="secu" type="button">🚨 Plan de secours</li>
     <li class="tab-cat" aria-hidden="true">Formation</li>
     <li class="tab" data-tab="exercices" type="button">🎯 Exercices <span class="count num" id="exoCount">(4)</span></li>
     <li class="tab" data-tab="journal" type="button" id="journalTab" hidden>📋 Journal des manipulations</li>
   </ul>
 
+  <!-- ============ BAR & BOUTIQUE ============ -->
+  <div id="view-bar" hidden>
+    <section class="panel panel-accent">
+      <h2>Bar, snacking et produits d'accueil</h2>
+      <p class="hint" style="max-width:860px;">Le point de vente du comptoir. Deux ventilations pour le bar : les boissons sans alcool (TVA 10 %) et les boissons alcoolisées (TVA 20 %). Le snacking est à 10 %, les produits d'accueil (brosse à dents, rasoir…) à 20 %. Bar ouvert de 11 h à 23 h, snacking de 12 h à 22 h ; après 23 h, la réception vend les boissons sans alcool et les produits d'accueil. Pas d'alcool aux mineurs.</p>
+      <div id="barBox"></div>
+    </section>
+  </div>
+
+  <!-- ============ PLAN DE SECOURS ============ -->
+  <div id="view-secu" hidden>
+    <section class="panel panel-accent">
+      <h2>Plan de secours · incendie et évacuation</h2>
+      <p class="hint" style="max-width:860px;">Le plan de masse et les plans des trois niveaux, avec les clients réellement présents dans le PMS. Lancez un scénario : le chronomètre démarre, cochez les étapes de la procédure générale dans l'ordre, puis contrôlez les chambres étage par étage. Le bilan dit ce qui a été oublié.</p>
+      <div id="secuBox"></div>
+    </section>
+  </div>
+
   <!-- ============ MAIN COURANTE ============ -->
   <div id="view-mc" hidden>
     <section class="panel panel-accent">
       <h2>Main courante · <span id="mcDate"></span></h2>
-      <p class="hint" style="max-width:820px;">Le journal de la journée, client par client. Au <b>débit</b>, ce que le client consomme cette nuit : hébergement, petit-déjeuner, parking, taxe de séjour. Au <b>crédit</b>, ce qu’il règle : espèces, carte, virement, ou transfert sur un compte débiteur. Solde à reporter = report de la veille + débit − crédit. Les encaissements de clients déjà partis (débiteurs) se suivent dans l’onglet Débiteurs.</p>
+      <p class="hint" style="max-width:820px;">Le journal de la journée, client par client. Au <b>débit</b>, ce que le client consomme : hébergement, petit-déjeuner, parking, taxe de séjour, bar, snacking et produits d’accueil. Au <b>crédit</b>, ce qu’il règle : espèces, carte, virement, ou transfert sur un compte débiteur. Solde à reporter = report de la veille + débit − crédit. Les encaissements de clients déjà partis (débiteurs) se suivent dans l’onglet Débiteurs.</p>
       <div class="actions" style="margin:0 0 14px;">
         <button type="button" class="btn btn-primary btn-sm" id="mcDlListe">⬇️ Mouvements à classer (CSV)</button>
         <button type="button" class="btn btn-ghost btn-sm" id="mcDlFull">⬇️ Main courante complète (CSV)</button>
@@ -2118,6 +2192,7 @@
           <div class="actions" style="margin-top:10px;">
             <button class="btn btn-ghost btn-sm" id="d-optEditBtn" type="button">🥐🚗 Modifier les options (petit déjeuner / parking)</button>
           </div>
+          <div id="d-extras"></div>
           <p class="hint" id="d-optLockHint" hidden style="margin:6px 0 0; color:var(--bad);"></p>
           <div class="extras-box" id="d-optPanel" hidden>
             <div class="extras-title">Modifier les options par jour <span class="opt-note">— cochez / décochez chaque jour et ajustez la quantité</span></div>
@@ -2442,6 +2517,7 @@
     currentDevis: null,          // pro-forma calculée mais pas encore enregistrée
     activeResId: null,
     plSel: {room:null, cat:null, type:null, arr:null, dep:null}, // sélection par cases à cocher sur le planning (chambre + nuits)
+    ventes: [],                  // ventes au comptoir (bar, snacking, boutique) des clients de passage
     journal: [],                 // mouvements de caisse du jour hôtelier en cours (encaissements + recouvrements), remis à zéro à la réinitialisation
     devisList: [],                // devis de groupe créés pendant la séance
     pristine: {},               // empreinte des dossiers générés sur 6 mois (non synchronisés tant qu'intacts)
@@ -2489,6 +2565,7 @@
     if (nP>0) lines.push({label:"Petit déjeuner", qty:pl(nP,"petit déjeuner","petits déjeuners"), pu:CONFIG.petitDej, puLabel:"/ unité", total:t.pdjTotal, tva:CONFIG.tva.pdj, detail:"Matins : "+dayDetail(r, r.pdjDays, true)});
     if (nK>0) lines.push({label:"Parking", qty:pl(nK,"place-nuit","places-nuits"), pu:CONFIG.parking, puLabel:"/ place / nuit", total:t.parkTotal, tva:CONFIG.tva.parking, detail:"Nuits : "+dayDetail(r, r.parkDays, false)});
     lines.push({label:"Taxe de séjour", qty:pl(adults,"adulte")+" × "+pl(n,"nuit"), pu:CONFIG.taxeSejour, puLabel:"/ adulte / nuit", total:t.taxe, tva:null});
+    if (r.extras && r.extras.length) lines = lines.concat(extrasLines(r));
     return lines;
   }
   function tarifLabelHtml(l){ return l.label + (l.detail ? "<span class='tl-detail'>"+l.detail+"</span>" : ""); }
@@ -2650,7 +2727,7 @@
     setCase(A[ai++], {cas:"tardive", note:"Arrivée prévue vers 23 h 30 : chambre garantie, clé à préparer pour le veilleur."});
     /* la chambre PMR doit être au rez-de-chaussée : on prend la prochaine arrivée en 0xx */
     (function(){ for (var z = ai; z < A.length; z++){ var rz = String(A[z].room || A[z].roomHint || ""); if (rz.charAt(0) === "0"){ var tmp = A[ai]; A[ai] = A[z]; A[z] = tmp; return; } } })();
-    setCase(A[ai++], {cas:"pmr", note:"Personne à mobilité réduite : chambre au rez-de-chaussée, proche de l'ascenseur."});
+    setCase(A[ai++], {cas:"pmr", note:"Personne à mobilité réduite : chambre adaptée au rez-de-chaussée, proche d'une sortie de plain-pied."});
     setCase(A[ai++], {cas:"debiteur", seg:"Affaires individuel", adults:1, kids:0, compte:"D0005", societe:"Cabinet Durand Conseil"});
     var et = A[ai++], E = SD_ETRANGERS.filter(function(x){ return !usedNames[x.nom]; })[0] || SD_ETRANGERS[0]; usedNames[E.nom] = 1;
     if (et){ et.cas = "etranger"; et.civ = sdCivFr(E.civ); et.prenom = E.prenom; et.nom = E.nom; et.ville = E.ville; et.indic = E.indic; et.email = E.email; et.langue = E.langue; et.mobile = "79 11 46 20 83"; et.seg = "Loisirs individuel";
@@ -2822,6 +2899,7 @@
     spOtaDebits(base.concat(longs));
     // Empreinte des dossiers générés : identiques chez tout le monde, ils ne transitent pas par la
     // session partagée tant que personne n'y touche — seuls les dossiers modifiés sont publiés.
+    try { exSeed(base.concat(longs)); } catch(e){ console.error(e); }
     app.pristine = {};
     longs.forEach(function(r){ app.pristine[r.id] = JSON.stringify(r); });
     return base.concat(longs);
@@ -3115,7 +3193,7 @@
   function showView(name){
     app.view = name;
     try { renderCrumb(name); } catch(e){}
-    ["planning","list","checkout","debiteurs","caisse","devis","clients","inhouse","groupes","tarifs","exercices","journal","cloture","mc","recherche","editions","new","detail"].forEach(function(v){ $("view-"+v).hidden = (v!==name); });
+    ["planning","list","checkout","debiteurs","caisse","devis","clients","inhouse","groupes","tarifs","exercices","journal","cloture","mc","recherche","editions","new","detail","bar","secu"].forEach(function(v){ $("view-"+v).hidden = (v!==name); });
     Array.prototype.forEach.call($("mainTabs").children, function(li){
       if (!li.dataset.tab) return;
       var on = li.dataset.tab===name || (li.dataset.also || "").split(" ").indexOf(name) >= 0;
@@ -3144,6 +3222,8 @@
     else if (name==="editions") renderEditions();
     else if (name==="caisse"){ renderCaisse(); if (app.caissePane === "perm") renderPerm(); if (app.caissePane === "debits") renderDebits(); }
     else if (name==="mc") renderMainCourante();
+    else if (name==="bar") renderBar();
+    else if (name==="secu") renderSecu();
     else if (name==="journal") renderJournal();
     else if (name==="devis"){ renderDevis(); renderDvRooms(); }
     else if (name==="clients"){ renderGuests(); renderGuestSheet(); }
@@ -3467,6 +3547,7 @@
     o.revpar = total ? o.ca/total : 0;
     o.if_ = o.vendues ? o.pers/o.vendues : 0;
     o.caPdj = o.pdj * CONFIG.petitDej; o.caPark = o.park * CONFIG.parking;
+    var vx = exVentilation(exLignesDuJour(t)); o.caBar = clR(vx.bar10.ttc + vx.bar20.ttc); o.caSnack = vx.snack.ttc; o.caBoutique = vx.boutique.ttc;
     return o;
   }
   /* Mêmes règles que le bandeau « Indicateurs du jour » : chambres in house seulement. */
@@ -3715,6 +3796,7 @@
         "<tr><td>Arrivées tardives gardées</td><td>"+names(rec.retards)+"</td></tr>"+
         "<tr><td>Petits-déjeuners du lendemain</td><td class='num'>"+i.pdj+" · "+eur(i.caPdj)+"</td></tr>"+
         "<tr><td>Parking · taxe de séjour</td><td class='num'>"+i.park+" places · "+eur(i.caPark)+" · taxe "+eur(i.taxe)+"</td></tr>"+
+        "<tr><td>Bar · snacking · produits d'accueil</td><td class='num'>"+eur(i.caBar || 0)+" · "+eur(i.caSnack || 0)+" · "+eur(i.caBoutique || 0)+"</td></tr>"+
         "<tr><td>Espèces</td><td class='num'>fond "+eur(c.fond)+" + encaissé "+eur(c.by["Espèces"])+" − dépôt "+eur(c.depot)+" = "+eur(c.theo)+" · compté "+eur(c.compte)+"</td></tr>"+
         "<tr><td>Carte bancaire</td><td class='num'>PMS "+eur(c.by["Carte bancaire"])+" · ticket Z "+eur(c.z)+" · écart "+(c.ecartCB>0?"+":"")+eur(c.ecartCB)+"</td></tr>"+
         "<tr><td>Virements · transferts débiteur</td><td class='num'>"+eur(c.by["Virement"])+" · "+eur(c.transf)+"</td></tr>"+
@@ -3900,17 +3982,29 @@
       if (!occupe && !parti && !departPrevu && !p.length) return;
       var avant = 0, last = Math.min(t, r.dep);
       for (var n = r.arr; n < last; n++){ var c = mcNight(r, n); avant += c.heb + c.pdj + c.park + c.taxe; }
+      avant += extrasAvant(r, t);
       var payTot = (r.paiements || []).reduce(function(s, x){ return s + (x.montant || 0); }, 0);
       var payToday = p.reduce(function(s, x){ return s + x.montant; }, 0);
       var deb = occupe ? mcNight(r, t) : {heb:0, pdj:0, park:0, taxe:0};
+      var xd = extrasDay(r, t); deb.bar = xd.bar; deb.snack = xd.snack; deb.boutique = xd.boutique;
       var cr = {}; MC_CREDITS.forEach(function(k){ cr[k] = 0; });
       p.forEach(function(m){ var k = MC_CREDITS.indexOf(m.moyen) >= 0 ? m.moyen : "Carte bancaire"; cr[k] += m.montant; });
-      var totDeb = deb.heb + deb.pdj + deb.park + deb.taxe;
+      var totDeb = deb.heb + deb.pdj + deb.park + deb.taxe + deb.bar + deb.snack + deb.boutique;
       var totCr = MC_CREDITS.reduce(function(s, k){ return s + cr[k]; }, 0);
       var report = mcR(avant - (payTot - payToday));
       rows.push({r:r, report:report, deb:deb, cr:cr, totDeb:mcR(totDeb), totCr:mcR(totCr), solde:mcR(report + totDeb - totCr), occupe:occupe, parti:parti});
     });
     rows.sort(function(a, b){ return String(a.r.room).localeCompare(String(b.r.room)); });
+    /* ventes au comptoir (clients de passage) : débit et crédit le même jour, solde nul */
+    var vp = pay["PASSAGE"] || [];
+    if (vp.length){
+      var dP = {heb:0, pdj:0, park:0, taxe:0, bar:0, snack:0, boutique:0}, cP = {}; MC_CREDITS.forEach(function(k){ cP[k] = 0; });
+      ventesDuJour(t).forEach(function(v){ v.lignes.forEach(function(l){ dP[EX_FAM[l.fam].col] += l.qte * l.pu; }); });
+      vp.forEach(function(m){ var k = MC_CREDITS.indexOf(m.moyen) >= 0 ? m.moyen : "Carte bancaire"; cP[k] += m.montant; });
+      dP.bar = mcR(dP.bar); dP.snack = mcR(dP.snack); dP.boutique = mcR(dP.boutique);
+      var tdP = mcR(dP.bar + dP.snack + dP.boutique), tcP = mcR(MC_CREDITS.reduce(function(x, k){ return x + cP[k]; }, 0));
+      rows.push({r:{room:"Bar", client:{civ:"Ventes", nom:"au comptoir (passage)"}, status:"terminee", dep:-999}, report:0, deb:dP, cr:cP, totDeb:tdP, totCr:tcP, solde:mcR(tdP - tcP), occupe:true, parti:false});
+    }
     return rows;
   }
   /* Main courante d'une journée passée, reconstituée à partir de l'historique (séjours archivés) et des dossiers
@@ -3926,7 +4020,7 @@
       var parNuit = {heb:a.heb / nuits, pdj:a.pdjT / nuits, park:a.parkT / nuits, taxe:a.taxe / nuits};
       var avant = diffDaysISO(a.arr, D < fin ? D : fin); avant = Math.max(0, Math.min(nuits, avant));
       var report = mcR((parNuit.heb + parNuit.pdj + parNuit.park + parNuit.taxe) * avant);
-      var deb = occupe ? {heb:mcR(parNuit.heb), pdj:mcR(parNuit.pdj), park:mcR(parNuit.park), taxe:mcR(parNuit.taxe)} : {heb:0, pdj:0, park:0, taxe:0};
+      var deb = occupe ? {heb:mcR(parNuit.heb), pdj:mcR(parNuit.pdj), park:mcR(parNuit.park), taxe:mcR(parNuit.taxe), bar:0, snack:0, boutique:0} : {heb:0, pdj:0, park:0, taxe:0, bar:0, snack:0, boutique:0};
       var cr = {}; MC_CREDITS.forEach(function(k){ cr[k] = 0; });
       if (payeLe === D && a.moyen !== "—") cr[mode(a.moyen)] = a.montant;
       var totDeb = deb.heb + deb.pdj + deb.park + deb.taxe, totCr = MC_CREDITS.reduce(function(x, k){ return x + cr[k]; }, 0);
@@ -3940,20 +4034,23 @@
     app.reservations.forEach(function(r){
       if (r.status === "annulee" || r.origin !== "seed" || !(r.arr <= nD && nD < r.dep)) return;
       var avant = 0; for (var n = r.arr; n < nD; n++){ var c = mcNight(r, n); avant += c.heb + c.pdj + c.park + c.taxe; }
+      avant += extrasAvant(r, nD);
       var payAvant = (r.paiements || []).filter(function(x){ return x.date && x.date < D; }).reduce(function(t, x){ return t + x.montant; }, 0);
       var cr = {}; MC_CREDITS.forEach(function(k){ cr[k] = 0; });
       (r.paiements || []).filter(function(x){ return x.date === D; }).forEach(function(x){ cr[mode(x.moyen)] += x.montant; });
-      var deb = mcNight(r, nD), totDeb = deb.heb + deb.pdj + deb.park + deb.taxe, totCr = MC_CREDITS.reduce(function(t, k){ return t + cr[k]; }, 0), report = mcR(avant - payAvant);
+      var deb = mcNight(r, nD), xp = extrasDay(r, nD); deb.bar = xp.bar; deb.snack = xp.snack; deb.boutique = xp.boutique;
+      var totDeb = deb.heb + deb.pdj + deb.park + deb.taxe + deb.bar + deb.snack + deb.boutique, totCr = MC_CREDITS.reduce(function(t, k){ return t + cr[k]; }, 0), report = mcR(avant - payAvant);
       rows.push({r:r, report:report, deb:deb, cr:cr, totDeb:mcR(totDeb), totCr:mcR(totCr), solde:mcR(report + totDeb - totCr), occupe:true, parti:false});
     });
     rows.sort(function(a, b){ return String(a.r.room).localeCompare(String(b.r.room)); });
     return rows;
   }
   function mcTotals(rows){
-    var T = {report:0, heb:0, pdj:0, park:0, taxe:0, totDeb:0, totCr:0, solde:0, cr:{}};
+    var T = {report:0, heb:0, pdj:0, park:0, taxe:0, bar:0, snack:0, boutique:0, totDeb:0, totCr:0, solde:0, cr:{}};
     MC_CREDITS.forEach(function(k){ T.cr[k] = 0; });
     rows.forEach(function(x){
       T.report += x.report; T.heb += x.deb.heb; T.pdj += x.deb.pdj; T.park += x.deb.park; T.taxe += x.deb.taxe;
+      T.bar += x.deb.bar || 0; T.snack += x.deb.snack || 0; T.boutique += x.deb.boutique || 0;
       T.totDeb += x.totDeb; T.totCr += x.totCr; T.solde += x.solde;
       MC_CREDITS.forEach(function(k){ T.cr[k] += x.cr[k]; });
     });
@@ -3970,12 +4067,12 @@
       var st = x.occupe ? "" : (x.parti ? " <span class='chip chip-muted'>parti</span>" : (x.r.status === "encours" && x.r.dep === CONFIG.today ? " <span class='chip chip-warn'>départ du jour</span>" : ""));
       return "<tr><td class='num'>"+clEsc(x.r.room)+"</td><td>"+clEsc(x.r.client.civ+" "+x.r.client.nom)+st+"</td>"+
         "<td class='num mc-rep'>"+m(x.report)+"</td>"+
-        "<td class='num mc-d'>"+m(x.deb.heb)+"</td><td class='num mc-d'>"+m(x.deb.pdj)+"</td><td class='num mc-d'>"+m(x.deb.park)+"</td><td class='num mc-d'>"+m(x.deb.taxe)+"</td><td class='num mc-dt'>"+m(x.totDeb)+"</td>"+
+        "<td class='num mc-d'>"+m(x.deb.heb)+"</td><td class='num mc-d'>"+m(x.deb.pdj)+"</td><td class='num mc-d'>"+m(x.deb.park)+"</td><td class='num mc-d'>"+m(x.deb.taxe)+"</td><td class='num mc-d'>"+m(x.deb.bar || 0)+"</td><td class='num mc-d'>"+m(x.deb.snack || 0)+"</td><td class='num mc-d'>"+m(x.deb.boutique || 0)+"</td><td class='num mc-dt'>"+m(x.totDeb)+"</td>"+
         MC_CREDITS.map(function(k){ return "<td class='num mc-c'>"+m(x.cr[k])+"</td>"; }).join("")+
         "<td class='num mc-ct'>"+m(x.totCr)+"</td><td class='num mc-s'>"+m(x.solde)+"</td></tr>";
-    }).join("") || "<tr><td colspan='15' class='empty-state'>Aucun client en séjour ni mouvement aujourd’hui.</td></tr>";
+    }).join("") || "<tr><td colspan='18' class='empty-state'>Aucun client en séjour ni mouvement aujourd’hui.</td></tr>";
     var foot = "<tr class='mc-tot'><td colspan='2'><b>Totaux</b></td><td class='num'>"+eur(T.report)+"</td>"+
-      "<td class='num'>"+eur(T.heb)+"</td><td class='num'>"+eur(T.pdj)+"</td><td class='num'>"+eur(T.park)+"</td><td class='num'>"+eur(T.taxe)+"</td><td class='num'><b>"+eur(T.totDeb)+"</b></td>"+
+      "<td class='num'>"+eur(T.heb)+"</td><td class='num'>"+eur(T.pdj)+"</td><td class='num'>"+eur(T.park)+"</td><td class='num'>"+eur(T.taxe)+"</td><td class='num'>"+eur(T.bar)+"</td><td class='num'>"+eur(T.snack)+"</td><td class='num'>"+eur(T.boutique)+"</td><td class='num'><b>"+eur(T.totDeb)+"</b></td>"+
       MC_CREDITS.map(function(k){ return "<td class='num'>"+eur(T.cr[k])+"</td>"; }).join("")+
       "<td class='num'><b>"+eur(T.totCr)+"</b></td><td class='num'><b>"+eur(T.solde)+"</b></td></tr>";
     var caisse = passe ? edMouvements(D).filter(function(m){ return m.room !== "DD" && m.mode !== "Débiteur"; }).reduce(function(s, x){ return s + x.montant; }, 0) + T.cr["Débiteur"]
@@ -3985,8 +4082,8 @@
     box.innerHTML =
       "<div class='twrap'><table class='mc-table'><thead>"+
         "<tr><th rowspan='2' class='num'>Ch.</th><th rowspan='2'>Client</th><th rowspan='2' class='num'>Report<br>de la veille</th>"+
-        "<th colspan='5' class='mc-hd'>DÉBIT · ce que le client consomme</th><th colspan='5' class='mc-hc'>CRÉDIT · ce que le client règle</th><th rowspan='2' class='num'>Solde<br>à reporter</th></tr>"+
-        "<tr><th class='num mc-hd2'>Héberg.</th><th class='num mc-hd2'>Petit-déj.</th><th class='num mc-hd2'>Parking</th><th class='num mc-hd2'>Taxe séjour</th><th class='num mc-hd2'>Total débit</th>"+
+        "<th colspan='8' class='mc-hd'>DÉBIT · ce que le client consomme</th><th colspan='5' class='mc-hc'>CRÉDIT · ce que le client règle</th><th rowspan='2' class='num'>Solde<br>à reporter</th></tr>"+
+        "<tr><th class='num mc-hd2'>Héberg.</th><th class='num mc-hd2'>Petit-déj.</th><th class='num mc-hd2'>Parking</th><th class='num mc-hd2'>Taxe séjour</th><th class='num mc-hd2'>Bar</th><th class='num mc-hd2'>Snacking</th><th class='num mc-hd2'>Boutique</th><th class='num mc-hd2'>Total débit</th>"+
         "<th class='num mc-hc2'>Espèces</th><th class='num mc-hc2'>Carte</th><th class='num mc-hc2'>Virement</th><th class='num mc-hc2'>Débiteur</th><th class='num mc-hc2'>Total crédit</th></tr>"+
       "</thead><tbody>"+body+"</tbody><tfoot>"+foot+"</tfoot></table></div>"+
       "<div class='mc-checks'>"+
@@ -4012,6 +4109,9 @@
         if (x.deb.pdj) L.push([x.r.room, cli, "Petits-déjeuners", mcCsvNum(x.deb.pdj)]);
         if (x.deb.park) L.push([x.r.room, cli, "Parking", mcCsvNum(x.deb.park)]);
         if (x.deb.taxe) L.push([x.r.room, cli, "Taxe de séjour", mcCsvNum(x.deb.taxe)]);
+        if (x.deb.bar) L.push([x.r.room, cli, "Bar", mcCsvNum(x.deb.bar)]);
+        if (x.deb.snack) L.push([x.r.room, cli, "Snacking", mcCsvNum(x.deb.snack)]);
+        if (x.deb.boutique) L.push([x.r.room, cli, "Produits d'accueil", mcCsvNum(x.deb.boutique)]);
         if (x.cr["Espèces"]) L.push([x.r.room, cli, "Règlement en espèces", mcCsvNum(x.cr["Espèces"])]);
         if (x.cr["Carte bancaire"]) L.push([x.r.room, cli, "Règlement par carte bancaire", mcCsvNum(x.cr["Carte bancaire"])]);
         if (x.cr["Virement"]) L.push([x.r.room, cli, "Virement reçu", mcCsvNum(x.cr["Virement"])]);
@@ -4021,12 +4121,12 @@
       var T = mcTotals(rows);
       L.push(["Main courante du " + date + " — " + CONFIG.hotel]);
       L.push([]);
-      L.push(["Chambre", "Client", "Report", "Hébergement", "Petit-déjeuner", "Parking", "Taxe de séjour", "Total débit", "Espèces", "Carte bancaire", "Virement", "Débiteur", "Total crédit", "Solde à reporter"]);
+      L.push(["Chambre", "Client", "Report", "Hébergement", "Petit-déjeuner", "Parking", "Taxe de séjour", "Bar", "Snacking", "Boutique", "Total débit", "Espèces", "Carte bancaire", "Virement", "Débiteur", "Total crédit", "Solde à reporter"]);
       rows.forEach(function(x){
-        L.push([x.r.room, x.r.client.civ + " " + x.r.client.nom, mcCsvNum(x.report), mcCsvNum(x.deb.heb), mcCsvNum(x.deb.pdj), mcCsvNum(x.deb.park), mcCsvNum(x.deb.taxe), mcCsvNum(x.totDeb)]
+        L.push([x.r.room, x.r.client.civ + " " + x.r.client.nom, mcCsvNum(x.report), mcCsvNum(x.deb.heb), mcCsvNum(x.deb.pdj), mcCsvNum(x.deb.park), mcCsvNum(x.deb.taxe), mcCsvNum(x.deb.bar || 0), mcCsvNum(x.deb.snack || 0), mcCsvNum(x.deb.boutique || 0), mcCsvNum(x.totDeb)]
           .concat(MC_CREDITS.map(function(k){ return mcCsvNum(x.cr[k]); })).concat([mcCsvNum(x.totCr), mcCsvNum(x.solde)]));
       });
-      L.push(["Totaux", "", mcCsvNum(T.report), mcCsvNum(T.heb), mcCsvNum(T.pdj), mcCsvNum(T.park), mcCsvNum(T.taxe), mcCsvNum(T.totDeb)]
+      L.push(["Totaux", "", mcCsvNum(T.report), mcCsvNum(T.heb), mcCsvNum(T.pdj), mcCsvNum(T.park), mcCsvNum(T.taxe), mcCsvNum(T.bar), mcCsvNum(T.snack), mcCsvNum(T.boutique), mcCsvNum(T.totDeb)]
         .concat(MC_CREDITS.map(function(k){ return mcCsvNum(T.cr[k]); })).concat([mcCsvNum(T.totCr), mcCsvNum(T.solde)]));
     }
     var csv = "﻿" + L.map(function(r){ return r.map(mcCsvCell).join(";"); }).join("\r\n");
@@ -5759,7 +5859,7 @@
   /* ---------- indicateurs d'une journée ---------- */
   function edJour(D, X){
     var o = {construites:CONFIG.rooms.length, hs:0, fact:0, occ:0, occupants:0, enfants:0, caHeb:0, caTheo:0, pdjNuit:0, pdjVeille:0, occVeille:0, park:0, taxe:0, ns:0, nsCA:0,
-             ca:{"Hébergement":0, "Petits-déjeuners":0, "Restaurants et banquets":0, "Bar":0, "Location de salle":0, "Parking":0, "Ventes diverses":0}, enc:{}, transfDD:0};
+             ca:{"Hébergement":0, "Petits-déjeuners":0, "Restaurants et banquets":0, "Bar (TVA 10 %)":0, "Bar (TVA 20 %)":0, "Snacking":0, "Produits d'accueil (boutique)":0, "Location de salle":0, "Parking":0, "Ventes diverses":0}, enc:{}, transfDD:0};
     (X.byNight[D] || []).forEach(function(x){
       var s = x.s, pd = s.pdj(x.i);
       o.fact++; o.occ++; o.occupants += s.adults + s.kids; o.enfants += s.kids; o.caHeb += s.rate; o.caTheo += CONFIG.rates[s.cat] || s.rate;
@@ -5771,11 +5871,14 @@
     (X.nsBy[D] || []).forEach(function(s){ o.ns++; o.nsCA += s.nsCA || 0; });
     o.ca["Hébergement"] = o.caHeb + o.nsCA; o.ca["Petits-déjeuners"] = o.pdjVeille * CONFIG.petitDej; o.ca["Parking"] = o.park * CONFIG.parking;
     /* factures permanentes : prestations datées du jour */
-    var cpCat = function(label){ return /petit-d/i.test(label) ? "Petits-déjeuners" : (/repas|déjeuner|pause/i.test(label) ? "Restaurants et banquets" : (/boisson/i.test(label) ? "Bar" : (/salle/i.test(label) ? "Location de salle" : "Ventes diverses"))); };
+    var cpCat = function(label){ return /petit-d/i.test(label) ? "Petits-déjeuners" : (/repas|déjeuner|pause/i.test(label) ? "Restaurants et banquets" : (/boisson/i.test(label) ? "Bar (TVA 10 %)" : (/salle/i.test(label) ? "Location de salle" : "Ventes diverses"))); };
     cp().comptes.forEach(function(c){
       c.lignes.forEach(function(l){ if (l.date === D) edAdd(o.ca, cpCat(l.label), l.qte * l.pu); });
       c.factures.forEach(function(f){ f.lignes.forEach(function(l){ var m = /\((\d\d)\/(\d\d)\/(\d{4})\)$/.exec(l.label); var dl = m ? m[3] + "-" + m[2] + "-" + m[1] : f.date; if (dl === D) edAdd(o.ca, cpCat(l.label), l.qte * l.pu); }); });
     });
+    /* bar, snacking, produits d'accueil : comptes chambre et ventes au comptoir du jour */
+    var idxX = CONFIG.dateObjs.findIndex(function(d){ return isoOf(d) === D; });
+    if (idxX >= 0) exLignesDuJour(idxX).forEach(function(l){ edAdd(o.ca, EX_FAM[l.fam].ca, l.qte * l.pu); });
     /* salle de séminaire */
     var idx = CONFIG.dateObjs.findIndex(function(d){ return isoOf(d) === D; });
     if (idx >= 0 && typeof salleList === "function") salleList().forEach(function(b){
@@ -7092,6 +7195,431 @@
     Array.prototype.forEach.call(box.querySelectorAll("[data-gro]"), function(b){ b.onclick = function(){ openDetail(b.getAttribute("data-gro")); }; });
     Array.prototype.forEach.call(box.querySelectorAll("[data-grp-pl]"), function(b){ b.onclick = function(){ grsShowOnPlanning(b.getAttribute("data-grp-pl")); }; });
   }
+  /* =====================================================================================================
+     PRESTATIONS ANNEXES : BAR (deux ventilations de TVA), SNACKING, PRODUITS D'ACCUEIL (boutique)
+     - imputées sur le compte d'une chambre (r.extras) ou encaissées au comptoir (app.ventes, client de passage)
+     - reprises sur la facture (ventilation TVA), le solde du dossier, la main courante, la feuille de journée
+     ===================================================================================================== */
+  var EX_FAM = {
+    bar10:   {lib:"Bar · boissons sans alcool", court:"Bar 10 %", tva:0.10, col:"bar", ca:"Bar (TVA 10 %)"},
+    bar20:   {lib:"Bar · boissons alcoolisées", court:"Bar 20 %", tva:0.20, col:"bar", ca:"Bar (TVA 20 %)"},
+    snack:   {lib:"Snacking", court:"Snacking", tva:0.10, col:"snack", ca:"Snacking"},
+    boutique:{lib:"Produits d'accueil", court:"Boutique", tva:0.20, col:"boutique", ca:"Produits d'accueil (boutique)"}
+  };
+  var EX_FAM_ORDRE = ["bar10", "bar20", "snack", "boutique"];
+  var EX_CATALOGUE = [
+    {c:"CAFE",  fam:"bar10", lib:"Café expresso", pu:2.50},
+    {c:"CREM",  fam:"bar10", lib:"Café crème / thé / infusion", pu:3.00},
+    {c:"CHOC",  fam:"bar10", lib:"Chocolat chaud", pu:3.50},
+    {c:"SODA",  fam:"bar10", lib:"Soda 33 cl", pu:3.80},
+    {c:"JUS",   fam:"bar10", lib:"Jus de fruits 25 cl", pu:3.80},
+    {c:"EAU5",  fam:"bar10", lib:"Eau de Volvic 50 cl", pu:2.50},
+    {c:"CHAT",  fam:"bar10", lib:"Eau de Châteldon 75 cl", pu:6.00},
+    {c:"BPRE",  fam:"bar20", lib:"Bière pression 25 cl", pu:4.50},
+    {c:"BBOU",  fam:"bar20", lib:"Bière d'Auvergne 33 cl", pu:5.50},
+    {c:"VIN",   fam:"bar20", lib:"Verre de côtes-d'auvergne 14 cl", pu:5.00},
+    {c:"BVIN",  fam:"bar20", lib:"Bouteille de côtes-d'auvergne 75 cl", pu:24.00},
+    {c:"APER",  fam:"bar20", lib:"Apéritif (gentiane, kir)", pu:5.50},
+    {c:"WHIS",  fam:"bar20", lib:"Whisky 4 cl", pu:8.00},
+    {c:"CHAM",  fam:"bar20", lib:"Coupe de champagne", pu:9.00},
+    {c:"CROQ",  fam:"snack", lib:"Croque-monsieur", pu:7.50},
+    {c:"SAND",  fam:"snack", lib:"Sandwich jambon d'Auvergne", pu:6.50},
+    {c:"PLAN",  fam:"snack", lib:"Planche saint-nectaire et charcuterie", pu:14.00},
+    {c:"SALA",  fam:"snack", lib:"Salade auvergnate", pu:12.00},
+    {c:"TART",  fam:"snack", lib:"Part de pompe aux pommes", pu:4.50},
+    {c:"CHIP",  fam:"snack", lib:"Paquet de chips", pu:2.00},
+    {c:"BROS",  fam:"boutique", lib:"Brosse à dents + dentifrice", pu:3.00},
+    {c:"RASJ",  fam:"boutique", lib:"Rasoir jetable", pu:2.00},
+    {c:"RASK",  fam:"boutique", lib:"Kit rasage (rasoir + mousse)", pu:4.50},
+    {c:"PEIG",  fam:"boutique", lib:"Peigne", pu:1.50},
+    {c:"COUT",  fam:"boutique", lib:"Kit couture", pu:2.00},
+    {c:"BOUC",  fam:"boutique", lib:"Bouchons d'oreilles", pu:2.00},
+    {c:"MOUC",  fam:"boutique", lib:"Paquet de mouchoirs", pu:1.00},
+    {c:"CHAR",  fam:"boutique", lib:"Chargeur USB", pu:15.00},
+    {c:"CPOS",  fam:"boutique", lib:"Carte postale + timbre", pu:2.50}
+  ];
+  function exProd(code){ return EX_CATALOGUE.filter(function(p){ return p.c === code; })[0] || null; }
+  function exR(v){ return Math.round(v * 100) / 100; }
+  function extrasOf(r){ return (r && r.extras) || []; }
+  function extrasTotal(r){ return exR(extrasOf(r).reduce(function(s, e){ return s + e.qte * e.pu; }, 0)); }
+  function extrasDay(r, day){ var o = {bar:0, snack:0, boutique:0}; extrasOf(r).forEach(function(e){ if (e.day === day) o[EX_FAM[e.fam].col] += e.qte * e.pu; }); o.bar = exR(o.bar); o.snack = exR(o.snack); o.boutique = exR(o.boutique); return o; }
+  function extrasAvant(r, day){ return exR(extrasOf(r).reduce(function(s, e){ return s + (e.day < day ? e.qte * e.pu : 0); }, 0)); }
+  /* lignes de facture : une ligne par article, avec les jours de consommation */
+  function extrasLines(r){
+    var g = {}, ordre = [];
+    extrasOf(r).forEach(function(e){
+      if (!g[e.code]){ g[e.code] = {e:e, q:0, t:0, jours:{}}; ordre.push(e.code); }
+      g[e.code].q += e.qte; g[e.code].t += e.qte * e.pu; g[e.code].jours[e.day] = (g[e.code].jours[e.day] || 0) + e.qte;
+    });
+    ordre.sort(function(a, b){ return EX_FAM_ORDRE.indexOf(g[a].e.fam) - EX_FAM_ORDRE.indexOf(g[b].e.fam); });
+    return ordre.map(function(k){
+      var x = g[k], f = EX_FAM[x.e.fam];
+      var det = Object.keys(x.jours).map(Number).sort(function(a, b){ return a - b; }).map(function(d){ return CONFIG.dateLabels[d] + " × " + x.jours[d]; }).join(" · ");
+      return {label:x.e.lib, qty:x.q + (x.q > 1 ? " unités" : " unité"), pu:x.e.pu, puLabel:"/ unité", total:exR(x.t), tva:f.tva, detail:f.lib + " · " + det, extra:true};
+    });
+  }
+  /* imputation sur une chambre */
+  function extrasPoster(r, lignes, qui){
+    if (!r) return false;
+    r.extras = r.extras || [];
+    var t = CONFIG.today, ts = new Date().toTimeString().slice(0, 5);
+    lignes.forEach(function(l){
+      var p = exProd(l.c); if (!p || !(l.q > 0)) return;
+      r.extras.push({id:"X" + Date.now().toString(36) + Math.floor(Math.random() * 1e4), day:t, code:p.c, lib:p.lib, fam:p.fam, pu:p.pu, qte:l.q, h:ts, par:qui || ""});
+    });
+    return true;
+  }
+  /* --- jeu de données : quelques consommations déjà sur le compte de clients en séjour (pas de dossier d'exercice) --- */
+  function exSeed(list){
+    var t = CONFIG.today;
+    var legacy = {}; (CONFIG.seedClients || []).forEach(function(s, i){ if (s.legacy || (s.cas && ["vip", "longSejour", "otaPrepaye", "debiteur"].indexOf(s.cas) < 0)) legacy["19" + String(i + 1).padStart(5, "0")] = 1; });
+    var cands = list.filter(function(r){ return r.status === "encours" && r.arr < t && r.dep > t + 0 && r.dep !== t && !legacy[r.id] && r.room; })
+                    .sort(function(a, b){ return String(a.room).localeCompare(String(b.room)); });
+    var plans = [
+      [["BPRE", 2, -1], ["CROQ", 1, -1], ["CAFE", 1, 0]],
+      [["VIN", 2, -1], ["PLAN", 1, -1], ["EAU5", 1, -1]],
+      [["SODA", 1, -1], ["BROS", 1, -1]],
+      [["WHIS", 1, -1], ["CHAT", 1, -1], ["RASK", 1, 0]],
+      [["BBOU", 2, -2], ["SAND", 1, -2], ["BBOU", 1, -1], ["CHIP", 1, -1]],
+      [["JUS", 2, -1], ["TART", 2, -1]]
+    ];
+    var pick = cands.slice(0, 6);
+    pick.forEach(function(r, k){
+      var pl = plans[k % plans.length]; r.extras = [];
+      pl.forEach(function(x, j){ var p = exProd(x[0]), d = Math.max(r.arr, t + x[2]);
+        r.extras.push({id:"XS" + r.id + "-" + j, day:d, code:p.c, lib:p.lib, fam:p.fam, pu:p.pu, qte:x[1], h:j % 2 ? "21:40" : "19:15", par:"Bar"}); });
+    });
+    return list;
+  }
+  /* --- ventes au comptoir (clients de passage, payées tout de suite) --- */
+  function ventesDuJour(day){ return (app.ventes || []).filter(function(v){ return v.day === (day == null ? CONFIG.today : day); }); }
+  function venteEncaisser(lignes, moyen, qui){
+    app.ventes = app.ventes || [];
+    var t = CONFIG.today, ts = new Date().toTimeString().slice(0, 5), tot = 0, id = "V" + String(app.ventes.length + 1).padStart(4, "0");
+    var L = [];
+    lignes.forEach(function(l){ var p = exProd(l.c); if (!p || !(l.q > 0)) return; L.push({code:p.c, lib:p.lib, fam:p.fam, pu:p.pu, qte:l.q}); tot += l.q * p.pu; });
+    if (!L.length) return null;
+    tot = exR(tot);
+    app.ventes.push({id:id, day:t, h:ts, lignes:L, total:tot, moyen:moyen, par:qui || ""});
+    app.journal.push({resId:"PASSAGE", client:"Vente au comptoir " + id + " (client de passage)", room:"Bar", moyen:moyen, montant:tot, kind:"encaissement"});
+    return id;
+  }
+  /* ventilation (TTC, HT, TVA) d'un ensemble de lignes {fam, qte, pu} */
+  function exVentilation(lignes){
+    var o = {}; EX_FAM_ORDRE.forEach(function(f){ o[f] = {ttc:0}; });
+    lignes.forEach(function(l){ o[l.fam].ttc += l.qte * l.pu; });
+    EX_FAM_ORDRE.forEach(function(f){ var x = o[f]; x.ttc = exR(x.ttc); x.ht = exR(x.ttc / (1 + EX_FAM[f].tva)); x.tva = exR(x.ttc - x.ht); });
+    return o;
+  }
+  function exLignesDuJour(day){
+    var d = day == null ? CONFIG.today : day, out = [];
+    app.reservations.forEach(function(r){ extrasOf(r).forEach(function(e){ if (e.day === d) out.push({fam:e.fam, qte:e.qte, pu:e.pu, src:"ch", room:r.room, nom:r.client.nom, e:e, r:r}); }); });
+    ventesDuJour(d).forEach(function(v){ v.lignes.forEach(function(l){ out.push({fam:l.fam, qte:l.qte, pu:l.pu, src:"pass", v:v, l:l}); }); });
+    return out;
+  }
+
+  /* ----------------------------- écran « Bar & boutique » (point de vente) ----------------------------- */
+  var exTicket = [];
+  function exChambresOuvertes(){
+    return app.reservations.filter(function(r){ return r.status === "encours" && r.room && !(r.facture && r.facture.numero); })
+      .sort(function(a, b){ return String(a.room).localeCompare(String(b.room)); });
+  }
+  function renderBar(){
+    var box = $("barBox"); if (!box) return;
+    var t = CONFIG.today, tot = exR(exTicket.reduce(function(s, l){ return s + l.q * exProd(l.c).pu; }, 0));
+    var famHtml = EX_FAM_ORDRE.map(function(f){
+      var F = EX_FAM[f];
+      return "<div class='bar-fam'><h3>" + F.lib + " <span class='chip chip-muted'>TVA " + Math.round(F.tva * 100) + " %</span></h3><div class='bar-grid'>" +
+        EX_CATALOGUE.filter(function(p){ return p.fam === f; }).map(function(p){
+          return "<button type='button' class='bar-prod bar-" + f + "' data-bar-add='" + p.c + "'><span>" + clEsc(p.lib) + "</span><b class='num'>" + eur(p.pu) + "</b></button>"; }).join("") +
+        "</div></div>";
+    }).join("");
+    var tk = exTicket.length ? exTicket.map(function(l, i){ var p = exProd(l.c);
+        return "<tr><td>" + clEsc(p.lib) + "<span class='tl-detail'>" + EX_FAM[p.fam].court + "</span></td><td class='num'><button type='button' class='btn btn-ghost btn-sm' data-bar-moins='" + i + "'>−</button> " + l.q + " <button type='button' class='btn btn-ghost btn-sm' data-bar-plus='" + i + "'>+</button></td><td class='num'>" + eur(l.q * p.pu) + "</td></tr>"; }).join("")
+      : "<tr><td colspan='3' class='empty-state'>Ticket vide : cliquez sur les articles.</td></tr>";
+    var vt = exVentilation(exTicket.map(function(l){ var p = exProd(l.c); return {fam:p.fam, qte:l.q, pu:p.pu}; }));
+    var tva10 = exR(vt.bar10.tva + vt.snack.tva), tva20 = exR(vt.bar20.tva + vt.boutique.tva);
+    var ch = exChambresOuvertes();
+    var opts = "<option value=''>— choisir la chambre —</option>" + ch.map(function(r){ return "<option value='" + r.id + "'>" + r.room + " · " + clEsc(r.client.civ + " " + r.client.nom) + (r.dep === t ? " (départ du jour)" : "") + "</option>"; }).join("");
+    /* ventes du jour */
+    var L = exLignesDuJour(t), V = exVentilation(L);
+    var totJ = exR(EX_FAM_ORDRE.reduce(function(s, f){ return s + V[f].ttc; }, 0));
+    var ventil = EX_FAM_ORDRE.map(function(f){ return "<tr><td>" + EX_FAM[f].lib + "</td><td class='num'>" + Math.round(EX_FAM[f].tva * 100) + " %</td><td class='num'>" + eur(V[f].ht) + "</td><td class='num'>" + eur(V[f].tva) + "</td><td class='num'>" + eur(V[f].ttc) + "</td></tr>"; }).join("");
+    var imp = exR(L.filter(function(x){ return x.src === "ch"; }).reduce(function(s, x){ return s + x.qte * x.pu; }, 0)), pas = exR(totJ - imp);
+    var hist = [];
+    app.reservations.forEach(function(r){ extrasOf(r).forEach(function(e){ if (e.day === t) hist.push({h:e.h || "", qui:r.room + " · " + r.client.nom, lib:e.lib, q:e.qte, m:e.qte * e.pu, mode:"Compte chambre", del:(r.facture && r.facture.numero) ? "" : "<button type='button' class='btn btn-ghost btn-sm' data-bar-annul='" + r.id + "|" + e.id + "'>Annuler</button>"}); }); });
+    ventesDuJour(t).forEach(function(v){ v.lignes.forEach(function(l){ hist.push({h:v.h, qui:"Passage · " + v.id, lib:l.lib, q:l.qte, m:l.qte * l.pu, mode:v.moyen, del:""}); }); });
+    hist.sort(function(a, b){ return a.h < b.h ? 1 : -1; });
+    box.innerHTML =
+      "<div class='bar-layout'><div class='bar-cat'>" + famHtml + "</div>" +
+      "<aside class='bar-ticket panel'><h3>Ticket en cours</h3><div class='twrap'><table><tbody>" + tk + "</tbody>" +
+        "<tfoot><tr><td><b>Total TTC</b></td><td></td><td class='num'><b>" + eur(tot) + "</b></td></tr>" +
+        "<tr><td class='hint'>dont TVA 10 % · 20 %</td><td></td><td class='num hint'>" + eur(tva10) + " · " + eur(tva20) + "</td></tr></tfoot></table></div>" +
+        "<div class='field'><label for='barRoom'>Imputer sur le compte d'une chambre</label><select id='barRoom'>" + opts + "</select></div>" +
+        "<button type='button' class='btn btn-primary btn-sm' id='barImputer'" + (exTicket.length ? "" : " disabled") + ">🛏️ Imputer sur la chambre</button>" +
+        "<div class='field' style='margin-top:12px;'><label for='barMoyen'>Ou encaisser tout de suite (client de passage)</label><select id='barMoyen'><option>Espèces</option><option>Carte bancaire</option></select></div>" +
+        "<button type='button' class='btn btn-ghost btn-sm' id='barEncaisser'" + (exTicket.length ? "" : " disabled") + ">💶 Encaisser</button> " +
+        "<button type='button' class='btn btn-ghost btn-sm' id='barVider'" + (exTicket.length ? "" : " disabled") + ">Vider le ticket</button>" +
+        "<p class='hint' style='margin-top:10px;'>Un client qui ne dort pas à l'hôtel paie tout de suite. Un client en séjour peut signer : la consommation va sur sa note et sera réglée au départ.</p>" +
+      "</aside></div>" +
+      "<h3 style='margin-top:18px;'>Ventilation du jour · " + CONFIG.dateLabels[t] + "</h3>" +
+      "<div class='twrap'><table><thead><tr><th>Famille</th><th class='num'>TVA</th><th class='num'>HT</th><th class='num'>TVA</th><th class='num'>TTC</th></tr></thead><tbody>" + ventil +
+        "<tr style='font-weight:700;'><td>Total</td><td></td><td class='num'>" + eur(exR(EX_FAM_ORDRE.reduce(function(s, f){ return s + V[f].ht; }, 0))) + "</td><td class='num'>" + eur(exR(EX_FAM_ORDRE.reduce(function(s, f){ return s + V[f].tva; }, 0))) + "</td><td class='num'>" + eur(totJ) + "</td></tr></tbody></table></div>" +
+      "<p class='hint'>Imputé sur les chambres : <b>" + eur(imp) + "</b> (encaissé au départ) · encaissé au comptoir : <b>" + eur(pas) + "</b> (déjà dans la caisse du jour).</p>" +
+      "<h3>Ventes du jour</h3><div class='twrap'><table><thead><tr><th>Heure</th><th>Client</th><th>Article</th><th class='num'>Qté</th><th class='num'>Montant</th><th>Règlement</th><th></th></tr></thead><tbody>" +
+        (hist.map(function(x){ return "<tr><td class='num'>" + clEsc(x.h) + "</td><td>" + clEsc(x.qui) + "</td><td>" + clEsc(x.lib) + "</td><td class='num'>" + x.q + "</td><td class='num'>" + eur(x.m) + "</td><td>" + clEsc(x.mode) + "</td><td>" + x.del + "</td></tr>"; }).join("") ||
+         "<tr><td colspan='7' class='empty-state'>Aucune vente aujourd'hui.</td></tr>") + "</tbody></table></div>";
+  }
+  document.addEventListener("click", function(e){
+    var el = e.target.closest && e.target.closest("[data-bar-add],[data-bar-plus],[data-bar-moins],[data-bar-annul],#barImputer,#barEncaisser,#barVider,[data-dx-add],[data-dx-del]");
+    if (!el) return;
+    if (el.dataset.barAdd){ var c = el.dataset.barAdd, l = exTicket.filter(function(x){ return x.c === c; })[0]; if (l) l.q++; else exTicket.push({c:c, q:1}); renderBar(); return; }
+    if (el.dataset.barPlus != null){ exTicket[+el.dataset.barPlus].q++; renderBar(); return; }
+    if (el.dataset.barMoins != null){ var i = +el.dataset.barMoins; exTicket[i].q--; if (exTicket[i].q <= 0) exTicket.splice(i, 1); renderBar(); return; }
+    if (el.id === "barVider"){ exTicket = []; renderBar(); return; }
+    if (el.id === "barImputer"){
+      var rid = $("barRoom").value, r = app.reservations.filter(function(x){ return x.id === rid; })[0];
+      if (!r){ toast("Choisissez la chambre du client avant d'imputer."); return; }
+      var tot = exR(exTicket.reduce(function(s, l){ return s + l.q * exProd(l.c).pu; }, 0));
+      extrasPoster(r, exTicket, edOp());
+      try { actPush([{a:"🍸 Bar : " + eur(tot) + " imputés sur la chambre " + r.room + " (" + r.client.nom + ")", id:r.id}]); } catch(x){}
+      exTicket = []; toast(eur(tot) + " ajoutés à la note de la chambre " + r.room + "."); refreshAll(); renderBar(); return;
+    }
+    if (el.id === "barEncaisser"){
+      var moyen = $("barMoyen").value, id = venteEncaisser(exTicket, moyen, edOp());
+      if (id){ var v = app.ventes[app.ventes.length - 1]; try { actPush([{a:"🍸 Vente au comptoir " + id + " : " + eur(v.total) + " en " + moyen}]); } catch(x){} toast("Vente " + id + " encaissée : " + eur(v.total) + " en " + moyen + "."); }
+      exTicket = []; refreshAll(); renderBar(); return;
+    }
+    if (el.dataset.barAnnul || el.dataset.dxDel){
+      var parts = (el.dataset.barAnnul || el.dataset.dxDel).split("|"), rr = app.reservations.filter(function(x){ return x.id === parts[0]; })[0];
+      if (!rr || (rr.facture && rr.facture.numero)){ toast("Facture déjà émise : la ligne ne peut plus être retirée (il faudrait un avoir)."); return; }
+      var ex = extrasOf(rr).filter(function(x){ return x.id === parts[1]; })[0]; if (!ex) return;
+      rr.extras = extrasOf(rr).filter(function(x){ return x.id !== parts[1]; });
+      try { actPush([{a:"🍸 Consommation retirée de la chambre " + rr.room + " : " + ex.lib + " × " + ex.qte, id:rr.id}]); } catch(x){}
+      refreshAll(); if (app.view === "bar") renderBar(); return;
+    }
+    if (el.dataset.dxAdd){
+      var r2 = currentRes(), sel = $("dxProd"), q = Math.max(1, parseInt($("dxQte").value, 10) || 1);
+      if (!r2 || !sel || !sel.value) return;
+      if (r2.facture && r2.facture.numero){ toast("La facture est émise : on ne peut plus rien ajouter à cette note."); return; }
+      extrasPoster(r2, [{c:sel.value, q:q}], edOp());
+      try { actPush([{a:"🍸 " + exProd(sel.value).lib + " × " + q + " ajouté sur la chambre " + r2.room, id:r2.id}]); } catch(x){}
+      refreshAll(); return;
+    }
+  });
+  /* bloc « Bar, snacking, produits d'accueil » de la fiche dossier */
+  function renderDossierExtras(r){
+    var host = $("d-extras"); if (!host) return;
+    if (!r || r.status === "annulee" || r.status === "noshow"){ host.innerHTML = ""; return; }
+    var ouvert = r.status === "encours" && !(r.facture && r.facture.numero);
+    var lignes = extrasOf(r).slice().sort(function(a, b){ return a.day - b.day; });
+    host.innerHTML = "<h4 style='margin:14px 0 6px;'>🍸 Bar, snacking et produits d'accueil · " + eur(extrasTotal(r)) + "</h4>" +
+      (lignes.length ? "<div class='twrap'><table><thead><tr><th>Jour</th><th>Article</th><th>Famille</th><th class='num'>Qté</th><th class='num'>Montant</th><th></th></tr></thead><tbody>" +
+        lignes.map(function(e){ return "<tr><td>" + CONFIG.dateLabels[e.day] + (e.h ? " " + e.h : "") + "</td><td>" + clEsc(e.lib) + "</td><td>" + EX_FAM[e.fam].court + "</td><td class='num'>" + e.qte + "</td><td class='num'>" + eur(e.qte * e.pu) + "</td><td>" + (ouvert ? "<button type='button' class='btn btn-ghost btn-sm' data-dx-del='" + r.id + "|" + e.id + "'>Retirer</button>" : "") + "</td></tr>"; }).join("") +
+        "</tbody></table></div>" : "<p class='hint' style='margin:0;'>Aucune consommation sur cette note.</p>") +
+      (ouvert ? "<div class='actions' style='margin-top:8px;align-items:flex-end;'><div class='field' style='margin:0;'><label for='dxProd'>Ajouter une consommation</label><select id='dxProd'>" +
+        EX_FAM_ORDRE.map(function(f){ return "<optgroup label='" + EX_FAM[f].lib + "'>" + EX_CATALOGUE.filter(function(p){ return p.fam === f; }).map(function(p){ return "<option value='" + p.c + "'>" + clEsc(p.lib) + " · " + eur(p.pu) + "</option>"; }).join("") + "</optgroup>"; }).join("") +
+        "</select></div><div class='field' style='margin:0;width:80px;'><label for='dxQte'>Qté</label><input id='dxQte' type='number' min='1' value='1'></div><button type='button' class='btn btn-ghost btn-sm' data-dx-add='1'>Ajouter à la note</button></div>"
+        : "<p class='hint' style='margin:6px 0 0;'>" + (r.status === "confirmee" ? "Les consommations s'ajoutent une fois le client arrivé." : "Note close : facture émise.") + "</p>");
+  }
+
+  /* =====================================================================================================
+     PLAN DE SECOURS : plan de masse, plans d'étage (RDC, 1er, 2e) avec les clients présents en temps réel,
+     exercice d'évacuation chronométré (procédure générale + contrôle étage par étage) et bilan.
+     Le bâtiment est fictif mais cohérent avec les 60 chambres du PMS et la fiche descriptive de l'hôtel.
+     ===================================================================================================== */
+  var SC_X0 = 270, SC_X1 = 1070, SC_YN = 90, SC_YC = 175, SC_YS = 205, SC_YB = 290;
+  function scRoomRects(niv){
+    var out = {}, p = String(niv), w = 68;
+    for (var i = 1; i <= 10; i++) out[p + String(i).padStart(2, "0")] = {x:330 + (i - 1) * w, y:SC_YN, w:w, h:SC_YC - SC_YN, side:"n"};
+    var sw = 63, x = 330, ordre = ["20", "19", "18", "17", "16", "ASC", "15", "14", "13", "12", "11"];
+    ordre.forEach(function(k){ if (k === "ASC"){ x += 50; return; } out[p + k] = {x:x, y:SC_YS, w:sw, h:SC_YB - SC_YS, side:"s"}; x += sw; });
+    return out;
+  }
+  var SC_SCENARIOS = [
+    {id:"nuit-linge", titre:"Nuit · fumée dans la lingerie du 1er étage", heure:"02 h 10", moment:"nuit", niv:1, fx:300, fy:250, zone:"Lingerie / office d'étage du 1er (aile ouest)",
+     bloque:["escA1"], pr:"P1", staff:1, horsCh:0,
+     contexte:"Vous êtes seule à la réception (veilleuse de nuit). La centrale incendie sonne : « Zone 1-02 · Détecteur lingerie 1er étage ». L'alarme générale se déclenche dans tout l'hôtel.",
+     points:["L'escalier A (ouest) est enfumé au 1er : les clients du 1er et du 2e descendent par l'escalier B (est).", "Ne jamais prendre l'ascenseur.", "Seule de nuit : vous appelez le 18, vous prenez la liste des présents et les clés, vous guidez vers le point de rassemblement P1, vous ne remontez pas dans les étages enfumés.", "Les pompiers reçoivent la liste et le nom des chambres non vérifiées."]},
+    {id:"jour-cuisine", titre:"Midi · départ de feu à l'office du bar", heure:"12 h 35", moment:"jour", niv:0, fx:220, fy:85, zone:"Office / cuisine du bar (pavillon d'accueil)",
+     bloque:["bar"], pr:"P1", staff:6, horsCh:22,
+     contexte:"Service du midi : 14 personnes en journée d'étude dans la salle des Volcans, 8 clients au bar. Un serveur crie « Au feu ! » : la friteuse de l'office s'est enflammée. Il utilise l'extincteur, sans succès.",
+     points:["Évacuer d'abord le pavillon : salle des Volcans par sa sortie ouest, bar par l'entrée principale (la sortie terrasse longe l'office en feu).", "Couper le gaz de l'office si on peut le faire sans risque (vanne dans le couloir de service).", "Les chambres sont presque vides à midi : contrôler quand même chaque étage, les clients en recouche peuvent dormir.", "Compter aussi le personnel et les clients de passage du bar au point de rassemblement."]},
+    {id:"fausse", titre:"Soirée · déclencheur manuel cassé au 2e étage", heure:"21 h 50", moment:"soir", niv:2, fx:1040, fy:150, zone:"Déclencheur manuel, palier de l'escalier B au 2e",
+     bloque:[], pr:"P1", staff:2, horsCh:5,
+     contexte:"La centrale indique « Zone 2-04 · Déclencheur manuel escalier B ». Une cliente appelle : « Mon fils a appuyé sur le boîtier rouge en jouant. »",
+     points:["L'alarme générale sonne : on évacue. La levée de doute se fait en parallèle, elle ne retarde jamais l'évacuation.", "Seuls les pompiers ou la direction décident de faire remonter les clients.", "Après coup : prévenir le prestataire pour réarmer le déclencheur, noter l'incident dans la main courante de sécurité (registre de sécurité)."]},
+    {id:"parking", titre:"Examen · feu de conteneurs près du parking", heure:"23 h 20", moment:"nuit", niv:0, fx:1085, fy:330, zone:"Local poubelles, façade est, côté parking",
+     bloque:["escB0"], pr:"P2", staff:1, horsCh:0,
+     contexte:"Un client rentre et signale des flammes au local poubelles, contre la façade est. La fumée entre par la porte de l'escalier B au rez-de-chaussée. Vous déclenchez l'alarme.",
+     points:["Le point de rassemblement habituel P1 (parking) est près du feu : on utilise le point de rassemblement de repli P2 (parvis ouest, devant la terrasse).", "La sortie de l'escalier B au rez-de-chaussée est enfumée : les étages descendent par l'escalier A et sortent par le hall.", "Les véhicules ne quittent pas le parking : la voie d'accès doit rester libre pour les pompiers."]}
+  ];
+  var SC_ETAPES = [
+    ["alarme", "Entendre l'alarme et lire la centrale incendie (zone, étage)"],
+    ["doute", "Levée de doute rapide, sans prendre de risque (ou envoyer un collègue)"],
+    ["appel", "Appeler les pompiers : 18 ou 112"],
+    ["liste", "Prendre la liste des présents, le passe général et les plans"],
+    ["evac", "Faire évacuer : guider vers les sorties non enfumées, jamais l'ascenseur"],
+    ["etages", "Contrôler les chambres étage par étage (plans ci-dessous)"],
+    ["pmr", "Personnes à mobilité réduite : les aider ou les installer dans l'espace d'attente sécurisé et le signaler"],
+    ["rass", "Point de rassemblement : compter les personnes avec la liste"],
+    ["pompiers", "Accueillir les pompiers : liste, chambres non vérifiées, PMR, plans, clés"],
+    ["fin", "Fin d'alerte : personne ne rentre sans l'accord des pompiers ; noter l'incident au registre de sécurité"]
+  ];
+  var scState = {niv:0, run:null};
+  function scPresents(){
+    var t = CONFIG.today, by = {};
+    app.reservations.forEach(function(r){
+      if (r.status !== "encours" || !r.room) return;
+      var com = (r.commentaires || []).map(function(c){ return c.txt || ""; }).join(" ") + " " + (r.note || "");
+      by[r.room] = {r:r, pers:r.adults + (r.kids || 0), kids:r.kids || 0, pmr:/mobilit/i.test(com), etr:!!(r.client.indic && r.client.indic !== "+33") || /anglais|english/i.test((r.client.langue || "") + com), dep:r.dep === t};
+    });
+    return by;
+  }
+  function scParNiveau(P){
+    var o = [0, 1, 2].map(function(){ return {ch:0, pers:0, pmr:0, kids:0}; });
+    Object.keys(P).forEach(function(rm){ var n = +rm.charAt(0), x = P[rm]; if (!o[n]) return; o[n].ch++; o[n].pers += x.pers; o[n].pmr += x.pmr ? 1 : 0; o[n].kids += x.kids; });
+    return o;
+  }
+  function scSvgFloor(niv, P, run){
+    var R = scRoomRects(niv), sc = run ? SC_SCENARIOS.filter(function(s){ return s.id === run.sc; })[0] : null;
+    var bloque = function(k){ return sc && sc.bloque.indexOf(k) >= 0; };
+    var s = "<svg viewBox='0 0 1190 410' class='sc-svg' role='img' aria-label='Plan d&apos;évacuation " + ["du rez-de-chaussée", "du 1er étage", "du 2e étage"][niv] + "'>";
+    s += "<defs><pattern id='scHatch' width='8' height='8' patternUnits='userSpaceOnUse' patternTransform='rotate(45)'><line x1='0' y1='0' x2='0' y2='8' stroke='#c0392b' stroke-width='3'/></pattern>" +
+         "<marker id='scArr' viewBox='0 0 10 10' refX='9' refY='5' markerWidth='7' markerHeight='7' orient='auto-start-reverse'><path d='M0 0L10 5L0 10z' fill='#1e8449'/></marker></defs>";
+    s += "<text x='20' y='30' class='sc-t'>" + ["Rez-de-chaussée · chambres 001 à 020 et pavillon d'accueil", "1er étage · chambres 101 à 120", "2e étage · chambres 201 à 220"][niv] + "</text>";
+    /* bâtiment principal */
+    s += "<rect x='" + SC_X0 + "' y='" + SC_YN + "' width='" + (SC_X1 - SC_X0) + "' height='" + (SC_YB - SC_YN) + "' class='sc-wall'/>";
+    s += "<rect x='" + SC_X0 + "' y='" + SC_YC + "' width='" + (SC_X1 - SC_X0) + "' height='" + (SC_YS - SC_YC) + "' class='sc-corr'/>";
+    s += "<text x='500' y='194' class='sc-small' text-anchor='middle'>couloir · éclairage de sécurité (BAES) tous les 15 m</text>";
+    /* escaliers et locaux */
+    var esc = function(x, y, nom, k){ return "<rect x='" + x + "' y='" + y + "' width='60' height='85' class='sc-esc'/>" + (bloque(k) ? "<rect x='" + x + "' y='" + y + "' width='60' height='85' fill='url(#scHatch)' opacity='.55'/>" : "") +
+      "<text x='" + (x + 30) + "' y='" + (y + 38) + "' text-anchor='middle' class='sc-lbl'>Escalier</text><text x='" + (x + 30) + "' y='" + (y + 54) + "' text-anchor='middle' class='sc-lbl'><tspan font-weight='700'>" + nom + "</tspan></text>" +
+      (niv > 0 ? "<text x='" + (x + 30) + "' y='" + (y + 74) + "' text-anchor='middle' class='sc-small'>EAS</text>" : ""); };
+    s += esc(270, SC_YN, "A (ouest)", "escA" + niv) + esc(1010, SC_YN, "B (est)", "escB" + niv);
+    s += "<rect x='270' y='" + SC_YS + "' width='60' height='85' class='sc-loc'/><text x='300' y='245' text-anchor='middle' class='sc-small'>" + (niv ? "Lingerie" : "Réserve") + "</text><text x='300' y='259' text-anchor='middle' class='sc-small'>office</text>";
+    s += "<rect x='1010' y='" + SC_YS + "' width='60' height='85' class='sc-loc'/><text x='1040' y='245' text-anchor='middle' class='sc-small'>Local</text><text x='1040' y='259' text-anchor='middle' class='sc-small'>ménage</text>";
+    s += "<rect x='645' y='" + SC_YS + "' width='50' height='85' class='sc-asc'/><text x='670' y='245' text-anchor='middle' class='sc-small'>Ascen-</text><text x='670' y='258' text-anchor='middle' class='sc-small'>seur</text><text x='670' y='278' text-anchor='middle' class='sc-small' fill='#c0392b'>interdit</text>";
+    /* chambres */
+    Object.keys(R).forEach(function(rm){
+      var g = R[rm], x = P[rm], st = run ? (run.ch[rm] || 0) : 0, cls = "sc-room" + (x ? " occ" : "") + (st === 1 ? " ok" : (st === 2 ? " ko" : ""));
+      s += "<g class='sc-rg' data-sc-room='" + rm + "'><rect x='" + g.x + "' y='" + g.y + "' width='" + g.w + "' height='" + g.h + "' class='" + cls + "'/>" +
+        "<text x='" + (g.x + g.w / 2) + "' y='" + (g.y + 22) + "' text-anchor='middle' class='sc-num'>" + rm + "</text>" +
+        (x ? "<text x='" + (g.x + g.w / 2) + "' y='" + (g.y + 44) + "' text-anchor='middle' class='sc-pers'>" + x.pers + " pers.</text>" : "<text x='" + (g.x + g.w / 2) + "' y='" + (g.y + 44) + "' text-anchor='middle' class='sc-small'>libre</text>") +
+        (x && x.pmr ? "<text x='" + (g.x + 8) + "' y='" + (g.y + g.h - 10) + "' class='sc-ico'>♿</text>" : "") +
+        (x && x.kids ? "<text x='" + (g.x + g.w / 2) + "' y='" + (g.y + g.h - 10) + "' text-anchor='middle' class='sc-small'>" + x.kids + " enf.</text>" : "") +
+        (x && x.etr ? "<text x='" + (g.x + g.w - 6) + "' y='" + (g.y + g.h - 26) + "' text-anchor='end' class='sc-small' font-weight='700'>EN</text>" : "") +
+        (st === 1 ? "<text x='" + (g.x + g.w - 8) + "' y='" + (g.y + 20) + "' text-anchor='end' class='sc-ico' fill='#1e8449'>✓</text>" : "") +
+        (st === 2 ? "<text x='" + (g.x + g.w - 8) + "' y='" + (g.y + 20) + "' text-anchor='end' class='sc-ico' fill='#c0392b'>!</text>" : "") + "</g>";
+    });
+    /* pavillon d'accueil (RDC) */
+    if (niv === 0){
+      var bx = function(x, y, w, h, l1, l2, k){ return "<rect x='" + x + "' y='" + y + "' width='" + w + "' height='" + h + "' class='sc-pav'/>" + (bloque(k) ? "<rect x='" + x + "' y='" + y + "' width='" + w + "' height='" + h + "' fill='url(#scHatch)' opacity='.4'/>" : "") +
+        "<text x='" + (x + w / 2) + "' y='" + (y + h / 2 - 2) + "' text-anchor='middle' class='sc-lbl'>" + l1 + "</text>" + (l2 ? "<text x='" + (x + w / 2) + "' y='" + (y + h / 2 + 14) + "' text-anchor='middle' class='sc-small'>" + l2 + "</text>" : ""); };
+      s += bx(30, 50, 145, 150, "Bar et salle", "petit-déjeuner · 48 pl.", "bar") + bx(175, 50, 95, 70, "Office", "cuisine (gaz)", "bar") + bx(175, 120, 95, 55, "Local tech.", "TGBT · chaudière") +
+           bx(30, 200, 100, 130, "Salle des", "Volcans · 40 pl.") + bx(130, 175, 140, 155, "Hall", "réception · SSI");
+      s += "<text x='200' y='300' text-anchor='middle' class='sc-small'>centrale incendie</text>";
+      /* sorties */
+      var exit = function(x, y, l, k, lx, ly){ var c = bloque(k) ? "#c0392b" : "#1e8449"; return "<rect x='" + (x - 7) + "' y='" + (y - 7) + "' width='14' height='14' fill='" + c + "'/><text x='" + lx + "' y='" + ly + "' class='sc-small' fill='" + c + "' font-weight='700'>" + l + "</text>"; };
+      s += exit(200, 330, "Entrée principale", "", 212, 346) + exit(30, 182, "Sortie terrasse", "bar", 42, 186) + exit(30, 312, "Sortie salle", "", 42, 316) + exit(300, 90, "Sortie jardin (esc. A)", "escA0", 312, 78) + exit(1070, 120, "Sortie est (esc. B)", "escB0", 1082, 124) + exit(1070, 190, "Sortie parking", "escB0", 1082, 194);
+    } else {
+      s += "<text x='150' y='190' text-anchor='middle' class='sc-small'>toiture du pavillon</text><text x='150' y='205' text-anchor='middle' class='sc-small'>(non accessible)</text>";
+      s += "<line x1='330' y1='190' x2='280' y2='190' stroke='" + (bloque("escA" + niv) ? "#c0392b" : "#1e8449") + "' stroke-width='3' marker-end='url(#scArr)'/>";
+      s += "<line x1='1000' y1='190' x2='1060' y2='190' stroke='" + (bloque("escB" + niv) ? "#c0392b" : "#1e8449") + "' stroke-width='3' marker-end='url(#scArr)'/>";
+    }
+    /* équipements */
+    var ext = function(x, y){ return "<circle cx='" + x + "' cy='" + y + "' r='7' fill='#c0392b'/><text x='" + x + "' y='" + (y + 3.5) + "' text-anchor='middle' class='sc-eq'>E</text>"; };
+    var dm = function(x, y){ return "<rect x='" + (x - 6) + "' y='" + (y - 6) + "' width='12' height='12' fill='#e67e22'/><text x='" + x + "' y='" + (y + 3.5) + "' text-anchor='middle' class='sc-eq'>D</text>"; };
+    s += ext(345, 182) + ext(660, 199) + ext(995, 182) + dm(345, 199) + dm(995, 199);
+    if (niv === 0) s += ext(60, 70) + ext(255, 68) + ext(190, 166) + ext(150, 320) + dm(215, 320) + dm(112, 214);
+    s += "<g><circle cx='705' cy='190' r='9' fill='#2c4c7a'/><text x='705' y='194' text-anchor='middle' class='sc-eq'>i</text></g>";
+    /* feu */
+    if (sc && sc.niv === niv) s += "<g class='sc-fire'><circle cx='" + sc.fx + "' cy='" + sc.fy + "' r='22' fill='#c0392b' opacity='.25'/><text x='" + sc.fx + "' y='" + (sc.fy + 8) + "' text-anchor='middle' font-size='24'>🔥</text></g>";
+    /* légende */
+    s += "<g transform='translate(20,360)' class='sc-small'><rect width='16' height='12' class='sc-room occ'/><text x='22' y='10'>chambre occupée</text>" +
+         "<rect x='140' width='16' height='12' class='sc-room ok'/><text x='162' y='10'>contrôlée, vide</text>" +
+         "<rect x='270' width='16' height='12' class='sc-room ko'/><text x='292' y='10'>personne restée (à signaler)</text>" +
+         "<circle cx='478' cy='6' r='6' fill='#c0392b'/><text x='490' y='10'>extincteur</text>" +
+         "<rect x='558' width='12' height='12' fill='#e67e22'/><text x='576' y='10'>déclencheur manuel</text>" +
+         "<rect x='700' width='12' height='12' fill='#1e8449'/><text x='718' y='10'>sortie</text>" +
+         "<circle cx='776' cy='6' r='7' fill='#2c4c7a'/><text x='788' y='10'>plan « vous êtes ici »</text>" +
+         "<text x='0' y='30'>♿ personne à mobilité réduite · EN client étranger · EAS espace d'attente sécurisé (paliers des escaliers aux étages)</text></g>";
+    return s + "</svg>";
+  }
+  function scSvgMasse(run){
+    var sc = run ? SC_SCENARIOS.filter(function(s){ return s.id === run.sc; })[0] : null, pr = sc ? sc.pr : "P1";
+    var s = "<svg viewBox='0 0 1110 430' class='sc-svg' role='img' aria-label='Plan de masse de l&apos;hôtel'>";
+    s += "<text x='20' y='30' class='sc-t'>Plan de masse · 12 rue des Sources, 63000 Clermont-Ferrand</text>";
+    s += "<rect x='20' y='370' width='1070' height='44' fill='#d5d8dc'/><text x='555' y='398' text-anchor='middle' class='sc-lbl'>Rue des Sources (accès pompiers par la façade sud et le portail du parking)</text>";
+    s += "<rect x='240' y='60' width='560' height='70' fill='#d4efdf'/><text x='520' y='100' text-anchor='middle' class='sc-small'>Jardin (côté calme, chambres x01 à x10)</text>";
+    s += "<rect x='250' y='140' width='560' height='150' class='sc-wall'/><text x='530' y='205' text-anchor='middle' class='sc-lbl'>Bâtiment principal · R+2 · 60 chambres</text><text x='530' y='224' text-anchor='middle' class='sc-small'>escalier A à l'ouest · escalier B à l'est · ascenseur au centre</text>";
+    s += "<rect x='90' y='150' width='160' height='170' class='sc-pav'/><text x='170' y='225' text-anchor='middle' class='sc-lbl'>Pavillon d'accueil</text><text x='170' y='242' text-anchor='middle' class='sc-small'>hall, bar, salle des Volcans</text>";
+    s += "<rect x='30' y='150' width='60' height='170' fill='#fdebd0'/><text x='60' y='240' text-anchor='middle' class='sc-small' transform='rotate(-90 60 240)'>Terrasse</text>";
+    s += "<rect x='830' y='140' width='250' height='210' fill='#eaeded' stroke='#aab7b8'/><text x='955' y='170' text-anchor='middle' class='sc-lbl'>Parking · 32 places</text><text x='955' y='188' text-anchor='middle' class='sc-small'>dont 2 PMR et 1 autocar · bornes de recharge</text>";
+    s += "<rect x='1000' y='300' width='70' height='36' fill='#fadbd8'/><text x='1035' y='322' text-anchor='middle' class='sc-small'>local poubelles</text>";
+    s += "<rect x='960' y='350' width='90' height='20' fill='#aab7b8'/><text x='1005' y='365' text-anchor='middle' class='sc-small'>portail</text>";
+    var P = function(x, y, l, on){ return "<g><circle cx='" + x + "' cy='" + y + "' r='22' fill='" + (on ? "#1e8449" : "#a9dfbf") + "'/><text x='" + x + "' y='" + (y + 6) + "' text-anchor='middle' font-weight='700' fill='#fff'>" + l + "</text></g>"; };
+    s += P(900, 300, "P1", pr === "P1") + "<text x='900' y='340' text-anchor='middle' class='sc-small'>point de rassemblement</text>";
+    s += P(60, 345, "P2", pr === "P2") + "<text x='95' y='350' class='sc-small'>repli : parvis ouest</text>";
+    s += "<rect x='175' y="+ "'320' width='30' height='14' fill='#1e8449'/><text x='212' y='331' class='sc-small'>entrée principale</text>";
+    s += "<circle cx='640' cy='358' r='8' fill='#c0392b'/><text x='652' y='362' class='sc-small'>poteau incendie</text>";
+    if (sc && sc.id === "parking") s += "<text x='1035' y='300' text-anchor='middle' font-size='26'>🔥</text>";
+    return s + "</svg>";
+  }
+  function scFmt(ms){ var s = Math.floor(ms / 1000); return String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0"); }
+  function renderSecu(){
+    var box = $("secuBox"); if (!box) return;
+    var P = scPresents(), N = scParNiveau(P), run = scState.run, sc = run ? SC_SCENARIOS.filter(function(s){ return s.id === run.sc; })[0] : null;
+    var totP = N[0].pers + N[1].pers + N[2].pers, totC = N[0].ch + N[1].ch + N[2].ch;
+    var head = "<div class='sc-head'><div class='field' style='margin:0;'><label for='scChoix'>Scénario d'exercice</label><select id='scChoix'" + (run && !run.fin ? " disabled" : "") + ">" +
+      SC_SCENARIOS.map(function(s){ return "<option value='" + s.id + "'" + (run && run.sc === s.id ? " selected" : "") + ">" + s.titre + "</option>"; }).join("") + "</select></div>" +
+      (run && !run.fin ? "<span class='sc-timer num' id='scTimer'>" + scFmt(Date.now() - run.t0) + "</span><button type='button' class='btn btn-primary btn-sm' id='scFin'>Terminer l'exercice</button>"
+                       : "<button type='button' class='btn btn-primary btn-sm' id='scGo'>🚨 Lancer l'exercice</button>") +
+      (run ? " <button type='button' class='btn btn-ghost btn-sm' id='scRaz'>Effacer</button>" : "") + "</div>";
+    var pres = "<div class='sc-kpis'><span>Présents ce soir : <b>" + totP + " personnes</b> dans <b>" + totC + " chambres</b></span>" +
+      [0, 1, 2].map(function(n){ return "<span>" + ["RDC", "1er", "2e"][n] + " : <b>" + N[n].pers + "</b> pers. / " + N[n].ch + " ch." + (N[n].pmr ? " · ♿ " + N[n].pmr : "") + (N[n].kids ? " · " + N[n].kids + " enf." : "") + "</span>"; }).join("") +
+      (sc ? "<span>Hors chambres : <b>" + (sc.staff + sc.horsCh) + "</b> (" + sc.staff + " salarié" + (sc.staff > 1 ? "s" : "") + (sc.horsCh ? ", " + sc.horsCh + " clients au bar ou en salle" : "") + ")</span>" : "") + "</div>";
+    var scen = sc ? "<div class='sc-scen'><b>" + sc.titre + " · " + sc.heure + "</b><p>" + sc.contexte + "</p><p class='hint' style='margin:0;'>Feu : " + sc.zone + ". Point de rassemblement : <b>" + (sc.pr === "P1" ? "P1, parking" : "P2, parvis ouest (repli)") + "</b>.</p></div>" : "";
+    var etapes = "<ol class='sc-steps'>" + SC_ETAPES.map(function(e){ var d = run && run.et[e[0]];
+      return "<li class='" + (d ? "done" : "") + "'><button type='button' class='sc-step' data-sc-step='" + e[0] + "'" + (!run || run.fin ? " disabled" : "") + ">" + (d ? "✓ " : "") + e[1] + "</button>" + (d ? "<span class='num sc-at'>" + scFmt(d) + "</span>" : "") + "</li>"; }).join("") + "</ol>";
+    var msg = "« Ici l'hôtel Les Trois Sources, 12 rue des Sources à Clermont-Ferrand. " + (sc ? "Feu : " + sc.zone.toLowerCase() + ". " : "Feu : [lieu]. ") + "Environ " + (totP + (sc ? sc.staff + sc.horsCh : 0)) + " personnes dans le bâtiment" + ((N[0].pmr + N[1].pmr + N[2].pmr) ? ", dont " + (N[0].pmr + N[1].pmr + N[2].pmr) + " à mobilité réduite" : "") + ". Évacuation en cours. Je suis " + edOp() + ", réceptionniste, au 04 73 00 00 00. »";
+    var bilan = "";
+    if (run && run.fin){
+      var nonC = [], rest = [], persNon = 0;
+      Object.keys(P).sort().forEach(function(rm){ var st = run.ch[rm] || 0; if (st === 0){ nonC.push(rm); persNon += P[rm].pers; } if (st === 2) rest.push(rm); });
+      var faites = SC_ETAPES.filter(function(e){ return run.et[e[0]]; }).length;
+      var ordreOk = SC_ETAPES.map(function(e){ return run.et[e[0]] || null; }).filter(Boolean).every(function(v, i, a){ return !i || a[i - 1] <= v; });
+      bilan = "<div class='sc-bilan'><h3>Bilan de l'exercice · durée " + scFmt(run.fin - run.t0) + "</h3><ul>" +
+        "<li>Étapes cochées : <b>" + faites + " / " + SC_ETAPES.length + "</b>" + (ordreOk ? " dans l'ordre." : " — <b>pas dans l'ordre</b> : relire la procédure.") + (run.et.appel && run.et.appel > 120000 ? " <b>Appel aux pompiers après plus de 2 minutes</b> : il doit venir tout de suite après la levée de doute." : "") + "</li>" +
+        "<li>Chambres occupées non contrôlées : <b>" + nonC.length + "</b>" + (nonC.length ? " (" + nonC.join(", ") + ", soit " + persNon + " personnes à signaler aux pompiers)" : " : toutes contrôlées.") + "</li>" +
+        "<li>Personnes restées signalées : " + (rest.length ? rest.join(", ") : "aucune") + "</li>" +
+        "<li>Points du scénario : " + sc.points.join(" ") + "</li></ul></div>";
+    }
+    var tabs = "<div class='sc-tabs'>" + [["masse", "Plan de masse"], [0, "RDC"], [1, "1er étage"], [2, "2e étage"]].map(function(x){ return "<button type='button' class='btn btn-sm " + (String(scState.niv) === String(x[0]) ? "btn-primary" : "btn-ghost") + "' data-sc-niv='" + x[0] + "'>" + x[1] + "</button>"; }).join("") +
+      "<span class='hint' style='margin-left:8px;'>" + (run && !run.fin ? "Cliquez sur une chambre : 1 clic = contrôlée et vide ✓, 2 clics = personne restée !, 3 clics = remettre." : "Les chiffres viennent du PMS : clients en séjour, enfants, PMR, clients étrangers.") + "</span></div>";
+    var plan = scState.niv === "masse" ? scSvgMasse(run) : scSvgFloor(+scState.niv, P, run);
+    var ctrl = "";
+    if (run && scState.niv !== "masse"){
+      var n = +scState.niv, occ = Object.keys(P).filter(function(rm){ return +rm.charAt(0) === n; }), ok = occ.filter(function(rm){ return run.ch[rm]; });
+      ctrl = "<p class='hint'>Contrôle de l'étage : <b>" + ok.length + " / " + occ.length + "</b> chambres occupées vérifiées.</p>";
+    }
+    box.innerHTML = head + pres + scen + "<div class='sc-cols'><div><h3>Procédure générale</h3>" + etapes + "<div class='sc-msg'><b>Message d'appel aux pompiers</b><br>" + clEsc(msg) + "</div></div>" +
+      "<div><h3>Consignes permanentes</h3><ul class='sc-cons'><li>Alarme générale = évacuation de tout le bâtiment. On ne cherche pas d'abord à savoir si c'est « pour de vrai ».</li><li>Fermer les portes derrière soi : une porte fermée retient la fumée.</li><li>Ne jamais utiliser l'ascenseur ; ne jamais remonter dans un étage enfumé.</li><li>Dans la fumée : se baisser, l'air frais est près du sol.</li><li>Client bloqué par la fumée : qu'il reste dans sa chambre, porte fermée, linge mouillé au bas de la porte, et se signale à la fenêtre ; on transmet le numéro aux pompiers.</li><li>Personne à mobilité réduite à l'étage : espace d'attente sécurisé (EAS) dans l'escalier, porte fermée ; les pompiers viennent la chercher.</li><li>Au point de rassemblement : appel nominatif avec la liste des présents, puis compte rendu au chef des secours.</li><li>Numéros : 18 pompiers · 112 urgences · 15 SAMU · direction d'astreinte 06 12 34 56 78.</li></ul></div></div>" +
+      tabs + "<div class='sc-plan'>" + plan + "</div>" + ctrl + bilan;
+  }
+  setInterval(function(){ var el = $("scTimer"); if (el && scState.run && !scState.run.fin) el.textContent = scFmt(Date.now() - scState.run.t0); }, 1000);
+  document.addEventListener("click", function(e){
+    var el = e.target.closest && e.target.closest("#scGo,#scFin,#scRaz,[data-sc-step],[data-sc-niv],[data-sc-room]");
+    if (!el || app.view !== "secu") return;
+    if (el.id === "scGo"){ scState.run = {sc:$("scChoix").value, t0:Date.now(), et:{}, ch:{}, fin:null}; var s0 = SC_SCENARIOS.filter(function(s){ return s.id === scState.run.sc; })[0]; scState.niv = s0.niv;
+      try { actPush([{a:"🚨 Exercice d'évacuation lancé : " + s0.titre}]); } catch(x){} renderSecu(); return; }
+    if (el.id === "scFin"){ scState.run.fin = Date.now(); try { actPush([{a:"🚨 Exercice d'évacuation terminé en " + scFmt(scState.run.fin - scState.run.t0)}]); } catch(x){} renderSecu(); return; }
+    if (el.id === "scRaz"){ scState.run = null; renderSecu(); return; }
+    if (el.dataset.scStep){ if (scState.run && !scState.run.fin){ var k = el.dataset.scStep; if (scState.run.et[k]) delete scState.run.et[k]; else scState.run.et[k] = Date.now() - scState.run.t0; } renderSecu(); return; }
+    if (el.dataset.scNiv != null){ scState.niv = el.dataset.scNiv === "masse" ? "masse" : +el.dataset.scNiv; renderSecu(); return; }
+    if (el.dataset.scRoom && scState.run && !scState.run.fin){ var rm = el.dataset.scRoom; scState.run.ch[rm] = ((scState.run.ch[rm] || 0) + 1) % 3; renderSecu(); }
+  });
+
   function refreshAll(){
     try { modeAppliquer(); } catch(e){}
     try { actDiff(); } catch(e){ console.error(e); }
@@ -7121,6 +7649,8 @@
     if (app.view==="exercices") paintExoResults();
     if (app.view==="cloture") renderCloture();
     if (app.view==="mc") renderMainCourante();
+    if (app.view==="bar") renderBar();
+    if (app.view==="secu") renderSecu();
     renderClotureBadge();
     updateTabCounts();
     renderKpis();
@@ -7809,7 +8339,6 @@
       "<li>Ticket Z carte bancaire = <b>" + eur(cb) + "</b>" + (cm ? " · carte manuelle (vente à distance) : " + eur(cm) : "") + "</li></ul>";
   }
   function autoTraiterJour(){
-    if (!estFormatrice()) return;
     var t = CONFIG.today, garde = {}, nd = 0, na = 0;
     /* on garde les dossiers d'origine des exercices et les cas particuliers (groupes, arrivée tardive, client étranger,
        PMR, arrhes, carte virtuelle à débiter, litige, erreur d'encaissement) : ce sont eux que les stagiaires traitent */
@@ -10542,6 +11071,7 @@
     {k:"groupes",      get:function(){ return app.groupes; },                set:function(v){ app.groupes = v; }},
     {k:"rateGrid",     get:function(){ return app.rateGrid; },               set:function(v){ app.rateGrid = v; }},
     {k:"journal",      get:function(){ return app.journal; },                set:function(v){ app.journal = v; }},
+    {k:"ventes",       get:function(){ return {l:app.ventes || []}; },       set:function(v){ app.ventes = (v && v.l) || []; }},
     {k:"hk",           get:function(){ return app.hk; },                     set:function(v){ app.hk = v; }},
     {k:"hsmm",         get:function(){ return {hs:app.hs || {}, mm:app.mm || {}}; }, set:function(v){ app.hs = (v && v.hs) || {}; app.mm = (v && v.mm) || {}; }},
     {k:"devis",        get:function(){ return {list:app.devisList, seq:app.nextDevisSeq}; },
@@ -11280,7 +11810,7 @@
       app.mode = mode || "normal";
       CONFIG.today = 2; refreshDateWindow();
       app.reservations = buildAllReservations(); app.nextInvoiceSeq = 1; app.nextDevisSeq = 1; app.activeResId = null;
-      clearPlSel(); app.journal = []; app.devisList = []; app.dayPickerOpen = {}; app.hk = buildHkState();
+      clearPlSel(); app.journal = []; app.ventes = []; app.devisList = []; app.dayPickerOpen = {}; app.hk = buildHkState();
       app.guests = buildGuests(); app.activeGuestId = null; app.pendingGuestId = null; renderKnownBox(null);
       app.groupes = buildSeedGroups(); app.activeGroupId = null; app.mailsTraites = []; app.demMiss = null; app.exoDem = null; app.exoDemShown = null; app._actSilent = true; try { actPush([{a:"🔄 Réinitialisation de la simulation"}]); } catch(e){} app.rateGrid = buildRateGrid();
       app.clotures = []; app.clotureFond = 150; app.clOpen = null; clViderSaisie(); app.salleResas = null; app.salleSeq = 1; app.deb = null; app.cperm = null; app.hs = {}; app.mm = {}; app.plTool = null; app.chan = null;
@@ -11632,7 +12162,8 @@
   function currentRes(){ return app.reservations.filter(function(r){return r.id===app.activeResId;})[0] || null; }
   function balanceOf(r){
     var paid = r.paiements.reduce(function(s,p){return s+p.montant;},0);
-    return {total:r.tarif.total, paid:paid, due: r.tarif.total - paid};
+    var tot = Math.round((r.tarif.total + extrasTotal(r)) * 100) / 100;
+    return {total:tot, paid:paid, due: tot - paid};
   }
   function openDetail(id){
     if (app.activeResId !== id){ optEdit = null; $("d-optPanel").hidden = true; $("d-occPanel").hidden = true; $("d-datesPanel").hidden = true; }
@@ -11683,7 +12214,8 @@
     if (optLock) $("d-occPanel").hidden = true;
     $("d-optLockHint").hidden = !optLock; $("d-optLockHint").textContent = optLock;
     if (optLock){ optEdit = null; $("d-optPanel").hidden = true; }
-    $("d-tarifTotal").textContent = eur(r.tarif.total);
+    $("d-tarifTotal").textContent = eur(r.tarif.total + extrasTotal(r));
+    try { renderDossierExtras(r); } catch(e){ console.error(e); }
 
     // Le check-in n'est permis que le jour d'arrivée du client (jour hôtelier en cours) : pour une réservation
     // arrivant un autre jour, seul le règlement (encaissement d'acompte, etc.) reste possible depuis ce dossier.
@@ -11812,7 +12344,7 @@
     $("d2-status").textContent = meta.label + (isDebtor(r) ? " · débiteur" : "");
     $("d2-arr").textContent = CONFIG.dateLabels[r.arr];
     $("d2-dep").textContent = CONFIG.dateLabels[r.dep];
-    $("d2-total").textContent = eur(r.tarif.total);
+    $("d2-total").textContent = eur(r.tarif.total + extrasTotal(r));
 
     renderInvoice(r, b);
   }
